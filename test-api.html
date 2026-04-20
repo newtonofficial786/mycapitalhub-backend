@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Auth API</title>
+    <style>
+        body { font-family: monospace; padding: 20px; max-width: 600px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; font-size: 14px; }
+        pre { background: #1e1e1e; color: #0f0; padding: 15px; border-radius: 5px; overflow: auto; max-height: 400px; }
+        h2 { color: #333; }
+        .error { color: #f44; }
+    </style>
+</head>
+<body>
+    <h2>Backend API Test</h2>
+    <div>
+        <button onclick="register()">1. Register</button>
+        <button onclick="login()">2. Login</button>
+        <button onclick="getProfile()">3. Get Profile</button>
+    </div>
+    <pre id="result">Click a button to test...</pre>
+
+    <script>
+    const API_URL = 'http://localhost:8000/api';
+    let token = localStorage.getItem('token') || '';
+
+    async function test(method, endpoint, body = null) {
+        const headers = {'Content-Type': 'application/json'};
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        
+        const options = { method, headers };
+        if (body) options.body = JSON.stringify(body);
+        
+        const res = await fetch(API_URL + endpoint, options);
+        return await res.json();
+    }
+
+    async function register() {
+        const mobile = '9' + Math.floor(Math.random() * 900000000 + 100000000);
+        const body = {
+            mobile: mobile,
+            password: 'test1234',
+            withdrawal_pin: '1234'
+        };
+        const result = await test('POST', '/auth/register', body);
+        if (result.data?.token) {
+            token = result.data.token;
+            localStorage.setItem('token', token);
+        }
+        document.getElementById('result').textContent = 'Register: ' + JSON.stringify(result, null, 2);
+    }
+
+    async function login() {
+        const result = await test('POST', '/auth/login', {
+            mobile: '9876543210',
+            password: 'test1234'
+        });
+        if (result.data?.token) {
+            token = result.data.token;
+            localStorage.setItem('token', token);
+        }
+        document.getElementById('result').textContent = 'Login: ' + JSON.stringify(result, null, 2);
+    }
+
+    async function getProfile() {
+        const result = await test('GET', '/user/profile');
+        document.getElementById('result').textContent = 'Profile: ' + JSON.stringify(result, null, 2);
+    }
+    </script>
+</body>
+</html>
