@@ -23,6 +23,7 @@ require_once __DIR__ . '/app/Controllers/IncomeController.php';
 require_once __DIR__ . '/app/Controllers/PaymentController.php';
 require_once __DIR__ . '/app/Controllers/TeamController.php';
 require_once __DIR__ . '/app/Controllers/ProductController.php';
+require_once __DIR__ . '/app/Controllers/BannerController.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = trim($uri, '/');
@@ -50,6 +51,7 @@ try {
     $teamController = new TeamController();
     $productController = new ProductController();
     $vipController = new VipController();
+    $bannerController = new BannerController();
 
     $appEnv = env('APP_ENV', 'local');
 
@@ -98,9 +100,12 @@ try {
 
         $uri === 'api/vip/packages' && $method === 'GET' => $vipController->getVipPackages(),
         $uri === 'api/vip/user' && $method === 'GET' => $vipController->getUserVip(),
-        $uri === 'api/vip/claim' && $method === 'POST' => $vipController->claimVipIncome(),
-        
-        $uri === 'api/debug' && $method === 'POST' => debugEndpoint($rawInput, $_POST),
+$uri === 'api/vip/claim' && $method === 'POST' => $vipController->claimVipIncome(),
+
+        $uri === 'api/banners' && $method === 'GET' => $bannerController->getBanners(),
+        $uri === 'api/banners' && $method === 'POST' => $bannerController->createBanner(),
+        $uri === 'api/banners' && $method === 'PUT' => $bannerController->updateBanner(),
+        $uri === 'api/banners' && $method === 'DELETE' => $bannerController->deleteBanner(),
 
         default => error('Endpoint not found', 404)
     };
