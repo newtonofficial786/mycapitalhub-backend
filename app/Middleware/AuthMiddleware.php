@@ -5,7 +5,22 @@ require_once __DIR__ . '/../Helpers.php';
 
 function authenticate() {
     $headers = getallheaders();
-    $authHeader = $headers['Authorization'] ?? $headers['Authorization'] ?? null;
+    $authHeader = null;
+    
+    foreach ($headers as $key => $value) {
+        if (strtolower($key) === 'authorization') {
+            $authHeader = $value;
+            break;
+        }
+    }
+    
+    if (!$authHeader) {
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    }
+    
+    if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
+        error('Unauthorized - No token provided', 401);
+    }
     
     if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
         error('Unauthorized', 401);

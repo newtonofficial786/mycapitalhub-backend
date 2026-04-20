@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+<h3>Backend API Test</h3>
+<button onclick="register()">Register</button>
+<button onclick="debug()">Debug</button>
+<pre id="r" style="background:#1e1e1e;color:#0f0;padding:10px;"></pre>
+<script>
+const API = 'http://localhost:8000';
+
+async function register() {
+    try {
+        const res = await fetch(API + '/api/auth/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({mobile: '9876543222', password: 'test1234', withdrawal_pin: '4321'})
+        });
+        const data = await res.json();
+        document.getElementById('r').textContent = 'Register: ' + JSON.stringify(data, null, 2);
+    } catch(e) {
+        document.getElementById('r').textContent = 'Error: ' + e.message;
+    }
+}
+
+async function debug() {
+    try {
+        const res = await fetch(API + '/api/debug', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({test: 'data'})
+        });
+        const data = await res.json();
+        document.getElementById('r').textContent = 'Debug: ' + JSON.stringify(data, null, 2);
+    } catch(e) {
+        document.getElementById('r').textContent = 'Error: ' + e.message;
+    }
+}
+</script>
+</body>
+</html>

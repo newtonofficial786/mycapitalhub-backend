@@ -24,8 +24,25 @@ function error($message = 'Error', $status = 400) {
 }
 
 function getJsonInput() {
+    if (!empty($_POST)) {
+        return array_merge($_POST, [
+            'withdrawalPin' => $_POST['withdrawalPin'] ?? $_POST['withdrawal_pin'] ?? '',
+            'referrerCode' => $_POST['referrerCode'] ?? $_POST['referrer_code'] ?? '',
+            'withdrawal_pin' => $_POST['withdrawal_pin'] ?? $_POST['withdrawalPin'] ?? '',
+            'referrer_code' => $_POST['referrer_code'] ?? $_POST['referrerCode'] ?? ''
+        ]);
+    }
     $input = file_get_contents('php://input');
-    return json_decode($input, true) ?? [];
+    $data = json_decode($input, true) ?? [];
+    
+    if (isset($data['withdrawalPin']) && !isset($data['withdrawal_pin'])) {
+        $data['withdrawal_pin'] = $data['withdrawalPin'];
+    }
+    if (isset($data['referrerCode']) && !isset($data['referrer_code'])) {
+        $data['referrer_code'] = $data['referrerCode'];
+    }
+    
+    return $data;
 }
 
 function generateToken($length = 32) {
@@ -33,7 +50,12 @@ function generateToken($length = 32) {
 }
 
 function generateReferralCode($mobile) {
-    return strtoupper(substr($mobile, -6) . bin2hex(random_bytes(2)));
+    $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    $code = '';
+    for ($i = 0; $i < 6; $i++) {
+        $code .= $chars[random_int(0, strlen($chars) - 1)];
+    }
+    return $code;
 }
 
 function hashPassword($password) {
@@ -51,4 +73,20 @@ function getConfig() {
         $configFile = __DIR__ . '/../config/local.php';
     }
     return require $configFile;
+}
+
+function debugEndpoint($rawInput, $postData) {
+    $logFile = __DIR__ . '/../debug.log';
+    $log = date('Y-m-d H:i:s') . ' | Raw: ' . strlen($rawInput) . ' bytes | post: ' . count($postData) . ' | ' . json_encode($postData) . "\n";
+    @file_put_contents($logFile, $log, FILE_APPEND);
+    
+    http_response_code(200);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'raw_len' => strlen($rawInput),
+        'raw' => $rawInput,
+        'post' => $postData,
+        'content_type' => $_SERVER['CONTENT_TYPE'] ?? ''
+    ]);
+    exit;
 }

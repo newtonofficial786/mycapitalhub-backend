@@ -5,6 +5,7 @@ require_once __DIR__ . '/bootstrap.php';
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Max-Age: 86400');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -26,6 +27,19 @@ require_once __DIR__ . '/app/Controllers/ProductController.php';
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = trim($uri, '/');
 $method = $_SERVER['REQUEST_METHOD'];
+
+$rawInput = file_get_contents('php://input');
+$logFile = __DIR__ . '/req.log';
+$log = date('Y-m-d H:i:s') . " $method $uri ct:" . ($_SERVER['CONTENT_TYPE'] ?? '') . " raw:" . strlen($rawInput) . " post:" . count($_POST) . " postdata:" . json_encode($_POST) . "\n";
+file_put_contents($logFile, $log, FILE_APPEND);
+
+if (empty($rawInput) && !empty($_POST)) {
+    $rawInput = json_encode($_POST);
+}
+
+if (empty($rawInput) && !empty($_POST)) {
+    $rawInput = json_encode($_POST);
+}
 
 try {
     $authController = new AuthController();
@@ -67,7 +81,7 @@ try {
         $uri === 'api/payment/recharge/methods' && $method === 'GET' => $paymentController->getRechargeMethods(),
         $uri === 'api/payment/recharge/history' && $method === 'GET' => $paymentController->getRechargeHistory(),
         $uri === 'api/payment/recharge/confirm' && $method === 'POST' => $paymentController->confirmRecharge(getJsonInput()['id'] ?? 0),
-        
+
         $uri === 'api/payment/withdraw' && $method === 'POST' => $paymentController->createWithdrawal(),
         $uri === 'api/payment/withdraw/history' && $method === 'GET' => $paymentController->getWithdrawalHistory(),
         $uri === 'api/payment/withdraw/info' && $method === 'GET' => $paymentController->getWithdrawalInfo(),
@@ -85,6 +99,8 @@ try {
         $uri === 'api/vip/packages' && $method === 'GET' => $vipController->getVipPackages(),
         $uri === 'api/vip/user' && $method === 'GET' => $vipController->getUserVip(),
         $uri === 'api/vip/claim' && $method === 'POST' => $vipController->claimVipIncome(),
+        
+        $uri === 'api/debug' && $method === 'POST' => debugEndpoint($rawInput, $_POST),
 
         default => error('Endpoint not found', 404)
     };

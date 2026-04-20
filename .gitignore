@@ -1,2 +1,4 @@
 database/schema.sql
 .env
+.env.development
+.env.production
