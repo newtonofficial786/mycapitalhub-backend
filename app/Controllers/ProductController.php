@@ -61,6 +61,10 @@ class ProductController {
         $db->beginTransaction();
         
         try {
+            $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+            $stmt->execute([$user['id']]);
+            $userBefore = $stmt->fetch()['balance'] ?? 0;
+            
             $stmt = $db->prepare("UPDATE users SET balance = balance - ? WHERE id = ?");
             $stmt->execute([$product['price'], $user['id']]);
             
@@ -71,6 +75,14 @@ class ProductController {
                 VALUES (?, ?, ?, 'active')
             ");
             $stmt->execute([$user['id'], $productId, $expiryDate]);
+            
+            $productName = $product['name'] ?? 'Product';
+            
+            $stmt = $db->prepare("
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
+                VALUES (?, 'bet', ?, ?, ?, ?)
+            ");
+            $stmt->execute([$user['id'], -$product['price'], $userBefore, $userBefore - $product['price'], 'Investment: ' . $productName]);
             
             $db->commit();
             
@@ -131,7 +143,7 @@ class ProductController {
 }
 
 class VipController {
-    public function getVipPackages() {
+public function getVipPackages() {
         $db = getDb();
         $stmt = $db->prepare("SELECT * FROM vip_packages WHERE active = 1 ORDER BY level ASC");
         $stmt->execute();
@@ -139,29 +151,85 @@ class VipController {
         
         response($packages);
     }
-
+    
     public function getUserVip() {
         $user = authenticate();
         
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT uv.*, vp.name, vp.daily_income, vp.level
+            SELECT uv.*, vp.name, vp.daily_income, vp.level, COALESCE(vp.price, vp.min_recharge) as price
             FROM user_vip uv
             JOIN vip_packages vp ON uv.vip_package_id = vp.id
             WHERE uv.user_id = ?
+            ORDER BY uv.id DESC
         ");
         $stmt->execute([$user['id']]);
-        $vip = $stmt->fetch();
+        $vips = $stmt->fetchAll();
         
         $stmt = $db->prepare("SELECT level FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $userLevel = $stmt->fetch();
         
-        if (!$vip) {
-            $vip = ['level' => $userLevel['level'], 'name' => 'Bronze VIP'];
+        if (empty($vips)) {
+            $vips = [['level' => intval($userLevel['level'] ?? 0), 'name' => 'Bronze VIP', 'daily_income' => 0]];
         }
         
-        response($vip);
+        response($vips);
+    }
+    
+    public function purchaseVip() {
+        $user = authenticate();
+        $data = getJsonInput();
+        
+        $packageId = intval($data['package_id'] ?? 0);
+        
+        if ($packageId <= 0) {
+            error('Invalid package');
+        }
+        
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM vip_packages WHERE id = ? AND active = 1");
+        $stmt->execute([$packageId]);
+        $package = $stmt->fetch();
+        
+        if (!$package) {
+            error('Package not found');
+        }
+        
+        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+        $stmt->execute([$user['id']]);
+        $userData = $stmt->fetch();
+        
+        $price = floatval($package['price'] ?? $package['min_recharge'] ?? 0);
+        
+        if ($userData['balance'] < $price) {
+            error('Insufficient balance');
+        }
+        
+        $db->beginTransaction();
+        
+        try {
+            $stmt = $db->prepare("UPDATE users SET balance = balance - ?, level = ? WHERE id = ?");
+            $stmt->execute([$price, $package['level'], $user['id']]);
+            
+            $stmt = $db->prepare("
+                INSERT INTO user_vip (user_id, vip_package_id, total_earned)
+                VALUES (?, ?, 0)
+            ");
+            $stmt->execute([$user['id'], $packageId]);
+            
+            $db->commit();
+            
+            response([
+                'id' => $db->lastInsertId(),
+                'package_name' => $package['name'],
+                'daily_income' => $package['daily_income'],
+                'level' => $package['level']
+            ], 'VIP purchased successfully');
+        } catch (Exception $e) {
+            $db->rollBack();
+            error('Purchase failed');
+        }
     }
 
     public function claimVipIncome() {
@@ -170,35 +238,44 @@ class VipController {
         $db = getDb();
         
         $stmt = $db->prepare("
-            SELECT uv.total_earned, vp.daily_income
+            SELECT uv.id, uv.total_earned, vp.daily_income
             FROM user_vip uv
             JOIN vip_packages vp ON uv.vip_package_id = vp.id
             WHERE uv.user_id = ?
         ");
         $stmt->execute([$user['id']]);
-        $vip = $stmt->fetch();
+        $vips = $stmt->fetchAll();
         
-        if (!$vip || floatval($vip['daily_income']) <= 0) {
+        if (empty($vips)) {
+            error('No VIP package purchased');
+        }
+        
+        $totalIncome = 0;
+        
+        foreach ($vips as $vip) {
+            $totalIncome += floatval($vip['daily_income']);
+        }
+        
+        if ($totalIncome <= 0) {
             error('No VIP income available');
         }
         
-        $income = floatval($vip['daily_income']);
-        
         $stmt = $db->prepare("UPDATE user_vip SET total_earned = total_earned + ? WHERE user_id = ?");
-        $stmt->execute([$income, $user['id']]);
+        $stmt->execute([$totalIncome, $user['id']]);
         
         $stmt = $db->prepare("UPDATE users SET balance = balance + ?, total_income = total_income + ? WHERE id = ?");
-        $stmt->execute([$income, $income, $user['id']]);
+        $stmt->execute([$totalIncome, $totalIncome, $user['id']]);
         
         $stmt = $db->prepare("
             INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
             SELECT ?, 'bonus', ?, balance, balance + ?, 'VIP daily income'
             FROM users WHERE id = ?
         ");
-        $stmt->execute([$user['id'], $income, $income, $user['id']]);
+        $stmt->execute([$user['id'], $totalIncome, $totalIncome, $user['id']]);
         
         response([
-            'amount' => $income
+            'amount' => $totalIncome,
+            'vips_claimed' => count($vips)
         ], 'VIP income claimed');
     }
 }

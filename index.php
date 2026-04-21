@@ -106,6 +106,7 @@ try {
 
         $uri === 'api/vip/packages' && $method === 'GET' => $vipController->getVipPackages(),
         $uri === 'api/vip/user' && $method === 'GET' => $vipController->getUserVip(),
+        $uri === 'api/vip/purchase' && $method === 'POST' => $vipController->purchaseVip(),
         $uri === 'api/vip/claim' && $method === 'POST' => $vipController->claimVipIncome(),
 
         $uri === 'api/banners' && $method === 'GET' => $bannerController->getBanners(),

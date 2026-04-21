@@ -153,6 +153,7 @@ function setupDatabase() {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
                 min_recharge DECIMAL(15, 2) NOT NULL,
+                price DECIMAL(15, 2) NOT NULL,
                 daily_income DECIMAL(15, 2) NOT NULL,
                 level INT NOT NULL,
                 active TINYINT(1) DEFAULT 1
