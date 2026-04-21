@@ -116,7 +116,25 @@ class PaymentController {
             error('All fields are required');
         }
         
+        // Get withdraw settings
         $db = getDb();
+        $stmt = $db->query("SELECT * FROM withdraw_settings WHERE active = 1 LIMIT 1");
+        $settings = $stmt->fetch();
+        
+        $minAmount = floatval($settings['min_amount'] ?? 100);
+        $maxAmount = floatval($settings['max_amount'] ?? 100000);
+        $feePercentage = floatval($settings['fee_percentage'] ?? 2);
+        
+        // Get user bank details
+        $stmt = $db->prepare("SELECT account_holder FROM user_bank_details WHERE user_id = ?");
+        $stmt->execute([$user['id']]);
+        $bankDetails = $stmt->fetch();
+        
+        if (!$bankDetails) {
+            error('Please add bank details first');
+        }
+        
+        // Verify withdrawal pin
         $stmt = $db->prepare("SELECT withdrawal_pin FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $userData = $stmt->fetch();
@@ -125,13 +143,29 @@ class PaymentController {
             error('Invalid withdrawal pin');
         }
         
-        $minWithdrawal = 100;
-        if ($amount < $minWithdrawal) {
-            error('Minimum withdrawal amount is ' . $minWithdrawal);
+        // Check min/max amount
+        if ($amount < $minAmount) {
+            error('Minimum withdrawal amount is ₹' . $minAmount);
+        }
+        if ($amount > $maxAmount) {
+            error('Maximum withdrawal amount is ₹' . $maxAmount);
         }
         
+        // Check user balance
+        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+        $stmt->execute([$user['id']]);
+        $userBalance = floatval($stmt->fetch()['balance'] ?? 0);
+        
+        if ($userBalance < $amount) {
+            error('Insufficient balance. Your balance: ₹' . $userBalance);
+        }
+        
+        // Calculate fee
+        $fee = ($amount * $feePercentage) / 100;
+        $receiveAmount = $amount - $fee;
+        
         try {
-            $this->userModel->updateBalance($user['id'], -$amount, 'withdraw', 'Withdrawal request');
+            $this->userModel->updateBalance($user['id'], -$amount, 'withdraw', 'Withdrawal request - Fee: ₹' . $fee);
         } catch (Exception $e) {
             error('Insufficient balance');
         }

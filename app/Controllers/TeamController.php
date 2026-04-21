@@ -91,7 +91,7 @@ class TeamController {
             'referral_code' => $userData['referral_code'],
             'team_count' => $teamCount,
             'commission_rate' => floatval($rate['commission_rate'] ?? 5),
-            'invite_link' => 'https://yourapp.com/register?ref=' . $userData['referral_code']
+            'invite_link' => (env('APP_URL', 'http://localhost:5173') . '/auth/register?invite=' . $userData['referral_code'])
         ]);
     }
 

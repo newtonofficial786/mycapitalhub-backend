@@ -24,6 +24,9 @@ require_once __DIR__ . '/app/Controllers/PaymentController.php';
 require_once __DIR__ . '/app/Controllers/TeamController.php';
 require_once __DIR__ . '/app/Controllers/ProductController.php';
 require_once __DIR__ . '/app/Controllers/BannerController.php';
+require_once __DIR__ . '/app/Controllers/BankController.php';
+require_once __DIR__ . '/app/Controllers/WithdrawSettingsController.php';
+require_once __DIR__ . '/app/Controllers/ReferSettingsController.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = trim($uri, '/');
@@ -52,6 +55,9 @@ try {
     $productController = new ProductController();
     $vipController = new VipController();
     $bannerController = new BannerController();
+    $bankController = new BankController();
+    $withdrawSettingsController = new WithdrawSettingsController();
+    $referSettingsController = new ReferSettingsController();
 
     $appEnv = env('APP_ENV', 'local');
 
@@ -100,12 +106,21 @@ try {
 
         $uri === 'api/vip/packages' && $method === 'GET' => $vipController->getVipPackages(),
         $uri === 'api/vip/user' && $method === 'GET' => $vipController->getUserVip(),
-$uri === 'api/vip/claim' && $method === 'POST' => $vipController->claimVipIncome(),
+        $uri === 'api/vip/claim' && $method === 'POST' => $vipController->claimVipIncome(),
 
         $uri === 'api/banners' && $method === 'GET' => $bannerController->getBanners(),
         $uri === 'api/banners' && $method === 'POST' => $bannerController->createBanner(),
         $uri === 'api/banners' && $method === 'PUT' => $bannerController->updateBanner(),
         $uri === 'api/banners' && $method === 'DELETE' => $bannerController->deleteBanner(),
+
+        $uri === 'api/user/bank' && $method === 'GET' => $bankController->getBankDetails(),
+        $uri === 'api/user/bank' && $method === 'POST' => $bankController->saveBankDetails(),
+
+        $uri === 'api/withdraw/settings' && $method === 'GET' => $withdrawSettingsController->getSettings(),
+        $uri === 'api/withdraw/settings' && $method === 'POST' => $withdrawSettingsController->updateSettings(),
+
+        $uri === 'api/refer/settings' && $method === 'GET' => $referSettingsController->getSettings(),
+        $uri === 'api/refer/settings' && $method === 'POST' => $referSettingsController->updateSettings(),
 
         default => error('Endpoint not found', 404)
     };

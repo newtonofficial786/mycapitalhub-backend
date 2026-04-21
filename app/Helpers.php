@@ -29,7 +29,11 @@ function getJsonInput() {
             'withdrawalPin' => $_POST['withdrawalPin'] ?? $_POST['withdrawal_pin'] ?? '',
             'referrerCode' => $_POST['referrerCode'] ?? $_POST['referrer_code'] ?? '',
             'withdrawal_pin' => $_POST['withdrawal_pin'] ?? $_POST['withdrawalPin'] ?? '',
-            'referrer_code' => $_POST['referrer_code'] ?? $_POST['referrerCode'] ?? ''
+            'referrer_code' => $_POST['referrer_code'] ?? $_POST['referrerCode'] ?? '',
+            'account_holder' => $_POST['account_holder'] ?? '',
+            'bank_name' => $_POST['bank_name'] ?? '',
+            'account_number' => $_POST['account_number'] ?? '',
+            'ifsc_code' => $_POST['ifsc_code'] ?? ''
         ]);
     }
     $input = file_get_contents('php://input');
