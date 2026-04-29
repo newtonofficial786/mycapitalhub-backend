@@ -107,13 +107,10 @@ class PaymentController {
         $data = getJsonInput();
         
         $amount = floatval($data['amount'] ?? 0);
-        $bankName = $data['bank_name'] ?? '';
-        $bankAccount = $data['bank_account'] ?? '';
-        $accountHolder = $data['account_holder'] ?? '';
         $withdrawalPin = $data['withdrawal_pin'] ?? '';
         
-        if ($amount <= 0 || empty($bankName) || empty($bankAccount) || empty($accountHolder)) {
-            error('All fields are required');
+        if ($amount <= 0) {
+            error('Invalid amount');
         }
         
         $db = getDb();
@@ -148,14 +145,20 @@ class PaymentController {
         $maxAmount = floatval($settings['max_amount'] ?? 100000);
         $feePercentage = floatval($settings['fee_percentage'] ?? 2);
         
-        // Get user bank details
-        $stmt = $db->prepare("SELECT account_holder FROM user_bank_details WHERE user_id = ?");
+        // Get user bank details (full)
+        $stmt = $db->prepare("SELECT account_holder, bank_name, account_number, ifsc_code FROM user_bank_details WHERE user_id = ?");
         $stmt->execute([$user['id']]);
         $bankDetails = $stmt->fetch();
         
-        if (!$bankDetails) {
-            error('Please add bank details first');
+        if (!$bankDetails || empty($bankDetails['account_holder']) || empty($bankDetails['account_number']) || empty($bankDetails['ifsc_code'])) {
+            error('Please add complete bank details first');
         }
+        
+        // Use bank details from database (full, unmasked)
+        $bankName = $bankDetails['bank_name'] ?? '';
+        $bankAccount = $bankDetails['account_number'] ?? '';
+        $accountHolder = $bankDetails['account_holder'] ?? '';
+        $ifscCode = $bankDetails['ifsc_code'] ?? '';
         
         // Verify withdrawal pin
         $stmt = $db->prepare("SELECT withdrawal_pin FROM users WHERE id = ? FOR UPDATE");
@@ -188,21 +191,32 @@ class PaymentController {
         $receiveAmount = $amount - $fee;
         
         try {
-            $this->userModel->updateBalance($user['id'], -$amount, 'withdraw', 'Withdrawal request - Fee: ₹' . $fee, 'pending');
+            // Include bank details in wallet transaction
+            $bankData = [
+                'bank_name' => $bankName,
+                'bank_account' => $bankAccount,
+                'account_holder' => $accountHolder,
+                'ifsc_code' => $ifscCode
+            ];
+            $txnId = $this->userModel->updateBalanceWithBankDetails($user['id'], -$amount, 'withdraw', 'Withdrawal request - Fee: ₹' . $fee, $bankData, 'pending');
         } catch (Exception $e) {
-            error('Insufficient balance');
+            error('Insufficient balance or transaction failed: ' . $e->getMessage());
         }
         
         $stmt = $db->prepare("
-            INSERT INTO withdrawals (user_id, amount, bank_name, bank_account, account_holder, status)
-            VALUES (?, ?, ?, ?, ?, 'pending')
+            INSERT INTO withdrawals (user_id, amount, bank_name, bank_account, account_holder, ifsc_code, status)
+            VALUES (?, ?, ?, ?, ?, ?, 'pending')
         ");
-        $stmt->execute([$user['id'], $amount, $bankName, $bankAccount, $accountHolder]);
+        $stmt->execute([$user['id'], $amount, $bankName, $bankAccount, $accountHolder, $ifscCode]);
         
         response([
-            'id' => $db->lastInsertId(),
+            'id' => $txnId,
             'amount' => $amount,
-            'status' => 'pending'
+            'status' => 'pending',
+            'bank_name' => $bankName,
+            'bank_account' => $bankAccount,
+            'account_holder' => $accountHolder,
+            'ifsc_code' => $ifscCode
         ], 'Withdrawal request created');
     }
 
@@ -217,9 +231,10 @@ class PaymentController {
         
         $db = getDb();
         
-        // Get from wallet_transactions where type = 'withdraw'
+        // Get from wallet_transactions where type = 'withdraw' (including bank details if stored)
         $stmt = $db->prepare("
-            SELECT id, user_id, type, amount, balance_before, balance_after, status, description, created_at
+            SELECT id, user_id, type, amount, balance_before, balance_after, status, description, created_at,
+                   bank_name, bank_account, account_holder, ifsc_code
             FROM wallet_transactions 
             WHERE user_id = ? AND type = 'withdraw'
             ORDER BY created_at DESC LIMIT ? OFFSET ?

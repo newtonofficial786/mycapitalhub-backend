@@ -73,10 +73,53 @@ class User {
             $stmt->execute([$userId, $type, $amount, $user['balance'], $newBalance, $status, $description]);
             
             $this->db->commit();
-            return true;
+            return $this->db->lastInsertId();
         } catch (Exception $e) {
             $this->db->rollBack();
             throw $e;
+        }
+    }
+    
+    public function updateBalanceWithBankDetails($userId, $amount, $type, $description, $bankDetails, $status = 'pending') {
+        $this->db->beginTransaction();
+        
+        try {
+            $stmt = $this->db->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
+            $stmt->execute([$userId]);
+            $user = $stmt->fetch();
+            
+            $newBalance = $user['balance'] + $amount;
+            if ($newBalance < 0) {
+                throw new Exception("Insufficient balance");
+            }
+            
+            $stmt = $this->db->prepare("UPDATE users SET balance = ? WHERE id = ?");
+            $stmt->execute([$newBalance, $userId]);
+            
+            $stmt = $this->db->prepare("
+                INSERT INTO wallet_transactions 
+                (user_id, type, amount, balance_before, balance_after, status, description, bank_name, bank_account, account_holder, ifsc_code)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([
+                $userId, 
+                $type, 
+                $amount, 
+                $user['balance'], 
+                $newBalance, 
+                $status, 
+                $description,
+                $bankDetails['bank_name'] ?? '',
+                $bankDetails['bank_account'] ?? '',
+                $bankDetails['account_holder'] ?? '',
+                $bankDetails['ifsc_code'] ?? ''
+            ]);
+            
+            $this->db->commit();
+            return $this->db->lastInsertId();
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error('Database error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
         }
     }
 
