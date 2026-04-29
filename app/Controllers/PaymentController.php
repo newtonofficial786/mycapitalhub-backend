@@ -82,6 +82,10 @@ class PaymentController {
             error('Recharge not found');
         }
         
+        if ($recharge['status'] === 'completed') {
+            error('Recharge already completed');
+        }
+        
         $stmt = $db->prepare("
             UPDATE recharges SET status = 'completed', updated_at = NOW()
             WHERE id = ?
@@ -99,6 +103,14 @@ class PaymentController {
         ");
         $stmt->execute([$recharge['amount'], $user['id']]);
         
+        // Pay referral commission to the referrer (if any)
+        try {
+            $this->userModel->payReferralCommission($user['id'], $recharge['amount']);
+        } catch (Exception $e) {
+            // Don't fail the recharge if commission payment fails
+            error_log("Commission payment failed: " . $e->getMessage());
+        }
+        
         response(null, 'Recharge completed');
     }
 
@@ -115,7 +127,36 @@ class PaymentController {
         
         $db = getDb();
         
-        // Prevent duplicate pending withdrawals (same amount within last 10 seconds)
+        // Check if user already has ANY pending withdrawal
+        $stmt = $db->prepare("
+            SELECT id, amount, created_at FROM withdrawals 
+            WHERE user_id = ? AND status = 'pending'
+            ORDER BY created_at DESC LIMIT 1
+        ");
+        $stmt->execute([$user['id']]);
+        $existingPending = $stmt->fetch();
+        
+        if ($existingPending) {
+            $created = new DateTime($existingPending['created_at']);
+            $now = new DateTime();
+            $diff = $now->diff($created);
+            $minutes = $diff->days * 24 * 60 + $diff->h * 60 + $diff->i;
+            
+            // Get processing time from settings for display
+            $settingsStmt = $db->query("SELECT processing_time FROM withdraw_settings WHERE active = 1 LIMIT 1");
+            $settings = $settingsStmt->fetch();
+            $processingTime = $settings['processing_time'] ?? '1-24 hours';
+            
+            error(sprintf(
+                "You already have a pending withdrawal of ₹%s (ID: %s) created %d minutes ago. Processing time: %s. Please wait for it to complete before requesting another withdrawal.",
+                number_format($existingPending['amount'], 2, '.', ''),
+                $existingPending['id'],
+                $minutes,
+                $processingTime
+            ), 400);
+        }
+        
+        // Prevent duplicate pending withdrawals (same amount within last 10 seconds) - additional guard
         $stmt = $db->prepare("
             SELECT id FROM withdrawals 
             WHERE user_id = ? AND amount = ? AND status = 'pending' 

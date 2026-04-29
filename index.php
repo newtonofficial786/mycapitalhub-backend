@@ -62,6 +62,15 @@ try {
         $c->getVipPackages();
         return;
     }
+    if ($uri === 'api/auth/register' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/AuthController.php');
+        $c = new AuthController();
+        $c->register();
+        return;
+    }
     if ($uri === 'api/auth/login' && $method === 'POST') {
         load('/bootstrap.php');
         load('/config/Database.php');

@@ -156,4 +156,37 @@ class User {
         $stmt->execute([$userId]);
         return $stmt->fetch();
     }
+
+    public function payReferralCommission($rechargedUserId, $rechargeAmount) {
+        // Get the user's referrer
+        $stmt = $this->db->prepare("SELECT referrer_id FROM users WHERE id = ?");
+        $stmt->execute([$rechargedUserId]);
+        $user = $stmt->fetch();
+        
+        if (!$user || empty($user['referrer_id'])) {
+            return; // No referrer, no commission
+        }
+        
+        $referrerId = $user['referrer_id'];
+        
+        // Get commission rate for level 1 (direct referral)
+        $stmt = $this->db->prepare("SELECT commission_rate FROM commission_settings WHERE level = 1 LIMIT 1");
+        $stmt->execute();
+        $rate = $stmt->fetch();
+        
+        $commissionRate = floatval($rate['commission_rate'] ?? 5);
+        $commissionAmount = $rechargeAmount * $commissionRate / 100;
+        
+        if ($commissionAmount <= 0) {
+            return;
+        }
+        
+        // Add commission to referrer's balance
+        $this->updateBalance(
+            $referrerId,
+            $commissionAmount,
+            'commission',
+            "Referral commission from user #{$rechargedUserId} recharge of ₹{$rechargeAmount}"
+        );
+    }
 }
