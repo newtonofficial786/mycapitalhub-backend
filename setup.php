@@ -26,7 +26,7 @@ function setupDatabase() {
                 withdrawal_pin VARCHAR(10) NOT NULL,
                 referrer_id INT NULL,
                 referral_code VARCHAR(20) UNIQUE NOT NULL,
-                level INT DEFAULT 1,
+                level INT DEFAULT 0,
                 balance DECIMAL(15, 2) DEFAULT 0.00,
                 total_recharge DECIMAL(15, 2) DEFAULT 0.00,
                 total_withdraw DECIMAL(15, 2) DEFAULT 0.00,

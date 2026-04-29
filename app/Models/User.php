@@ -27,8 +27,8 @@ class User {
 
     public function create($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO users (mobile, password, withdrawal_pin, referrer_id, referral_code)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO users (mobile, password, withdrawal_pin, referrer_id, referral_code, level)
+            VALUES (?, ?, ?, ?, ?, 0)
         ");
         
         $referrerId = null;
