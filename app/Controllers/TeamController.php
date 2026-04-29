@@ -29,11 +29,18 @@ class TeamController {
         $stmt->execute([$user['id']]);
         $teamStats = $stmt->fetch();
         
+        $stmt = $db->prepare("
+            SELECT commission_rate FROM commission_settings WHERE level = 1
+        ");
+        $stmt->execute();
+        $rate = $stmt->fetch();
+        
         response([
             'members' => $members,
             'total_count' => $teamCount,
             'total_team_recharge' => floatval($teamStats['total_team_recharge'] ?? 0),
-            'total_team_balance' => floatval($teamStats['total_team_balance'] ?? 0)
+            'total_team_balance' => floatval($teamStats['total_team_balance'] ?? 0),
+            'commission_rate' => floatval($rate['commission_rate'] ?? 5)
         ]);
     }
 
