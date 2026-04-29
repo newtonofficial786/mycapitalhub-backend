@@ -302,6 +302,17 @@ try {
         $c->saveBankDetails();
         return;
     }
+    if ($uri === 'api/user/verify-pin' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/UserController.php');
+        $c = new UserController();
+        $c->verifyAndShowWithdrawalPin();
+        return;
+    }
     if ($uri === 'api/withdraw/settings' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');

@@ -61,7 +61,7 @@ class PaymentController {
         $db = getDb();
         $stmt = $db->prepare("
             SELECT * FROM recharges 
-            WHERE user_id = ?
+            WHERE user_id = ? AND status = 'completed'
             ORDER BY created_at DESC LIMIT ? OFFSET ?
         ");
         $stmt->execute([$user['id'], $limit, $offset]);

@@ -55,7 +55,7 @@ class IncomeController {
                 type,
                 SUM(amount) as total
             FROM wallet_transactions 
-            WHERE user_id = ?
+            WHERE user_id = ? AND status = 'completed'
             GROUP BY type
         ");
         $stmt->execute([$user['id']]);
@@ -118,6 +118,7 @@ class IncomeController {
                 SUM(CASE WHEN type = 'win' THEN amount ELSE 0 END) as income
             FROM wallet_transactions 
             WHERE user_id = ? 
+            AND status = 'completed'
             AND created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
             GROUP BY DATE(created_at)
             ORDER BY date DESC

@@ -87,6 +87,30 @@ class UserController {
         ]);
     }
 
+    public function verifyAndShowWithdrawalPin() {
+        $user = authenticate();
+        $data = getJsonInput();
+        
+        $password = $data['password'] ?? '';
+        
+        if (empty($password)) {
+            error('Password is required');
+        }
+        
+        $db = getDb();
+        $stmt = $db->prepare("SELECT password, withdrawal_pin FROM users WHERE id = ?");
+        $stmt->execute([$user['id']]);
+        $userData = $stmt->fetch();
+        
+        if (!verifyPassword($password, $userData['password'])) {
+            error('Incorrect password');
+        }
+        
+        response([
+            'withdrawal_pin' => $userData['withdrawal_pin']
+        ]);
+    }
+
     public function getReferrer() {
         $user = authenticate();
         
@@ -102,7 +126,6 @@ class UserController {
         $stmt = $db->prepare("
             SELECT 
                 balance,
-                total_recharge,
                 total_withdraw,
                 total_income,
                 team_income,
@@ -113,22 +136,38 @@ class UserController {
         $wallet = $stmt->fetch();
         
         $stmt = $db->prepare("
-            SELECT SUM(CASE WHEN type = 'win' THEN amount ELSE 0 END) as total_wins,
-                   SUM(CASE WHEN type = 'bet' THEN amount ELSE 0 END) as total_bets
+            SELECT 
+                SUM(CASE WHEN type = 'win' THEN amount ELSE 0 END) as total_wins,
+                SUM(CASE WHEN type = 'bet' AND amount < 0 THEN ABS(amount) ELSE 0 END) as total_bets,
+                SUM(CASE WHEN type = 'commission' THEN amount ELSE 0 END) as total_commission,
+                SUM(CASE WHEN type = 'bonus' THEN amount ELSE 0 END) as total_bonus
             FROM wallet_transactions WHERE user_id = ?
         ");
         $stmt->execute([$user['id']]);
         $stats = $stmt->fetch();
         
+        $stmt = $db->prepare("
+            SELECT COALESCE(SUM(amount), 0) as total_completed_recharge
+            FROM recharges WHERE user_id = ? AND status = 'completed'
+        ");
+        $stmt->execute([$user['id']]);
+        $rechargeStats = $stmt->fetch();
+        
+        $totalBonus = floatval($stats['total_bonus'] ?? 0);
+        $totalCommission = floatval($stats['total_commission'] ?? 0);
+        $userIncome = $totalBonus + $totalCommission;
+        
         response([
             'balance' => $wallet['balance'],
-            'total_recharge' => $wallet['total_recharge'],
+            'total_recharge' => floatval($rechargeStats['total_completed_recharge'] ?? 0),
             'total_withdraw' => $wallet['total_withdraw'],
-            'total_income' => $wallet['total_income'],
+            'total_income' => $userIncome,
             'team_income' => $wallet['team_income'],
             'level' => $wallet['level'],
-            'total_wins' => abs($stats['total_wins'] ?? 0),
-            'total_bets' => abs($stats['total_bets'] ?? 0)
+            'total_wins' => $stats['total_wins'] ?? 0,
+            'total_bets' => $stats['total_bets'] ?? 0,
+            'total_commission' => $totalCommission,
+            'total_bonus' => $totalBonus
         ]);
     }
 }
