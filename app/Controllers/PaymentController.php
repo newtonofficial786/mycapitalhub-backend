@@ -116,8 +116,31 @@ class PaymentController {
             error('All fields are required');
         }
         
-        // Get withdraw settings
         $db = getDb();
+        
+        // Prevent duplicate pending withdrawals (same amount within last 10 seconds)
+        $stmt = $db->prepare("
+            SELECT id FROM withdrawals 
+            WHERE user_id = ? AND amount = ? AND status = 'pending' 
+            AND created_at >= DATE_SUB(NOW(), INTERVAL 10 SECOND)
+        ");
+        $stmt->execute([$user['id'], $amount]);
+        if ($stmt->fetch()) {
+            error('A withdrawal with this amount is already being processed. Please wait.', 400);
+        }
+        
+        // Also check for duplicate pending wallet_transactions (defense in depth)
+        $stmt = $db->prepare("
+            SELECT id FROM wallet_transactions 
+            WHERE user_id = ? AND type = 'withdraw' AND amount = ? AND status = 'pending'
+            AND created_at >= DATE_SUB(NOW(), INTERVAL 10 SECOND)
+        ");
+        $stmt->execute([$user['id'], -$amount]);
+        if ($stmt->fetch()) {
+            error('A withdrawal transaction is already being processed. Please wait.', 400);
+        }
+        
+        // Get withdraw settings
         $stmt = $db->query("SELECT * FROM withdraw_settings WHERE active = 1 LIMIT 1");
         $settings = $stmt->fetch();
         
@@ -135,7 +158,7 @@ class PaymentController {
         }
         
         // Verify withdrawal pin
-        $stmt = $db->prepare("SELECT withdrawal_pin FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT withdrawal_pin FROM users WHERE id = ? FOR UPDATE");
         $stmt->execute([$user['id']]);
         $userData = $stmt->fetch();
         
@@ -151,8 +174,8 @@ class PaymentController {
             error('Maximum withdrawal amount is ₹' . $maxAmount);
         }
         
-        // Check user balance
-        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+        // Check user balance (with lock)
+        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
         $stmt->execute([$user['id']]);
         $userBalance = floatval($stmt->fetch()['balance'] ?? 0);
         
@@ -165,7 +188,7 @@ class PaymentController {
         $receiveAmount = $amount - $fee;
         
         try {
-            $this->userModel->updateBalance($user['id'], -$amount, 'withdraw', 'Withdrawal request - Fee: ₹' . $fee);
+            $this->userModel->updateBalance($user['id'], -$amount, 'withdraw', 'Withdrawal request - Fee: ₹' . $fee, 'pending');
         } catch (Exception $e) {
             error('Insufficient balance');
         }
@@ -193,9 +216,12 @@ class PaymentController {
         if ($limit > 100) $limit = 100;
         
         $db = getDb();
+        
+        // Get from wallet_transactions where type = 'withdraw'
         $stmt = $db->prepare("
-            SELECT * FROM withdrawals 
-            WHERE user_id = ?
+            SELECT id, user_id, type, amount, balance_before, balance_after, status, description, created_at
+            FROM wallet_transactions 
+            WHERE user_id = ? AND type = 'withdraw'
             ORDER BY created_at DESC LIMIT ? OFFSET ?
         ");
         $stmt->execute([$user['id'], $limit, $offset]);
@@ -209,16 +235,56 @@ class PaymentController {
         
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT balance, total_withdraw FROM users WHERE id = ?
+            SELECT balance, total_withdraw 
+            FROM users 
+            WHERE id = ?
         ");
         $stmt->execute([$user['id']]);
         $info = $stmt->fetch();
         
+        // Also calculate pending withdrawal amount from wallet_transactions
+        $stmt = $db->prepare("
+            SELECT SUM(ABS(amount)) as pending_amount
+            FROM wallet_transactions 
+            WHERE user_id = ? AND type = 'withdraw' AND status = 'pending'
+        ");
+        $stmt->execute([$user['id']]);
+        $pending = $stmt->fetch();
+        
         response([
-            'available_balance' => $info['balance'],
-            'total_withdrawn' => $info['total_withdraw'],
-            'min_withdrawal' => 100,
-            'fee_percentage' => 2
+            'available_balance' => floatval($info['balance']),
+            'total_withdrawn' => floatval($info['total_withdraw']),
+            'pending_withdrawals' => floatval($pending['pending_amount'] ?? 0)
+        ]);
+    }
+
+    public function getWithdrawalSettings() {
+        $user = authenticate();
+        
+        $db = getDb();
+        $stmt = $db->query("SELECT * FROM withdraw_settings WHERE active = 1 LIMIT 1");
+        $settings = $stmt->fetch();
+        
+        if (!$settings) {
+            // Fallback defaults
+            $settings = [
+                'min_amount' => 100,
+                'max_amount' => 100000,
+                'fee_percentage' => 2,
+                'daily_limit' => 50000,
+                'withdrawal_time' => '07:00am-05:00pm',
+                'processing_time' => '1-24 hours'
+            ];
+        }
+        
+        // Return full settings
+        response([
+            'min_amount' => floatval($settings['min_amount'] ?? 100),
+            'max_amount' => floatval($settings['max_amount'] ?? 100000),
+            'fee_percentage' => floatval($settings['fee_percentage'] ?? 2),
+            'daily_limit' => floatval($settings['daily_limit'] ?? 50000),
+            'withdrawal_time' => $settings['withdrawal_time'] ?? '07:00am-05:00pm',
+            'processing_time' => $settings['processing_time'] ?? '1-24 hours'
         ]);
     }
 }

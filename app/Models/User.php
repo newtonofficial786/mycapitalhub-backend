@@ -50,7 +50,7 @@ class User {
         return $this->db->lastInsertId();
     }
 
-    public function updateBalance($userId, $amount, $type, $description) {
+    public function updateBalance($userId, $amount, $type, $description, $status = 'completed') {
         $this->db->beginTransaction();
         
         try {
@@ -67,10 +67,10 @@ class User {
             $stmt->execute([$newBalance, $userId]);
             
             $stmt = $this->db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             ");
-            $stmt->execute([$userId, $type, $amount, $user['balance'], $newBalance, $description]);
+            $stmt->execute([$userId, $type, $amount, $user['balance'], $newBalance, $status, $description]);
             
             $this->db->commit();
             return true;

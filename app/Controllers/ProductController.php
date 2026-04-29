@@ -83,8 +83,8 @@ class ProductController {
             $productName = $product['name'] ?? 'Product';
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
-                VALUES (?, 'bet', ?, ?, ?, ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
+                VALUES (?, 'bet', ?, ?, ?, 'completed', ?)
             ");
             $stmt->execute([$user['id'], -$product['price'], $userBefore, $userBefore - $product['price'], 'Investment: ' . $productName]);
             
@@ -148,10 +148,12 @@ class ProductController {
             }
             
             $lastClaimed = $product['last_claimed'] ?? null;
+            error_log("Product {$productId} last_claimed: " . ($lastClaimed ?? 'null') . ", now: " . date('Y-m-d H:i:s'));
+            
             if ($lastClaimed) {
                 $last = new DateTime($lastClaimed);
                 $next = clone $last;
-                $next->add(new DateInterval('P1D')); // add 1 day
+                $next->add(new DateInterval('P1D'));
                 $now = new DateTime();
                 if ($now < $next) {
                     $remaining = $next->getTimestamp() - $now->getTimestamp();
@@ -173,8 +175,8 @@ class ProductController {
             $stmt->execute([$productId]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
-                VALUES (?, 'bonus', ?, ?, ?, ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
+                VALUES (?, 'bonus', ?, ?, ?, 'completed', ?)
             ");
             $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, "Daily income: {$product['name']}"]);
             
@@ -289,8 +291,8 @@ class VipController {
             $stmt->execute([$user['id'], $packageId]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
-                VALUES (?, 'bet', ?, ?, ?, ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
+                VALUES (?, 'bet', ?, ?, ?, 'completed', ?)
             ");
             $stmt->execute([$user['id'], -$price, $currentUser['balance'], $currentUser['balance'] - $price, 'VIP Upgrade: ' . $package['name']]);
             
@@ -351,6 +353,8 @@ class VipController {
             }
             
             $lastClaimed = $vip['last_claimed'] ?? null;
+            error_log("VIP {$packageId} last_claimed: " . ($lastClaimed ?? 'null') . ", now: " . date('Y-m-d H:i:s'));
+            
             if ($lastClaimed) {
                 $last = new DateTime($lastClaimed);
                 $next = clone $last;
@@ -376,8 +380,8 @@ class VipController {
             $stmt->execute([$balanceAfter, $income, $user['id']]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
-                VALUES (?, 'bonus', ?, ?, ?, ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
+                VALUES (?, 'bonus', ?, ?, ?, 'completed', ?)
             ");
             $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, 'VIP Daily Income: ' . $vip['name']]);
             
