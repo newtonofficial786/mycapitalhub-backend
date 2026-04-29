@@ -135,17 +135,25 @@ function setupDatabase() {
         ");
         
         $pdo->exec("
-            CREATE TABLE IF NOT EXISTS user_products (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
-                product_id INT NOT NULL,
-                purchase_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                expiry_date DATE NOT NULL,
-                status ENUM('active', 'expired') DEFAULT 'active',
-                total_earned DECIMAL(15, 2) DEFAULT 0.00,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
-            )
+         $pdo->exec("
+             CREATE TABLE IF NOT EXISTS user_products (
+                 id INT AUTO_INCREMENT PRIMARY KEY,
+                 user_id INT NOT NULL,
+                 product_id INT NOT NULL,
+                 purchase_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                 expiry_date DATE NOT NULL,
+                 status ENUM('active', 'expired') DEFAULT 'active',
+                 total_earned DECIMAL(15, 2) DEFAULT 0.00,
+                 last_claimed TIMESTAMP NULL DEFAULT NULL,
+                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                 FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+             )
+         ");
+         
+         try {
+             $pdo->exec("ALTER TABLE user_products ADD COLUMN last_claimed TIMESTAMP NULL");
+         } catch (Exception $e) {
+         }
         ");
         
         $pdo->exec("
@@ -167,10 +175,16 @@ function setupDatabase() {
                 vip_package_id INT NOT NULL,
                 start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 total_earned DECIMAL(15, 2) DEFAULT 0.00,
+                last_claimed TIMESTAMP NULL,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY (vip_package_id) REFERENCES vip_packages(id) ON DELETE CASCADE
             )
         ");
+
+        try {
+            $pdo->exec("ALTER TABLE user_vip ADD COLUMN last_claimed TIMESTAMP NULL");
+        } catch (Exception $e) {
+        }
         
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS commission_settings (

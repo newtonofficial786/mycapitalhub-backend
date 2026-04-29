@@ -1,137 +1,370 @@
 <?php
-
-require_once __DIR__ . '/bootstrap.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/php-error.log');
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header('Access-Control-Max-Age: 86400');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+$uri = isset($_SERVER['REQUEST_URI']) ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : '';
+$uri = trim($uri, '/');
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+// Handle CORS preflight
+if ($method === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-require_once __DIR__ . '/config/Database.php';
-require_once __DIR__ . '/app/Helpers.php';
-require_once __DIR__ . '/app/Middleware/AuthMiddleware.php';
-require_once __DIR__ . '/app/Models/User.php';
-require_once __DIR__ . '/app/Controllers/AuthController.php';
-require_once __DIR__ . '/app/Controllers/UserController.php';
-require_once __DIR__ . '/app/Controllers/GameController.php';
-require_once __DIR__ . '/app/Controllers/IncomeController.php';
-require_once __DIR__ . '/app/Controllers/PaymentController.php';
-require_once __DIR__ . '/app/Controllers/TeamController.php';
-require_once __DIR__ . '/app/Controllers/ProductController.php';
-require_once __DIR__ . '/app/Controllers/BannerController.php';
-require_once __DIR__ . '/app/Controllers/BankController.php';
-require_once __DIR__ . '/app/Controllers/WithdrawSettingsController.php';
-require_once __DIR__ . '/app/Controllers/ReferSettingsController.php';
-
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri = trim($uri, '/');
-$method = $_SERVER['REQUEST_METHOD'];
-
-$rawInput = file_get_contents('php://input');
-$logFile = __DIR__ . '/req.log';
-$log = date('Y-m-d H:i:s') . " $method $uri ct:" . ($_SERVER['CONTENT_TYPE'] ?? '') . " raw:" . strlen($rawInput) . " post:" . count($_POST) . " postdata:" . json_encode($_POST) . "\n";
-file_put_contents($logFile, $log, FILE_APPEND);
-
-if (empty($rawInput) && !empty($_POST)) {
-    $rawInput = json_encode($_POST);
+if ($uri === '' || $uri === '/') {
+    http_response_code(200);
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'message' => 'API Running']);
+    return;
 }
 
-if (empty($rawInput) && !empty($_POST)) {
-    $rawInput = json_encode($_POST);
+function load($path) {
+    if (file_exists(__DIR__ . $path)) {
+        include __DIR__ . $path;
+        return true;
+    }
+    return false;
 }
 
 try {
-    $authController = new AuthController();
-    $userController = new UserController();
-    $gameController = new GameController();
-    $incomeController = new IncomeController();
-    $paymentController = new PaymentController();
-    $teamController = new TeamController();
-    $productController = new ProductController();
-    $vipController = new VipController();
-    $bannerController = new BannerController();
-    $bankController = new BankController();
-    $withdrawSettingsController = new WithdrawSettingsController();
-    $referSettingsController = new ReferSettingsController();
-
-    $appEnv = env('APP_ENV', 'local');
-
-    if ($appEnv !== 'production') {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
+    // Public endpoints
+    if ($uri === 'api/banners' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/BannerController.php');
+        $c = new BannerController();
+        $c->getBanners();
+        return;
     }
-
-    match (true) {
-        $uri === 'api/auth/login' && $method === 'POST' => $authController->login(),
-        $uri === 'api/auth/register' && $method === 'POST' => $authController->register(),
-        $uri === 'api/auth/logout' && $method === 'POST' => $authController->logout(),
-
-        $uri === 'api/user/profile' && $method === 'GET' => $userController->profile(),
-        $uri === 'api/user/profile' && $method === 'PUT' => $userController->updateProfile(),
-        $uri === 'api/user/password' && $method === 'PUT' => $userController->changePassword(),
-        $uri === 'api/user/wallet' && $method === 'GET' => $userController->getWalletInfo(),
-
-        $uri === 'api/games/bet' && $method === 'POST' => $gameController->placeBet(),
-        $uri === 'api/games/history' && $method === 'GET' => $gameController->getHistory(),
-        $uri === 'api/games/results' && $method === 'GET' => $gameController->getGameResults(),
-        $uri === 'api/games/period' && $method === 'GET' => $gameController->getCurrentPeriod(),
-
-        $uri === 'api/income/transactions' && $method === 'GET' => $incomeController->getTransactions(),
-        $uri === 'api/income/summary' && $method === 'GET' => $incomeController->getSummary(),
-        $uri === 'api/income/daily' && $method === 'GET' => $incomeController->getDailyIncome(),
-
-        $uri === 'api/payment/recharge' && $method === 'POST' => $paymentController->createRecharge(),
-        $uri === 'api/payment/recharge/methods' && $method === 'GET' => $paymentController->getRechargeMethods(),
-        $uri === 'api/payment/recharge/history' && $method === 'GET' => $paymentController->getRechargeHistory(),
-        $uri === 'api/payment/recharge/confirm' && $method === 'POST' => $paymentController->confirmRecharge(getJsonInput()['id'] ?? 0),
-
-        $uri === 'api/payment/withdraw' && $method === 'POST' => $paymentController->createWithdrawal(),
-        $uri === 'api/payment/withdraw/history' && $method === 'GET' => $paymentController->getWithdrawalHistory(),
-        $uri === 'api/payment/withdraw/info' && $method === 'GET' => $paymentController->getWithdrawalInfo(),
-
-        $uri === 'api/team' && $method === 'GET' => $teamController->getTeam(),
-        $uri === 'api/team/commission' && $method === 'GET' => $teamController->getCommission(),
-        $uri === 'api/team/invite' && $method === 'GET' => $teamController->getInviteInfo(),
-        $uri === 'api/team/rewards' && $method === 'GET' => $teamController->getInviteRewards(),
-
-        $uri === 'api/products' && $method === 'GET' => $productController->getProducts(),
-        $uri === 'api/products/user' && $method === 'GET' => $productController->getUserProducts(),
-        $uri === 'api/products/purchase' && $method === 'POST' => $productController->purchaseProduct(),
-        $uri === 'api/products/claim' && $method === 'POST' => $productController->claimDailyIncome(),
-
-        $uri === 'api/vip/packages' && $method === 'GET' => $vipController->getVipPackages(),
-        $uri === 'api/vip/user' && $method === 'GET' => $vipController->getUserVip(),
-        $uri === 'api/vip/purchase' && $method === 'POST' => $vipController->purchaseVip(),
-        $uri === 'api/vip/claim' && $method === 'POST' => $vipController->claimVipIncome(),
-
-        $uri === 'api/banners' && $method === 'GET' => $bannerController->getBanners(),
-        $uri === 'api/banners' && $method === 'POST' => $bannerController->createBanner(),
-        $uri === 'api/banners' && $method === 'PUT' => $bannerController->updateBanner(),
-        $uri === 'api/banners' && $method === 'DELETE' => $bannerController->deleteBanner(),
-
-        $uri === 'api/user/bank' && $method === 'GET' => $bankController->getBankDetails(),
-        $uri === 'api/user/bank' && $method === 'POST' => $bankController->saveBankDetails(),
-
-        $uri === 'api/withdraw/settings' && $method === 'GET' => $withdrawSettingsController->getSettings(),
-        $uri === 'api/withdraw/settings' && $method === 'POST' => $withdrawSettingsController->updateSettings(),
-
-        $uri === 'api/refer/settings' && $method === 'GET' => $referSettingsController->getSettings(),
-        $uri === 'api/refer/settings' && $method === 'POST' => $referSettingsController->updateSettings(),
-
-        default => error('Endpoint not found', 404)
-    };
-} catch (PDOException $e) {
-    $appEnv = env('APP_ENV', 'local');
-    if ($appEnv !== 'production') {
-        error('Database error: ' . $e->getMessage(), 500);
-    } else {
-        error('Database error', 500);
+    if ($uri === 'api/products' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new ProductController();
+        $c->getProducts();
+        return;
     }
-} catch (Exception $e) {
-    error($e->getMessage(), 400);
+    if ($uri === 'api/vip/packages' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new VipController();
+        $c->getVipPackages();
+        return;
+    }
+    if ($uri === 'api/auth/login' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/AuthController.php');
+        $c = new AuthController();
+        $c->login();
+        return;
+    }
+    if ($uri === 'api/auth/logout' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/AuthController.php');
+        $c = new AuthController();
+        $c->logout();
+        return;
+    }
+    
+    // Auth required endpoints
+    if ($uri === 'api/user/profile' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/UserController.php');
+        $c = new UserController();
+        $c->profile();
+        return;
+    }
+    if ($uri === 'api/user/wallet' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/UserController.php');
+        $c = new UserController();
+        $c->getWalletInfo();
+        return;
+    }
+    if ($uri === 'api/products/user' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new ProductController();
+        $c->getUserProducts();
+        return;
+    }
+    if ($uri === 'api/vip/user' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new VipController();
+        $c->getUserVip();
+        return;
+    }
+    if ($uri === 'api/products/purchase' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new ProductController();
+        $c->purchaseProduct();
+        return;
+    }
+    if ($uri === 'api/products/claim' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new ProductController();
+        $c->claimDailyIncome();
+        return;
+    }
+    if ($uri === 'api/vip/purchase' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new VipController();
+        $c->purchaseVip();
+        return;
+    }
+    if ($uri === 'api/vip/claim' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/ProductController.php');
+        $c = new VipController();
+        $c->claimVipIncome();
+        return;
+    }
+    if ($uri === 'api/income/transactions' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/IncomeController.php');
+        $c = new IncomeController();
+        $c->getTransactions();
+        return;
+    }
+    if ($uri === 'api/income/summary' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/IncomeController.php');
+        $c = new IncomeController();
+        $c->getSummary();
+        return;
+    }
+    if ($uri === 'api/payment/recharge' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createRecharge();
+        return;
+    }
+    if ($uri === 'api/payment/recharge/history' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->getRechargeHistory();
+        return;
+    }
+    if ($uri === 'api/payment/withdraw' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createWithdrawal();
+        return;
+    }
+    if ($uri === 'api/payment/withdraw/history' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->getWithdrawalHistory();
+        return;
+    }
+    if ($uri === 'api/payment/withdraw/info' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->getWithdrawalInfo();
+        return;
+    }
+    if ($uri === 'api/team' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/TeamController.php');
+        $c = new TeamController();
+        $c->getTeam();
+        return;
+    }
+    if ($uri === 'api/team/invite' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/TeamController.php');
+        $c = new TeamController();
+        $c->getInviteInfo();
+        return;
+    }
+    if ($uri === 'api/user/bank' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/BankController.php');
+        $c = new BankController();
+        $c->getBankDetails();
+        return;
+    }
+    if ($uri === 'api/user/bank' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/BankController.php');
+        $c = new BankController();
+        $c->saveBankDetails();
+        return;
+    }
+    if ($uri === 'api/withdraw/settings' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/WithdrawSettingsController.php');
+        $c = new WithdrawSettingsController();
+        $c->getSettings();
+        return;
+    }
+    if ($uri === 'api/refer/settings' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/ReferSettingsController.php');
+        $c = new ReferSettingsController();
+        $c->getSettings();
+        return;
+    }
+    if ($uri === 'api/game/place-bet' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/GameController.php');
+        $c = new GameController();
+        $c->placeBet();
+        return;
+    }
+    if ($uri === 'api/game/history' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/GameController.php');
+        $c = new GameController();
+        $c->getHistory();
+        return;
+    }
+    if ($uri === 'api/game/results' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/GameController.php');
+        $c = new GameController();
+        $c->getGameResults();
+        return;
+    }
+    if ($uri === 'api/game/current-period' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/GameController.php');
+        $c = new GameController();
+        $c->getCurrentPeriod();
+        return;
+    }
+    
+    http_response_code(404);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Endpoint not found']);
+} catch (Throwable $e) {
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => $e->getMessage()]);
 }

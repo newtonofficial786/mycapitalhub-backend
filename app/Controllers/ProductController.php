@@ -19,7 +19,11 @@ class ProductController {
         
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT up.*, p.name, p.daily_income, p.duration_days
+            SELECT up.*, p.name, p.daily_income, p.duration_days,
+                   CASE 
+                       WHEN up.expiry_date >= CURRENT_DATE AND up.status = 'active' THEN 'active'
+                       ELSE 'expired'
+                   END as status
             FROM user_products up
             JOIN products p ON up.product_id = p.id
             WHERE up.user_id = ?
@@ -98,52 +102,96 @@ class ProductController {
     }
 
     public function claimDailyIncome() {
-        $user = authenticate();
-        
-        $db = getDb();
-        $stmt = $db->prepare("
-            SELECT up.*, p.daily_income, p.duration_days
-            FROM user_products up
-            JOIN products p ON up.product_id = p.id
-            WHERE up.user_id = ? AND up.status = 'active'
-            AND up.expiry_date >= CURRENT_DATE
-        ");
-        $stmt->execute([$user['id']]);
-        $activeProducts = $stmt->fetchAll();
-        
-        if (empty($activeProducts)) {
-            error('No active products');
+        try {
+            $user = authenticate();
+            
+            // Accept both JSON and form-encoded
+            $data = [];
+            $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+            
+            if (stripos($contentType, 'application/json') !== false) {
+                $rawInput = file_get_contents('php://input');
+                $data = json_decode($rawInput, true) ?? [];
+            } elseif (stripos($contentType, 'application/x-www-form-urlencoded') !== false) {
+                $data = $_POST;
+            } else {
+                // Try JSON first, fallback to POST
+                $rawInput = file_get_contents('php://input');
+                $data = json_decode($rawInput, true) ?? $_POST;
+            }
+            
+            $productId = $data['id'] ?? $data['product_id'] ?? null;
+            
+            if (!$productId) {
+                error('Product ID required. Received: ' . json_encode($data), 400);
+            }
+            
+            $db = getDb();
+            $stmt = $db->prepare("
+                SELECT up.id, up.last_claimed, p.daily_income, p.name
+                FROM user_products up
+                JOIN products p ON up.product_id = p.id
+                WHERE up.id = ? AND up.user_id = ? AND up.status = 'active'
+                AND up.expiry_date >= CURRENT_DATE
+            ");
+            $stmt->execute([$productId, $user['id']]);
+            $product = $stmt->fetch();
+            
+            if (!$product) {
+                error('Invalid product or not eligible for claim');
+            }
+            
+            $income = floatval($product['daily_income']);
+            
+            if ($income <= 0) {
+                error('No income available for this product');
+            }
+            
+            $lastClaimed = $product['last_claimed'] ?? null;
+            if ($lastClaimed) {
+                $last = new DateTime($lastClaimed);
+                $next = clone $last;
+                $next->add(new DateInterval('P1D')); // add 1 day
+                $now = new DateTime();
+                if ($now < $next) {
+                    $remaining = $next->getTimestamp() - $now->getTimestamp();
+                    $hours = floor($remaining / 3600);
+                    $minutes = floor(($remaining % 3600) / 60);
+                    error("Please wait {$hours}h {$minutes}m before claiming again", 400);
+                }
+            }
+            
+            $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+            $stmt->execute([$user['id']]);
+            $balanceBefore = floatval($stmt->fetch()['balance'] ?? 0);
+            $balanceAfter = $balanceBefore + $income;
+            
+            $stmt = $db->prepare("UPDATE users SET balance = ?, total_income = total_income + ? WHERE id = ?");
+            $stmt->execute([$balanceAfter, $income, $user['id']]);
+            
+            $stmt = $db->prepare("UPDATE user_products SET last_claimed = NOW() WHERE id = ?");
+            $stmt->execute([$productId]);
+            
+            $stmt = $db->prepare("
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
+                VALUES (?, 'bonus', ?, ?, ?, ?)
+            ");
+            $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, "Daily income: {$product['name']}"]);
+            
+            response([
+                'amount' => $income,
+                'product_id' => $productId,
+                'product_name' => $product['name'],
+                'next_claim_at' => (new DateTime('+1 day'))->format('Y-m-d H:i:s')
+            ], 'Income claimed successfully');
+        } catch (Throwable $e) {
+            error('Server error: ' . $e->getMessage(), 500);
         }
-        
-        $totalIncome = 0;
-        
-        foreach ($activeProducts as $product) {
-            $totalIncome += floatval($product['daily_income']);
-        }
-        
-        if ($totalIncome <= 0) {
-            error('No income to claim');
-        }
-        
-        $stmt = $db->prepare("UPDATE users SET balance = balance + ?, total_income = total_income + ? WHERE id = ?");
-        $stmt->execute([$totalIncome, $totalIncome, $user['id']]);
-        
-        $stmt = $db->prepare("
-            INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
-            SELECT ?, 'bonus', ?, balance, balance + ?, 'Daily product income'
-            FROM users WHERE id = ?
-        ");
-        $stmt->execute([$user['id'], $totalIncome, $totalIncome, $user['id']]);
-        
-        response([
-            'amount' => $totalIncome,
-            'products_claimed' => count($activeProducts)
-        ], 'Income claimed successfully');
     }
 }
 
 class VipController {
-public function getVipPackages() {
+    public function getVipPackages() {
         $db = getDb();
         $stmt = $db->prepare("SELECT * FROM vip_packages WHERE active = 1 ORDER BY level ASC");
         $stmt->execute();
@@ -157,7 +205,11 @@ public function getVipPackages() {
         
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT uv.*, vp.name, vp.daily_income, vp.level, COALESCE(vp.price, vp.min_recharge) as price
+            SELECT uv.*, vp.name, vp.daily_income, vp.level, vp.min_recharge,
+                   CASE 
+                       WHEN vp.active = 1 AND uv.user_id IS NOT NULL THEN 'active'
+                       ELSE 'expired'
+                   END as status
             FROM user_vip uv
             JOIN vip_packages vp ON uv.vip_package_id = vp.id
             WHERE uv.user_id = ?
@@ -171,7 +223,16 @@ public function getVipPackages() {
         $userLevel = $stmt->fetch();
         
         if (empty($vips)) {
-            $vips = [['level' => intval($userLevel['level'] ?? 0), 'name' => 'Bronze VIP', 'daily_income' => 0]];
+            $userLevel = intval($userLevel['level'] ?? 0);
+            $vips = [ [
+                'id' => 0,
+                'vip_package_id' => null,
+                'level' => $userLevel,
+                'name' => 'Bronze VIP',
+                'daily_income' => 0,
+                'status' => 'active',
+                'last_claimed' => null
+            ] ];
         }
         
         response($vips);
@@ -196,14 +257,20 @@ public function getVipPackages() {
             error('Package not found');
         }
         
-        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT balance, level FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
-        $userData = $stmt->fetch();
+        $currentUser = $stmt->fetch();
+        $currentLevel = intval($currentUser['level'] ?? 0);
+        $currentBalance = floatval($currentUser['balance'] ?? 0);
         
-        $price = floatval($package['price'] ?? $package['min_recharge'] ?? 0);
+        $price = floatval($package['min_recharge'] ?? 0);
         
-        if ($userData['balance'] < $price) {
-            error('Insufficient balance');
+        if ($currentLevel >= intval($package['level'])) {
+            error('You already have this VIP level or higher. Current: ' . $currentLevel . ', Package: ' . $package['level']);
+        }
+        
+        if ($currentBalance < $price) {
+            error('Insufficient balance. Your balance: ' . $currentBalance . ', Price: ' . $price);
         }
         
         $db->beginTransaction();
@@ -212,11 +279,20 @@ public function getVipPackages() {
             $stmt = $db->prepare("UPDATE users SET balance = balance - ?, level = ? WHERE id = ?");
             $stmt->execute([$price, $package['level'], $user['id']]);
             
+            $stmt = $db->prepare("DELETE FROM user_vip WHERE user_id = ?");
+            $stmt->execute([$user['id']]);
+            
             $stmt = $db->prepare("
                 INSERT INTO user_vip (user_id, vip_package_id, total_earned)
                 VALUES (?, ?, 0)
             ");
             $stmt->execute([$user['id'], $packageId]);
+            
+            $stmt = $db->prepare("
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
+                VALUES (?, 'bet', ?, ?, ?, ?)
+            ");
+            $stmt->execute([$user['id'], -$price, $currentUser['balance'], $currentUser['balance'] - $price, 'VIP Upgrade: ' . $package['name']]);
             
             $db->commit();
             
@@ -225,7 +301,7 @@ public function getVipPackages() {
                 'package_name' => $package['name'],
                 'daily_income' => $package['daily_income'],
                 'level' => $package['level']
-            ], 'VIP purchased successfully');
+            ], 'VIP upgraded successfully');
         } catch (Exception $e) {
             $db->rollBack();
             error('Purchase failed');
@@ -233,49 +309,86 @@ public function getVipPackages() {
     }
 
     public function claimVipIncome() {
-        $user = authenticate();
-        
-        $db = getDb();
-        
-        $stmt = $db->prepare("
-            SELECT uv.id, uv.total_earned, vp.daily_income
-            FROM user_vip uv
-            JOIN vip_packages vp ON uv.vip_package_id = vp.id
-            WHERE uv.user_id = ?
-        ");
-        $stmt->execute([$user['id']]);
-        $vips = $stmt->fetchAll();
-        
-        if (empty($vips)) {
-            error('No VIP package purchased');
+        try {
+            $user = authenticate();
+            
+            $data = [];
+            $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+            if (stripos($contentType, 'application/json') !== false) {
+                $rawInput = file_get_contents('php://input');
+                $data = json_decode($rawInput, true) ?? [];
+            } elseif (stripos($contentType, 'application/x-www-form-urlencoded') !== false) {
+                $data = $_POST;
+            } else {
+                $rawInput = file_get_contents('php://input');
+                $data = json_decode($rawInput, true) ?? $_POST;
+            }
+            
+            $packageId = $data['id'] ?? $data['package_id'] ?? null;
+            
+            if (!$packageId) {
+                error('VIP package ID required. Received: ' . json_encode($data), 400);
+            }
+            
+            $db = getDb();
+            $stmt = $db->prepare("
+                SELECT uv.id, uv.last_claimed, vp.daily_income, vp.name
+                FROM user_vip uv
+                JOIN vip_packages vp ON uv.vip_package_id = vp.id
+                WHERE uv.id = ? AND uv.user_id = ?
+            ");
+            $stmt->execute([$packageId, $user['id']]);
+            $vip = $stmt->fetch();
+            
+            if (!$vip) {
+                error('Invalid VIP package');
+            }
+            
+            $income = floatval($vip['daily_income']);
+            
+            if ($income <= 0) {
+                error('No VIP income available');
+            }
+            
+            $lastClaimed = $vip['last_claimed'] ?? null;
+            if ($lastClaimed) {
+                $last = new DateTime($lastClaimed);
+                $next = clone $last;
+                $next->add(new DateInterval('P1D'));
+                $now = new DateTime();
+                if ($now < $next) {
+                    $remaining = $next->getTimestamp() - $now->getTimestamp();
+                    $hours = floor($remaining / 3600);
+                    $minutes = floor(($remaining % 3600) / 60);
+                    error("Please wait {$hours}h {$minutes}m before claiming again", 400);
+                }
+            }
+            
+            $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+            $stmt->execute([$user['id']]);
+            $balanceBefore = floatval($stmt->fetch()['balance'] ?? 0);
+            $balanceAfter = $balanceBefore + $income;
+            
+            $stmt = $db->prepare("UPDATE user_vip SET total_earned = total_earned + ?, last_claimed = NOW() WHERE id = ?");
+            $stmt->execute([$income, $packageId]);
+            
+            $stmt = $db->prepare("UPDATE users SET balance = ?, total_income = total_income + ? WHERE id = ?");
+            $stmt->execute([$balanceAfter, $income, $user['id']]);
+            
+            $stmt = $db->prepare("
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
+                VALUES (?, 'bonus', ?, ?, ?, ?)
+            ");
+            $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, 'VIP Daily Income: ' . $vip['name']]);
+            
+            response([
+                'amount' => $income,
+                'package_id' => $packageId,
+                'package_name' => $vip['name'],
+                'next_claim_at' => (new DateTime('+1 day'))->format('Y-m-d H:i:s')
+            ], 'VIP income claimed');
+        } catch (Throwable $e) {
+            error('Server error: ' . $e->getMessage(), 500);
         }
-        
-        $totalIncome = 0;
-        
-        foreach ($vips as $vip) {
-            $totalIncome += floatval($vip['daily_income']);
-        }
-        
-        if ($totalIncome <= 0) {
-            error('No VIP income available');
-        }
-        
-        $stmt = $db->prepare("UPDATE user_vip SET total_earned = total_earned + ? WHERE user_id = ?");
-        $stmt->execute([$totalIncome, $user['id']]);
-        
-        $stmt = $db->prepare("UPDATE users SET balance = balance + ?, total_income = total_income + ? WHERE id = ?");
-        $stmt->execute([$totalIncome, $totalIncome, $user['id']]);
-        
-        $stmt = $db->prepare("
-            INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, description)
-            SELECT ?, 'bonus', ?, balance, balance + ?, 'VIP daily income'
-            FROM users WHERE id = ?
-        ");
-        $stmt->execute([$user['id'], $totalIncome, $totalIncome, $user['id']]);
-        
-        response([
-            'amount' => $totalIncome,
-            'vips_claimed' => count($vips)
-        ], 'VIP income claimed');
     }
 }

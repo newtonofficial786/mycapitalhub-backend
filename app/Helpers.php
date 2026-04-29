@@ -2,6 +2,11 @@
 
 require_once __DIR__ . '/../bootstrap.php';
 
+// Disable error output to prevent HTML in responses
+// Errors should be logged but not displayed
+ini_set('display_errors', 0);
+error_reporting(0);
+
 function response($data = null, $message = 'Success', $status = 200) {
     http_response_code($status);
     header('Content-Type: application/json');
@@ -16,6 +21,8 @@ function response($data = null, $message = 'Success', $status = 200) {
 function error($message = 'Error', $status = 400) {
     http_response_code($status);
     header('Content-Type: application/json');
+    // Clear any previous output to ensure pure JSON
+    if (ob_get_length()) ob_clean();
     echo json_encode([
         'success' => false,
         'error' => $message

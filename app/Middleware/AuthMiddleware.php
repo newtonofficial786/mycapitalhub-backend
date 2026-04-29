@@ -4,9 +4,20 @@ require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../Helpers.php';
 
 function authenticate() {
-    $headers = getallheaders();
-    $authHeader = null;
+    $headers = [];
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
+    } else {
+        // Fallback for environments without getallheaders()
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $key = str_replace('_', '-', strtolower(substr($name, 5)));
+                $headers[$key] = $value;
+            }
+        }
+    }
     
+    $authHeader = null;
     foreach ($headers as $key => $value) {
         if (strtolower($key) === 'authorization') {
             $authHeader = $value;
@@ -20,10 +31,6 @@ function authenticate() {
     
     if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
         error('Unauthorized - No token provided', 401);
-    }
-    
-    if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
-        error('Unauthorized', 401);
     }
     
     $token = substr($authHeader, 7);
