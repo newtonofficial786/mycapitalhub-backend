@@ -532,6 +532,18 @@ try {
         $c->reject();
         return;
     }
+    if ($uri === 'api/admin/withdrawals/revert' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminWithdrawalsController.php');
+        $c = new AdminWithdrawalsController();
+        $c->revertToPending();
+        return;
+    }
     if ($uri === 'api/admin/recharges' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');

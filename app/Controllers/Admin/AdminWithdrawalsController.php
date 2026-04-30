@@ -128,4 +128,38 @@ class AdminWithdrawalsController {
             error('Failed to reject: ' . $e->getMessage());
         }
     }
+
+    public function revertToPending() {
+        authenticateAdmin();
+        $data = getJsonInput();
+        $id = intval($data['id'] ?? 0);
+
+        if (!$id) error('Withdrawal ID required');
+
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM withdrawals WHERE id = ?");
+        $stmt->execute([$id]);
+        $withdrawal = $stmt->fetch();
+
+        if (!$withdrawal) error('Withdrawal not found');
+        if ($withdrawal['status'] !== 'completed') error('Withdrawal must be completed');
+
+        $db->beginTransaction();
+        try {
+            $stmt = $db->prepare("UPDATE withdrawals SET status = 'pending', updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$id]);
+
+            $stmt = $db->prepare("UPDATE wallet_transactions SET status = 'pending' WHERE type = 'withdraw' AND user_id = ? AND status = 'completed' ORDER BY created_at DESC LIMIT 1");
+            $stmt->execute([$withdrawal['user_id']]);
+
+            $stmt = $db->prepare("UPDATE users SET total_withdraw = total_withdraw - ?, balance = balance + ? WHERE id = ?");
+            $stmt->execute([$withdrawal['amount'], $withdrawal['amount'], $withdrawal['user_id']]);
+
+            $db->commit();
+            response(null, 'Withdrawal reverted to pending');
+        } catch (Exception $e) {
+            $db->rollBack();
+            error('Failed to revert: ' . $e->getMessage());
+        }
+    }
 }

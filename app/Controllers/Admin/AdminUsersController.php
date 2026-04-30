@@ -9,29 +9,38 @@ require_once __DIR__ . '/../../../app/Models/User.php';
 class AdminUsersController {
     public function getUsers() {
         authenticateAdmin();
-        $data = getJsonInput();
         
-        $limit = min(intval($data['limit'] ?? 20), 100);
-        $offset = intval($data['offset'] ?? 0);
-        $search = $data['search'] ?? '';
-        $status = $data['status'] ?? '';
+        $limit = min(intval($_GET['limit'] ?? 20), 100);
+        $offset = intval($_GET['offset'] ?? 0);
+        $search = trim($_GET['search'] ?? '');
+        $status = trim($_GET['status'] ?? '');
+        
+        $isAdmin = null;
+        if (isset($_GET['is_admin'])) {
+            $isAdmin = intval($_GET['is_admin']);
+        }
         
         $db = getDb();
-        $where = ['1=1'];
+        $where = [];
         $params = [];
         
-        if ($search) {
+        if ($search !== '') {
             $where[] = '(mobile LIKE ? OR referral_code LIKE ?)';
             $params[] = "%$search%";
             $params[] = "%$search%";
         }
         
-        if ($status) {
+        if ($status !== '' && $status !== 'all') {
             $where[] = 'status = ?';
             $params[] = $status;
         }
         
-        $whereClause = implode(' AND ', $where);
+        if ($isAdmin !== null) {
+            $where[] = 'is_admin = ?';
+            $params[] = $isAdmin;
+        }
+        
+        $whereClause = empty($where) ? '1=1' : implode(' AND ', $where);
         $params[] = $limit;
         $params[] = $offset;
         

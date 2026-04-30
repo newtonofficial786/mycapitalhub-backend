@@ -33,7 +33,7 @@ function error($message = 'Error', $status = 400) {
 function getJsonInput() {
     $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
     
-    if ($method === 'GET' && !empty($_GET)) {
+    if ($method === 'GET') {
         return $_GET;
     }
     
