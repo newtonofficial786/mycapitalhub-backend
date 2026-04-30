@@ -59,3 +59,35 @@ function requireLevel($minLevel) {
     }
     return $user;
 }
+
+function getBearerToken() {
+    $headers = [];
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
+    } else {
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $key = str_replace('_', '-', strtolower(substr($name, 5)));
+                $headers[$key] = $value;
+            }
+        }
+    }
+    
+    $authHeader = null;
+    foreach ($headers as $key => $value) {
+        if (strtolower($key) === 'authorization') {
+            $authHeader = $value;
+            break;
+        }
+    }
+    
+    if (!$authHeader) {
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    }
+    
+    if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
+        return null;
+    }
+    
+    return substr($authHeader, 7);
+}

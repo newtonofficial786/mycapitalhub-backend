@@ -31,6 +31,12 @@ function error($message = 'Error', $status = 400) {
 }
 
 function getJsonInput() {
+    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    
+    if ($method === 'GET' && !empty($_GET)) {
+        return $_GET;
+    }
+    
     if (!empty($_POST)) {
         return array_merge($_POST, [
             'withdrawalPin' => $_POST['withdrawalPin'] ?? $_POST['withdrawal_pin'] ?? '',

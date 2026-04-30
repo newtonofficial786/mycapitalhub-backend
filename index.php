@@ -380,6 +380,514 @@ try {
         return;
     }
     
+    // Admin endpoints
+    if ($uri === 'api/admin/auth/login' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Controllers/Admin/AdminAuthController.php');
+        $c = new AdminAuthController();
+        $c->login();
+        return;
+    }
+    if ($uri === 'api/admin/auth/logout' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Controllers/Admin/AdminAuthController.php');
+        $c = new AdminAuthController();
+        $c->logout();
+        return;
+    }
+    if ($uri === 'api/admin/dashboard' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminDashboardController.php');
+        $c = new AdminDashboardController();
+        $c->getStats();
+        return;
+    }
+    if ($uri === 'api/admin/users' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminUsersController.php');
+        $c = new AdminUsersController();
+        $c->getUsers();
+        return;
+    }
+    if ($uri === 'api/admin/users/detail' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminUsersController.php');
+        $c = new AdminUsersController();
+        $c->getUser();
+        return;
+    }
+    if ($uri === 'api/admin/users/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminUsersController.php');
+        $c = new AdminUsersController();
+        $c->updateUser();
+        return;
+    }
+    if ($uri === 'api/admin/users/adjust-balance' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminUsersController.php');
+        $c = new AdminUsersController();
+        $c->adjustBalance();
+        return;
+    }
+    if ($uri === 'api/admin/users/suspend' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminUsersController.php');
+        $c = new AdminUsersController();
+        $c->suspendUser();
+        return;
+    }
+    if ($uri === 'api/admin/users/activate' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminUsersController.php');
+        $c = new AdminUsersController();
+        $c->activateUser();
+        return;
+    }
+    if ($uri === 'api/admin/users/reset-pin' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminUsersController.php');
+        $c = new AdminUsersController();
+        $c->resetWithdrawalPin();
+        return;
+    }
+    if ($uri === 'api/admin/withdrawals' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminWithdrawalsController.php');
+        $c = new AdminWithdrawalsController();
+        $c->getWithdrawals();
+        return;
+    }
+    if ($uri === 'api/admin/withdrawals/approve' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminWithdrawalsController.php');
+        $c = new AdminWithdrawalsController();
+        $c->approve();
+        return;
+    }
+    if ($uri === 'api/admin/withdrawals/reject' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminWithdrawalsController.php');
+        $c = new AdminWithdrawalsController();
+        $c->reject();
+        return;
+    }
+    if ($uri === 'api/admin/recharges' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminRechargesController.php');
+        $c = new AdminRechargesController();
+        $c->getRecharges();
+        return;
+    }
+    if ($uri === 'api/admin/recharges/approve' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminRechargesController.php');
+        $c = new AdminRechargesController();
+        $c->approve();
+        return;
+    }
+    if ($uri === 'api/admin/recharges/reject' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminRechargesController.php');
+        $c = new AdminRechargesController();
+        $c->reject();
+        return;
+    }
+    if ($uri === 'api/admin/transactions' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminTransactionsController.php');
+        $c = new AdminTransactionsController();
+        $c->getAll();
+        return;
+    }
+    if ($uri === 'api/admin/transactions/update-status' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminTransactionsController.php');
+        $c = new AdminTransactionsController();
+        $c->updateStatus();
+        return;
+    }
+    if ($uri === 'api/admin/banners' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminBannersController.php');
+        $c = new AdminBannersController();
+        $c->getAll();
+        return;
+    }
+    if ($uri === 'api/admin/banners/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminBannersController.php');
+        $c = new AdminBannersController();
+        $c->create();
+        return;
+    }
+    if ($uri === 'api/admin/banners/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminBannersController.php');
+        $c = new AdminBannersController();
+        $c->update();
+        return;
+    }
+    if ($uri === 'api/admin/banners/delete' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminBannersController.php');
+        $c = new AdminBannersController();
+        $c->delete();
+        return;
+    }
+    if ($uri === 'api/admin/banners/toggle' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminBannersController.php');
+        $c = new AdminBannersController();
+        $c->toggleActive();
+        return;
+    }
+    if ($uri === 'api/admin/products' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminProductsController.php');
+        $c = new AdminProductsController();
+        $c->getAll();
+        return;
+    }
+    if ($uri === 'api/admin/products/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminProductsController.php');
+        $c = new AdminProductsController();
+        $c->create();
+        return;
+    }
+    if ($uri === 'api/admin/products/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminProductsController.php');
+        $c = new AdminProductsController();
+        $c->update();
+        return;
+    }
+    if ($uri === 'api/admin/products/delete' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminProductsController.php');
+        $c = new AdminProductsController();
+        $c->delete();
+        return;
+    }
+    if ($uri === 'api/admin/products/toggle' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminProductsController.php');
+        $c = new AdminProductsController();
+        $c->toggleActive();
+        return;
+    }
+    if ($uri === 'api/admin/vip/packages' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminVipController.php');
+        $c = new AdminVipController();
+        $c->getPackages();
+        return;
+    }
+    if ($uri === 'api/admin/vip/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminVipController.php');
+        $c = new AdminVipController();
+        $c->create();
+        return;
+    }
+    if ($uri === 'api/admin/vip/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminVipController.php');
+        $c = new AdminVipController();
+        $c->update();
+        return;
+    }
+    if ($uri === 'api/admin/vip/delete' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminVipController.php');
+        $c = new AdminVipController();
+        $c->delete();
+        return;
+    }
+    if ($uri === 'api/admin/vip/users' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminVipController.php');
+        $c = new AdminVipController();
+        $c->getUserVips();
+        return;
+    }
+    if ($uri === 'api/admin/settings' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->getAllSettings();
+        return;
+    }
+    if ($uri === 'api/admin/settings/commission' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->getCommissionSettings();
+        return;
+    }
+    if ($uri === 'api/admin/settings/commission/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->updateCommissionSettings();
+        return;
+    }
+    if ($uri === 'api/admin/settings/refer' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->getReferSettings();
+        return;
+    }
+    if ($uri === 'api/admin/settings/refer/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->updateReferSettings();
+        return;
+    }
+    if ($uri === 'api/admin/settings/withdraw' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->getWithdrawSettings();
+        return;
+    }
+    if ($uri === 'api/admin/settings/withdraw/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->updateWithdrawSettings();
+        return;
+    }
+    if ($uri === 'api/admin/games/bets' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminGamesController.php');
+        $c = new AdminGamesController();
+        $c->getBets();
+        return;
+    }
+    if ($uri === 'api/admin/games/results' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminGamesController.php');
+        $c = new AdminGamesController();
+        $c->getResults();
+        return;
+    }
+    if ($uri === 'api/admin/games/results/add' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminGamesController.php');
+        $c = new AdminGamesController();
+        $c->addResult();
+        return;
+    }
+    if ($uri === 'api/admin/games/results/delete' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminGamesController.php');
+        $c = new AdminGamesController();
+        $c->deleteResult();
+        return;
+    }
+    if ($uri === 'api/admin/games/stats' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminGamesController.php');
+        $c = new AdminGamesController();
+        $c->getStats();
+        return;
+    }
+    
     http_response_code(404);
     header('Content-Type: application/json');
     echo json_encode(['error' => 'Endpoint not found']);
