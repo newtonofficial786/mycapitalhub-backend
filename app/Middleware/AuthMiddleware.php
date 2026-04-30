@@ -40,13 +40,16 @@ function authenticate() {
         SELECT u.* FROM api_tokens t
         JOIN users u ON t.user_id = u.id
         WHERE t.token = ? AND (t.expires_at IS NULL OR t.expires_at > NOW())
-        AND u.status = 'active'
     ");
     $stmt->execute([$token]);
     $user = $stmt->fetch();
     
     if (!$user) {
         error('Invalid or expired token', 401);
+    }
+    
+    if ($user['status'] !== 'active') {
+        error('Account suspended', 403);
     }
     
     return $user;
