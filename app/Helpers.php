@@ -2,10 +2,8 @@
 
 require_once __DIR__ . '/../bootstrap.php';
 
-// Disable error output to prevent HTML in responses
-// Errors should be logged but not displayed
-ini_set('display_errors', 0);
-error_reporting(0);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 function response($data = null, $message = 'Success', $status = 200) {
     http_response_code($status);
@@ -21,7 +19,6 @@ function response($data = null, $message = 'Success', $status = 200) {
 function error($message = 'Error', $status = 400) {
     http_response_code($status);
     header('Content-Type: application/json');
-    // Clear any previous output to ensure pure JSON
     if (ob_get_length()) ob_clean();
     echo json_encode([
         'success' => false,
@@ -84,26 +81,19 @@ function verifyPassword($password, $hash) {
 }
 
 function getConfig() {
-    $env = env('APP_ENV', 'local');
-    $configFile = __DIR__ . '/../config/' . $env . '.php';
-    if (!file_exists($configFile)) {
-        $configFile = __DIR__ . '/../config/local.php';
+    $envFile = __DIR__ . '/../.env';
+    $env = [];
+    if (file_exists($envFile)) {
+        foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+            if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+                list($key, $value) = explode('=', $line, 2);
+                $env[trim($key)] = trim($value);
+            }
+        }
     }
-    return require $configFile;
-}
-
-function debugEndpoint($rawInput, $postData) {
-    $logFile = __DIR__ . '/../debug.log';
-    $log = date('Y-m-d H:i:s') . ' | Raw: ' . strlen($rawInput) . ' bytes | post: ' . count($postData) . ' | ' . json_encode($postData) . "\n";
-    @file_put_contents($logFile, $log, FILE_APPEND);
-    
-    http_response_code(200);
-    header('Content-Type: application/json');
-    echo json_encode([
-        'raw_len' => strlen($rawInput),
-        'raw' => $rawInput,
-        'post' => $postData,
-        'content_type' => $_SERVER['CONTENT_TYPE'] ?? ''
-    ]);
-    exit;
+    return [
+        'jwt' => [
+            'expiry' => (int)($env['JWT_EXPIRY'] ?? 86400)
+        ]
+    ];
 }

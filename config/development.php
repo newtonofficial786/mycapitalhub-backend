@@ -15,7 +15,8 @@ return [
         'env' => getenv('APP_ENV') ?: 'development'
     ],
     'jwt' => [
-        'secret' => getenv('JWT_SECRET') ?: 'dev-secret-key-do-not-use-in-production',
         'expiry' => getenv('JWT_EXPIRY') ?: 86400
-    ]
+    ],
+    'debug' => true,
+    'display_errors' => true
 ];

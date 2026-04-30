@@ -15,7 +15,6 @@ return [
         'env' => 'local'
     ],
     'jwt' => [
-        'secret' => env('JWT_SECRET', 'local-dev-secret-key-12345'),
         'expiry' => env('JWT_EXPIRY', 86400)
     ],
     'debug' => true,

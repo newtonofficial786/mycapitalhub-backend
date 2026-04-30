@@ -1,5 +1,0 @@
-api/products/user
-after bootstrap
-after db
-after helpers
-after auth

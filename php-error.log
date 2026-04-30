@@ -1,4 +1,42 @@
-[29-Apr-2026 07:42:29 Europe/Berlin] Product 18 last_claimed: null, now: 2026-04-29 07:42:29
-[29-Apr-2026 08:55:47 Europe/Berlin] PHP Warning:  Undefined property: PaymentController::$db in P:\Website Projects\Projects001\backend\app\Controllers\PaymentController.php on line 213
-[29-Apr-2026 08:57:30 Europe/Berlin] PHP Warning:  Undefined property: PaymentController::$db in P:\Website Projects\Projects001\backend\app\Controllers\PaymentController.php on line 213
-[29-Apr-2026 14:21:03 Europe/Berlin] VIP 9 last_claimed: null, now: 2026-04-29 14:21:03
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Undefined array key "db" in P:\Website Projects\Projects001\backend\config\Database.php on line 23
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 27
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 28
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 29
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 30
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Undefined array key "db" in P:\Website Projects\Projects001\backend\config\Database.php on line 23
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 27
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 28
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 29
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 30
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:22:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:22:16 Europe/Berlin] PHP Warning:  Undefined array key "db" in P:\Website Projects\Projects001\backend\config\Database.php on line 23
+[30-Apr-2026 07:22:16 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 27
+[30-Apr-2026 07:22:16 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 28
+[30-Apr-2026 07:22:16 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 29
+[30-Apr-2026 07:22:16 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 30
+[30-Apr-2026 07:22:16 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:22:16 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:22:17 Europe/Berlin] PHP Warning:  Undefined array key "db" in P:\Website Projects\Projects001\backend\config\Database.php on line 23
+[30-Apr-2026 07:22:17 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 27
+[30-Apr-2026 07:22:17 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 28
+[30-Apr-2026 07:22:17 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 29
+[30-Apr-2026 07:22:17 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 30
+[30-Apr-2026 07:22:17 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:22:17 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:23:18 Europe/Berlin] PHP Warning:  Undefined array key "db" in P:\Website Projects\Projects001\backend\config\Database.php on line 23
+[30-Apr-2026 07:23:18 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 27
+[30-Apr-2026 07:23:18 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 28
+[30-Apr-2026 07:23:18 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 29
+[30-Apr-2026 07:23:18 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 30
+[30-Apr-2026 07:23:18 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:23:18 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Undefined array key "db" in P:\Website Projects\Projects001\backend\config\Database.php on line 23
+[30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 27
+[30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 28
+[30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 29
+[30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 30
+[30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
+[30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34

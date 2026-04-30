@@ -1,6 +1,0 @@
-POST /api/products/claim HTTP/1.1
-Host: localhost:8000
-Content-Type: application/json
-Authorization: Bearer test
-
-{"id": 1}

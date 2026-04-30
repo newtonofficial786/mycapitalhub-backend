@@ -15,7 +15,6 @@ return [
         'env' => 'production'
     ],
     'jwt' => [
-        'secret' => getenv('JWT_SECRET') ?: '',
         'expiry' => getenv('JWT_EXPIRY') ?: 86400
     ],
     'debug' => false,
