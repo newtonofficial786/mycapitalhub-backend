@@ -66,16 +66,16 @@ class AdminRechargesController {
             $stmt = $db->prepare("UPDATE recharges SET status = 'completed', updated_at = NOW() WHERE id = ?");
             $stmt->execute([$id]);
             
-            $stmt = $db->prepare("UPDATE users SET balance = balance + ?, total_recharge = total_recharge + ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE users SET main_wallet = main_wallet + ?, total_recharge = total_recharge + ? WHERE id = ?");
             $stmt->execute([$recharge['amount'], $recharge['amount'], $recharge['user_id']]);
             
-            $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+            $stmt = $db->prepare("SELECT main_wallet FROM users WHERE id = ?");
             $stmt->execute([$recharge['user_id']]);
-            $newBalance = $stmt->fetch()['balance'];
+            $newBalance = $stmt->fetch()['main_wallet'];
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                VALUES (?, 'recharge', ?, ?, ?, 'completed', 'Recharge approved by admin')
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, 'recharge', ?, ?, ?, 'completed', 'Recharge approved by admin', 'main')
             ");
             $stmt->execute([
                 $recharge['user_id'],

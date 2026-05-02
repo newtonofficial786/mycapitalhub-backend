@@ -84,7 +84,7 @@ class ProductController {
             
             $stmt = $db->prepare("
                 INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
-                VALUES (?, 'bet', ?, ?, ?, 'completed', ?, 'stable')
+                VALUES (?, 'bet', ?, ?, ?, 'completed', ?, 'main')
             ");
             $stmt->execute([$user['id'], -$product['price'], $userBefore, $userBefore - $product['price'], 'Investment: ' . $productName]);
             
@@ -292,7 +292,7 @@ class VipController {
             
             $stmt = $db->prepare("
                 INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
-                VALUES (?, 'bet', ?, ?, ?, 'completed', ?, 'vip')
+                VALUES (?, 'bet', ?, ?, ?, 'completed', ?, 'main')
             ");
             $stmt->execute([$user['id'], -$price, $currentUser['main_wallet'], $currentUser['main_wallet'] - $price, 'VIP Upgrade: ' . $package['name']]);
             

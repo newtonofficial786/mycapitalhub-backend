@@ -96,11 +96,34 @@ class IncomeController {
             }
         }
         
-        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT main_wallet, stable_wallet, vip_wallet, referral_wallet FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $balanceData = $stmt->fetch();
         
-        $summary['balance'] = floatval($balanceData['balance']);
+        $summary['main_wallet'] = floatval($balanceData['main_wallet'] ?? 0);
+        $summary['stable_wallet'] = floatval($balanceData['stable_wallet'] ?? 0);
+        $summary['vip_wallet'] = floatval($balanceData['vip_wallet'] ?? 0);
+        $summary['referral_wallet'] = floatval($balanceData['referral_wallet'] ?? 0);
+        $summary['balance'] = floatval($balanceData['main_wallet'] ?? 0);
+        
+        $stmt = $db->prepare("
+            SELECT wallet_type, SUM(amount) as wallet_total
+            FROM wallet_transactions 
+            WHERE user_id = ? AND status = 'completed' AND amount > 0
+            GROUP BY wallet_type
+        ");
+        $stmt->execute([$user['id']]);
+        $walletTotals = $stmt->fetchAll();
+        
+        $summary['wallet_income'] = [
+            'main' => 0,
+            'stable' => 0,
+            'vip' => 0,
+            'referral' => 0
+        ];
+        foreach ($walletTotals as $row) {
+            $summary['wallet_income'][$row['wallet_type']] = floatval($row['wallet_total']);
+        }
         
         response($summary);
     }

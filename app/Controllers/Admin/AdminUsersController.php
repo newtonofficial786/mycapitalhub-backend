@@ -45,7 +45,7 @@ class AdminUsersController {
         $params[] = $offset;
         
         $stmt = $db->prepare("
-            SELECT id, mobile, referral_code, level, balance, total_recharge, total_withdraw, 
+            SELECT id, mobile, referral_code, level, main_wallet, stable_wallet, vip_wallet, referral_wallet, balance, total_recharge, total_withdraw, 
                    total_income, team_income, status, is_admin, created_at
             FROM users WHERE $whereClause ORDER BY created_at DESC LIMIT ? OFFSET ?
         ");
@@ -119,30 +119,34 @@ class AdminUsersController {
         $amount = floatval($data['amount'] ?? 0);
         $type = $data['type'] ?? 'bonus';
         $reason = $data['reason'] ?? 'Admin adjustment';
+        $walletType = $data['wallet_type'] ?? 'main';
         
+        if (!in_array($walletType, ['main', 'stable', 'vip', 'referral'])) error('Invalid wallet type');
         if (!$userId) error('User ID required');
         if ($amount == 0) error('Amount cannot be zero');
         
+        $walletColumn = $this->getWalletColumn($walletType);
+        
         $db = getDb();
-        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
+        $stmt = $db->prepare("SELECT {$walletColumn} as wallet_balance FROM users WHERE id = ? FOR UPDATE");
         $stmt->execute([$userId]);
         $user = $stmt->fetch();
         
         if (!$user) error('User not found');
         
-        $newBalance = $user['balance'] + $amount;
-        if ($newBalance < 0) error('Insufficient balance');
+        $newBalance = $user['wallet_balance'] + $amount;
+        if ($newBalance < 0) error('Insufficient balance in ' . ucfirst($walletType) . ' wallet');
         
         $db->beginTransaction();
         try {
-            $stmt = $db->prepare("UPDATE users SET balance = ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE users SET {$walletColumn} = ? WHERE id = ?");
             $stmt->execute([$newBalance, $userId]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                VALUES (?, ?, ?, ?, ?, 'completed', ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, ?, ?, ?, ?, 'completed', ?, ?)
             ");
-            $stmt->execute([$userId, $type, $amount, $user['balance'], $newBalance, $reason]);
+            $stmt->execute([$userId, $type, $amount, $user['wallet_balance'], $newBalance, $reason, $walletType]);
             
             $db->commit();
             response(['new_balance' => $newBalance], 'Balance adjusted');
@@ -193,5 +197,15 @@ class AdminUsersController {
         $stmt->execute([$newPin, $userId]);
         
         response(null, 'Withdrawal PIN reset');
+    }
+    
+    private function getWalletColumn($walletType) {
+        $columns = [
+            'main' => 'main_wallet',
+            'stable' => 'stable_wallet',
+            'vip' => 'vip_wallet',
+            'referral' => 'referral_wallet',
+        ];
+        return $columns[$walletType] ?? 'main_wallet';
     }
 }

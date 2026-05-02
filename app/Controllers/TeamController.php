@@ -23,7 +23,7 @@ class TeamController {
         $stmt = $db->prepare("
             SELECT 
                 SUM(total_recharge) as total_team_recharge,
-                SUM(balance) as total_team_balance
+                SUM(main_wallet + stable_wallet + vip_wallet + referral_wallet) as total_team_balance
             FROM users WHERE referrer_id = ?
         ");
         $stmt->execute([$user['id']]);

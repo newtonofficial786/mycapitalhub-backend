@@ -16,7 +16,11 @@ class AdminDashboardController {
                 (SELECT COUNT(*) FROM users) as total_users,
                 (SELECT COUNT(*) FROM users WHERE status = 'active') as active_users,
                 (SELECT COUNT(*) FROM users WHERE status = 'suspended') as suspended_users,
-                (SELECT SUM(balance) FROM users) as total_balance,
+                (SELECT SUM(main_wallet + stable_wallet + vip_wallet + referral_wallet) FROM users) as total_balance,
+                (SELECT SUM(main_wallet) FROM users) as total_main_wallet,
+                (SELECT SUM(stable_wallet) FROM users) as total_stable_wallet,
+                (SELECT SUM(vip_wallet) FROM users) as total_vip_wallet,
+                (SELECT SUM(referral_wallet) FROM users) as total_referral_wallet,
                 (SELECT SUM(total_recharge) FROM users) as total_recharge,
                 (SELECT SUM(total_withdraw) FROM users) as total_withdraw,
                 (SELECT COUNT(*) FROM recharges WHERE status = 'pending') as pending_recharges,
@@ -35,7 +39,7 @@ class AdminDashboardController {
         ")->fetch();
         
         $recentUsers = $db->query("
-            SELECT id, mobile, balance, total_recharge, created_at 
+            SELECT id, mobile, main_wallet, stable_wallet, vip_wallet, referral_wallet, total_recharge, created_at 
             FROM users ORDER BY created_at DESC LIMIT 5
         ")->fetchAll();
         
