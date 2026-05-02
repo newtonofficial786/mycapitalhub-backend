@@ -195,7 +195,7 @@ class ProductController {
 class VipController {
     public function getVipPackages() {
         $db = getDb();
-        $stmt = $db->prepare("SELECT * FROM vip_packages WHERE active = 1 ORDER BY level ASC");
+        $stmt = $db->prepare("SELECT * FROM vip_packages WHERE active = 1 ORDER BY min_recharge ASC");
         $stmt->execute();
         $packages = $stmt->fetchAll();
         
@@ -207,7 +207,7 @@ class VipController {
         
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT uv.*, vp.name, vp.daily_income, vp.level, vp.min_recharge,
+            SELECT uv.*, vp.name, vp.daily_income, vp.level, vp.min_recharge, vp.reward_amount, vp.wait_minutes,
                    CASE 
                        WHEN vp.active = 1 AND uv.user_id IS NOT NULL THEN 'active'
                        ELSE 'expired'
@@ -220,24 +220,7 @@ class VipController {
         $stmt->execute([$user['id']]);
         $vips = $stmt->fetchAll();
         
-        $stmt = $db->prepare("SELECT level FROM users WHERE id = ?");
-        $stmt->execute([$user['id']]);
-        $userLevel = $stmt->fetch();
-        
-        if (empty($vips)) {
-            $userLevel = intval($userLevel['level'] ?? 0);
-            $vips = [ [
-                'id' => 0,
-                'vip_package_id' => null,
-                'level' => $userLevel,
-                'name' => 'Bronze VIP',
-                'daily_income' => 0,
-                'status' => 'active',
-                'last_claimed' => null
-            ] ];
-        }
-        
-        response($vips);
+        response($vips ?: []);
     }
     
     public function purchaseVip() {
@@ -259,54 +242,57 @@ class VipController {
             error('Package not found');
         }
         
-        $stmt = $db->prepare("SELECT main_wallet, level FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT main_wallet FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $currentUser = $stmt->fetch();
-        $currentLevel = intval($currentUser['level'] ?? 0);
         $currentBalance = floatval($currentUser['main_wallet'] ?? 0);
         
         $price = floatval($package['min_recharge'] ?? 0);
         
-        if ($currentLevel >= intval($package['level'])) {
-            error('You already have this VIP level or higher. Current: ' . $currentLevel . ', Package: ' . $package['level']);
+        if ($currentBalance < $price) {
+            error('Insufficient balance in main wallet. Your balance: ₹' . $currentBalance . ', Price: ₹' . $price);
         }
         
-        if ($currentBalance < $price) {
-            error('Insufficient balance in main wallet. Your balance: ' . $currentBalance . ', Price: ' . $price);
+        $stmt = $db->prepare("SELECT id, is_claimed FROM user_vip WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+        $stmt->execute([$user['id']]);
+        $existingVip = $stmt->fetch();
+        
+        if ($existingVip && !$existingVip['is_claimed']) {
+            error('You already have an active VIP package. Please wait until it can be claimed.');
         }
         
         $db->beginTransaction();
         
         try {
-            $stmt = $db->prepare("UPDATE users SET main_wallet = main_wallet - ?, level = ? WHERE id = ?");
-            $stmt->execute([$price, $package['level'], $user['id']]);
+            $stmt = $db->prepare("UPDATE users SET main_wallet = main_wallet - ? WHERE id = ?");
+            $stmt->execute([$price, $user['id']]);
             
-            $stmt = $db->prepare("DELETE FROM user_vip WHERE user_id = ?");
-            $stmt->execute([$user['id']]);
-            
+            $waitMinutes = intval($package['wait_minutes'] ?? 60);
             $stmt = $db->prepare("
-                INSERT INTO user_vip (user_id, vip_package_id, total_earned)
-                VALUES (?, ?, 0)
+                INSERT INTO user_vip (user_id, vip_package_id, purchased_at, claimable_at, is_claimed)
+                VALUES (?, ?, NOW(), DATE_ADD(NOW(), INTERVAL ? MINUTE), 0)
             ");
-            $stmt->execute([$user['id'], $packageId]);
+            $stmt->execute([$user['id'], $packageId, $waitMinutes]);
             
             $stmt = $db->prepare("
                 INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
                 VALUES (?, 'bet', ?, ?, ?, 'completed', ?, 'main')
             ");
-            $stmt->execute([$user['id'], -$price, $currentUser['main_wallet'], $currentUser['main_wallet'] - $price, 'VIP Upgrade: ' . $package['name']]);
+            $stmt->execute([$user['id'], -$price, $currentUser['main_wallet'], $currentUser['main_wallet'] - $price, 'VIP Jackpot: ' . $package['name']]);
             
             $db->commit();
+            
+            $claimableTime = new DateTime("+$waitMinutes minutes");
             
             response([
                 'id' => $db->lastInsertId(),
                 'package_name' => $package['name'],
-                'daily_income' => $package['daily_income'],
-                'level' => $package['level']
-            ], 'VIP upgraded successfully');
+                'reward_amount' => $package['reward_amount'],
+                'claimable_at' => $claimableTime->format('Y-m-d H:i:s')
+            ], 'VIP Jackpot purchased successfully');
         } catch (Exception $e) {
             $db->rollBack();
-            error('Purchase failed');
+            error('Purchase failed: ' . $e->getMessage());
         }
     }
 
@@ -329,12 +315,12 @@ class VipController {
             $packageId = $data['id'] ?? $data['package_id'] ?? null;
             
             if (!$packageId) {
-                error('VIP package ID required. Received: ' . json_encode($data), 400);
+                error('VIP package ID required', 400);
             }
             
             $db = getDb();
             $stmt = $db->prepare("
-                SELECT uv.id, uv.last_claimed, vp.daily_income, vp.name
+                SELECT uv.id, uv.claimable_at, uv.is_claimed, vp.reward_amount, vp.name
                 FROM user_vip uv
                 JOIN vip_packages vp ON uv.vip_package_id = vp.id
                 WHERE uv.id = ? AND uv.user_id = ?
@@ -346,51 +332,60 @@ class VipController {
                 error('Invalid VIP package');
             }
             
-            $income = floatval($vip['daily_income']);
-            
-            if ($income <= 0) {
-                error('No VIP income available');
+            if ($vip['is_claimed']) {
+                error('This VIP jackpot has already been claimed');
             }
             
-            $lastClaimed = $vip['last_claimed'] ?? null;
-            error_log("VIP {$packageId} last_claimed: " . ($lastClaimed ?? 'null') . ", now: " . date('Y-m-d H:i:s'));
+            $rewardAmount = floatval($vip['reward_amount']);
             
-            if ($lastClaimed) {
-                $last = new DateTime($lastClaimed);
-                $next = clone $last;
-                $next->add(new DateInterval('P1D'));
+            if ($rewardAmount <= 0) {
+                error('No reward available');
+            }
+            
+            $claimableAt = $vip['claimable_at'] ?? null;
+            
+            if ($claimableAt) {
+                $claimable = new DateTime($claimableAt);
                 $now = new DateTime();
-                if ($now < $next) {
-                    $remaining = $next->getTimestamp() - $now->getTimestamp();
+                if ($now < $claimable) {
+                    $remaining = $claimable->getTimestamp() - $now->getTimestamp();
                     $hours = floor($remaining / 3600);
                     $minutes = floor(($remaining % 3600) / 60);
-                    error("Please wait {$hours}h {$minutes}m before claiming again", 400);
+                    $seconds = $remaining % 60;
+                    error("Please wait {$hours}h {$minutes}m {$seconds}s before claiming. Time remaining.", 400);
                 }
             }
             
             $stmt = $db->prepare("SELECT vip_wallet FROM users WHERE id = ?");
             $stmt->execute([$user['id']]);
             $balanceBefore = floatval($stmt->fetch()['vip_wallet'] ?? 0);
-            $balanceAfter = $balanceBefore + $income;
+            $balanceAfter = $balanceBefore + $rewardAmount;
             
-            $stmt = $db->prepare("UPDATE user_vip SET total_earned = total_earned + ?, last_claimed = NOW() WHERE id = ?");
-            $stmt->execute([$income, $packageId]);
+            $db->beginTransaction();
             
-            $stmt = $db->prepare("UPDATE users SET vip_wallet = ? WHERE id = ?");
-            $stmt->execute([$balanceAfter, $user['id']]);
-            
-            $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
-                VALUES (?, 'bonus', ?, ?, ?, 'completed', ?, 'vip')
-            ");
-            $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, 'VIP Daily Income: ' . $vip['name']]);
-            
-            response([
-                'amount' => $income,
-                'package_id' => $packageId,
-                'package_name' => $vip['name'],
-                'next_claim_at' => (new DateTime('+1 day'))->format('Y-m-d H:i:s')
-            ], 'VIP income claimed');
+            try {
+                $stmt = $db->prepare("UPDATE user_vip SET is_claimed = 1 WHERE id = ?");
+                $stmt->execute([$packageId]);
+                
+                $stmt = $db->prepare("UPDATE users SET vip_wallet = ? WHERE id = ?");
+                $stmt->execute([$balanceAfter, $user['id']]);
+                
+                $stmt = $db->prepare("
+                    INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                    VALUES (?, 'bonus', ?, ?, ?, 'completed', ?, 'vip')
+                ");
+                $stmt->execute([$user['id'], $rewardAmount, $balanceBefore, $balanceAfter, 'VIP Jackpot Claimed: ' . $vip['name']]);
+                
+                $db->commit();
+                
+                response([
+                    'amount' => $rewardAmount,
+                    'package_name' => $vip['name']
+                ], 'VIP Jackpot claimed successfully!');
+            } catch (Exception $e) {
+                $db->rollBack();
+                error('Claim failed: ' . $e->getMessage());
+            }
         } catch (Throwable $e) {
             error('Server error: ' . $e->getMessage(), 500);
         }

@@ -21,6 +21,8 @@ class AdminVipController {
         $minRecharge = floatval($data['min_recharge'] ?? 0);
         $price = floatval($data['price'] ?? 0);
         $dailyIncome = floatval($data['daily_income'] ?? 0);
+        $rewardAmount = floatval($data['reward_amount'] ?? 0);
+        $waitMinutes = intval($data['wait_minutes'] ?? 60);
         $level = intval($data['level'] ?? 0);
         $active = intval($data['active'] ?? 1);
         
@@ -28,10 +30,10 @@ class AdminVipController {
         
         $db = getDb();
         $stmt = $db->prepare("
-            INSERT INTO vip_packages (name, min_recharge, price, daily_income, level, active)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO vip_packages (name, min_recharge, price, daily_income, reward_amount, wait_minutes, level, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        $stmt->execute([$name, $minRecharge, $price, $dailyIncome, $level, $active]);
+        $stmt->execute([$name, $minRecharge, $price, $dailyIncome, $rewardAmount, $waitMinutes, $level, $active]);
         
         response(['id' => $db->lastInsertId()], 'VIP package created');
     }
@@ -46,7 +48,7 @@ class AdminVipController {
         $updates = [];
         $params = [];
         
-        foreach (['name', 'min_recharge', 'price', 'daily_income', 'level', 'active'] as $field) {
+        foreach (['name', 'min_recharge', 'price', 'daily_income', 'reward_amount', 'wait_minutes', 'level', 'active'] as $field) {
             if (isset($data[$field])) {
                 $updates[] = "$field = ?";
                 $params[] = $data[$field];
