@@ -19,7 +19,6 @@ class AdminVipController {
         
         $name = $data['name'] ?? '';
         $minRecharge = floatval($data['min_recharge'] ?? 0);
-        $price = floatval($data['price'] ?? 0);
         $dailyIncome = floatval($data['daily_income'] ?? 0);
         $rewardAmount = floatval($data['reward_amount'] ?? 0);
         $waitMinutes = intval($data['wait_minutes'] ?? 60);
@@ -30,10 +29,10 @@ class AdminVipController {
         
         $db = getDb();
         $stmt = $db->prepare("
-            INSERT INTO vip_packages (name, min_recharge, price, daily_income, reward_amount, wait_minutes, level, active)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO vip_packages (name, min_recharge, daily_income, reward_amount, wait_minutes, level, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
-        $stmt->execute([$name, $minRecharge, $price, $dailyIncome, $rewardAmount, $waitMinutes, $level, $active]);
+        $stmt->execute([$name, $minRecharge, $dailyIncome, $rewardAmount, $waitMinutes, $level, $active]);
         
         response(['id' => $db->lastInsertId()], 'VIP package created');
     }
@@ -45,20 +44,29 @@ class AdminVipController {
         
         if (!$id) error('Package ID required');
         
+        $db = getDb();
         $updates = [];
         $params = [];
         
-        foreach (['name', 'min_recharge', 'price', 'daily_income', 'reward_amount', 'wait_minutes', 'level', 'active'] as $field) {
-            if (isset($data[$field])) {
-                $updates[] = "$field = ?";
-                $params[] = $data[$field];
+        foreach ($data as $key => $value) {
+            if ($key === 'id') continue;
+            if ($value === null || $value === '') continue;
+            
+            if (in_array($key, ['min_recharge', 'daily_income', 'reward_amount'])) {
+                $updates[] = "$key = ?";
+                $params[] = floatval($value);
+            } elseif (in_array($key, ['wait_minutes', 'level', 'active'])) {
+                $updates[] = "$key = ?";
+                $params[] = intval($value);
+            } else {
+                $updates[] = "$key = ?";
+                $params[] = $value;
             }
         }
         
         if (empty($updates)) error('No fields to update');
         
         $params[] = $id;
-        $db = getDb();
         $stmt = $db->prepare("UPDATE vip_packages SET " . implode(', ', $updates) . " WHERE id = ?");
         $stmt->execute($params);
         

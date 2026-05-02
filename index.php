@@ -852,6 +852,50 @@ try {
         $c->updateWithdrawSettings();
         return;
     }
+    if ($uri === 'api/admin/settings/level/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->createLevel();
+        return;
+    }
+    if ($uri === 'api/admin/settings/level/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->updateLevel();
+        return;
+    }
+    if ($uri === 'api/admin/settings/level/delete' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->deleteLevel();
+        return;
+    }
+    if ($uri === 'api/user/level' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/Admin/AdminSettingsController.php');
+        $c = new AdminSettingsController();
+        $c->getUserLevel();
+        return;
+    }
     if ($uri === 'api/admin/games/bets' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');

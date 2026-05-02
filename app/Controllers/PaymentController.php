@@ -111,6 +111,25 @@ class PaymentController {
             error_log("Commission payment failed: " . $e->getMessage());
         }
         
+        // Auto level-up based on total recharge
+        try {
+            $stmt = $db->prepare("SELECT total_recharge FROM users WHERE id = ?");
+            $stmt->execute([$user['id']]);
+            $rechargeData = $stmt->fetch();
+            $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
+            
+            $stmt = $db->query("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= $totalRecharge ORDER BY level DESC LIMIT 1");
+            $newLevel = $stmt->fetch();
+            
+            if ($newLevel) {
+                $level = intval($newLevel['level']);
+                $stmt = $db->prepare("UPDATE users SET level = ? WHERE id = ? AND level < ?");
+                $stmt->execute([$level, $user['id'], $level]);
+            }
+        } catch (Exception $e) {
+            error_log("Level up check failed: " . $e->getMessage());
+        }
+        
         response(null, 'Recharge completed');
     }
 
