@@ -42,3 +42,5 @@
 [30-Apr-2026 07:24:31 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in P:\Website Projects\Projects001\backend\config\Database.php on line 34
 [01-May-2026 15:01:45 Europe/Berlin] Product 19 last_claimed: null, now: 2026-05-01 15:01:45
 [01-May-2026 15:03:24 Europe/Berlin] Product 20 last_claimed: null, now: 2026-05-01 15:03:24
+[02-May-2026 09:02:22 Europe/Berlin] Product 21 last_claimed: null, now: 2026-05-02 09:02:22
+[02-May-2026 09:03:01 Europe/Berlin] Product 22 last_claimed: null, now: 2026-05-02 09:03:01

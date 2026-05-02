@@ -203,9 +203,11 @@ class VipController {
     }
     
     public function getUserVip() {
+        date_default_timezone_set('Asia/Kolkata');
         $user = authenticate();
         
         $db = getDb();
+        $db->exec("SET time_zone = '+05:30'");
         $stmt = $db->prepare("
             SELECT uv.*, vp.name, vp.daily_income, vp.level, vp.min_recharge, vp.reward_amount, vp.wait_minutes,
                    CASE 
@@ -220,10 +222,18 @@ class VipController {
         $stmt->execute([$user['id']]);
         $vips = $stmt->fetchAll();
         
+        foreach ($vips as &$v) {
+            if ($v['claimable_at']) {
+                $v['claimable_timestamp'] = strtotime($v['claimable_at']);
+            }
+            $v['server_time'] = time();
+        }
+        
         response($vips ?: []);
     }
     
     public function purchaseVip() {
+        date_default_timezone_set('Asia/Kolkata');
         $user = authenticate();
         $data = getJsonInput();
         
@@ -234,6 +244,7 @@ class VipController {
         }
         
         $db = getDb();
+        $db->exec("SET time_zone = '+05:30'");
         $stmt = $db->prepare("SELECT * FROM vip_packages WHERE id = ? AND active = 1");
         $stmt->execute([$packageId]);
         $package = $stmt->fetch();
@@ -268,11 +279,14 @@ class VipController {
             $stmt->execute([$price, $user['id']]);
             
             $waitMinutes = intval($package['wait_minutes'] ?? 60);
+            $now = date('Y-m-d H:i:s');
+            $claimableAt = date('Y-m-d H:i:s', strtotime("+{$waitMinutes} minutes"));
+            
             $stmt = $db->prepare("
                 INSERT INTO user_vip (user_id, vip_package_id, purchased_at, claimable_at, is_claimed)
-                VALUES (?, ?, NOW(), DATE_ADD(NOW(), INTERVAL ? MINUTE), 0)
+                VALUES (?, ?, ?, ?, 0)
             ");
-            $stmt->execute([$user['id'], $packageId, $waitMinutes]);
+            $stmt->execute([$user['id'], $packageId, $now, $claimableAt]);
             
             $stmt = $db->prepare("
                 INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
@@ -283,12 +297,14 @@ class VipController {
             $db->commit();
             
             $claimableTime = new DateTime("+$waitMinutes minutes");
+            date_default_timezone_set('Asia/Kolkata');
+            $claimableTime->setTimezone(new DateTimeZone('Asia/Kolkata'));
             
             response([
                 'id' => $db->lastInsertId(),
                 'package_name' => $package['name'],
                 'reward_amount' => $package['reward_amount'],
-                'claimable_at' => $claimableTime->format('Y-m-d H:i:s')
+                'claimable_at' => $claimableTime->format('c')
             ], 'VIP Jackpot purchased successfully');
         } catch (Exception $e) {
             $db->rollBack();
@@ -297,9 +313,13 @@ class VipController {
     }
 
     public function claimVipIncome() {
+        date_default_timezone_set('Asia/Kolkata');
+        $user = authenticate();
+        
+        $db = getDb();
+        $db->exec("SET time_zone = '+05:30'");
+        
         try {
-            $user = authenticate();
-            
             $data = [];
             $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
             if (stripos($contentType, 'application/json') !== false) {
@@ -345,14 +365,14 @@ class VipController {
             $claimableAt = $vip['claimable_at'] ?? null;
             
             if ($claimableAt) {
-                $claimable = new DateTime($claimableAt);
-                $now = new DateTime();
-                if ($now < $claimable) {
-                    $remaining = $claimable->getTimestamp() - $now->getTimestamp();
+                $claimableTs = strtotime($claimableAt);
+                $nowTs = time();
+                if ($nowTs < $claimableTs) {
+                    $remaining = $claimableTs - $nowTs;
                     $hours = floor($remaining / 3600);
                     $minutes = floor(($remaining % 3600) / 60);
                     $seconds = $remaining % 60;
-                    error("Please wait {$hours}h {$minutes}m {$seconds}s before claiming. Time remaining.", 400);
+                    error("Please wait {$hours}h {$minutes}m {$seconds}s before claiming.", 400);
                 }
             }
             
