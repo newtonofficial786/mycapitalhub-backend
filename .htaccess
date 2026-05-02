@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /backend/
+
+# If the file or folder doesn't exist, send to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
