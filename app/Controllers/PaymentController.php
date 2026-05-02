@@ -187,6 +187,41 @@ class PaymentController {
         $stmt = $db->query("SELECT * FROM withdraw_settings WHERE active = 1 LIMIT 1");
         $settings = $stmt->fetch();
         
+        // Check withdrawal window (close_from / close_to)
+        date_default_timezone_set('Asia/Kolkata');
+        $closeFrom = $settings['close_from'] ?? '00:00';
+        $closeTo = $settings['close_to'] ?? '23:59';
+        $now = date('H:i');
+        
+        $isClosed = false;
+        if ($closeFrom < $closeTo) {
+            // Window is within the same day (e.g., 07:00 to 17:00)
+            if ($now < $closeFrom || $now > $closeTo) $isClosed = true;
+        } else {
+            // Window spans midnight (e.g., 18:00 to 07:00)
+            if ($now < $closeFrom && $now > $closeTo) $isClosed = false;
+            else $isClosed = true;
+        }
+        
+        if ($isClosed) {
+            // Calculate next opening time
+            $nextOpen = new DateTime($closeFrom);
+            $nowDt = new DateTime();
+            if ($nowDt > $nextOpen) {
+                $nextOpen->modify('+1 day');
+            }
+            $diff = $nowDt->diff($nextOpen);
+            $totalSeconds = ($diff->h * 3600) + ($diff->i * 60) + $diff->s;
+            
+            error(sprintf(
+                "Withdrawals are closed. Please wait %dh %dm %ds until %s to withdraw.",
+                $diff->h,
+                $diff->i,
+                $diff->s,
+                $closeFrom
+            ), 400);
+        }
+        
         $minAmount = floatval($settings['min_amount'] ?? 100);
         $maxAmount = floatval($settings['max_amount'] ?? 100000);
         $feePercentage = floatval($settings['fee_percentage'] ?? 2);
@@ -354,6 +389,40 @@ class PaymentController {
             ];
         }
         
+        // Calculate time window state on server
+        $closeFrom = $settings['close_from'] ?? '00:00';
+        $closeTo = $settings['close_to'] ?? '23:59';
+        $now = date('H:i');
+        $serverTimestamp = time();
+        
+        $isClosed = false;
+        $targetTimestamp = null;
+        
+        if ($closeFrom < $closeTo) {
+            // Same-day window (e.g., 07:00 to 17:00)
+            if ($now < $closeFrom) {
+                $isClosed = true;
+                $targetTimestamp = strtotime($closeFrom);
+            } elseif ($now > $closeTo) {
+                $isClosed = true;
+                $targetTimestamp = strtotime($closeFrom . ' +1 day');
+            }
+            // If between open and close, it's open - target is close time
+            if (!$isClosed) {
+                $targetTimestamp = strtotime($closeTo);
+            }
+        } else {
+            // Overnight window (e.g., 18:00 to 07:00)
+            if ($now >= $closeFrom || $now <= $closeTo) {
+                // Currently open - target is close time today
+                $targetTimestamp = strtotime($closeTo);
+                if ($now > $closeTo) $targetTimestamp = strtotime($closeTo . ' +1 day');
+            } else {
+                $isClosed = true;
+                $targetTimestamp = strtotime($closeFrom);
+            }
+        }
+        
         // Return full settings
         response([
             'min_amount' => floatval($settings['min_amount'] ?? 100),
@@ -361,7 +430,12 @@ class PaymentController {
             'fee_percentage' => floatval($settings['fee_percentage'] ?? 2),
             'daily_limit' => floatval($settings['daily_limit'] ?? 50000),
             'withdrawal_time' => $settings['withdrawal_time'] ?? '07:00am-05:00pm',
-            'processing_time' => $settings['processing_time'] ?? '1-24 hours'
+            'processing_time' => $settings['processing_time'] ?? '1-24 hours',
+            'close_from' => $closeFrom,
+            'close_to' => $closeTo,
+            'server_time' => $serverTimestamp,
+            'target_time' => $targetTimestamp,
+            'is_closed' => $isClosed
         ]);
     }
 }

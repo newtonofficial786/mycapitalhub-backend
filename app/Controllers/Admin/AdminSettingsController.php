@@ -76,7 +76,7 @@ class AdminSettingsController {
         $updates = [];
         $params = [];
         
-        foreach (['min_amount', 'max_amount', 'fee_percentage', 'daily_limit', 'withdrawal_time', 'processing_time'] as $field) {
+        foreach (['min_amount', 'max_amount', 'fee_percentage', 'daily_limit', 'withdrawal_time', 'processing_time', 'close_from', 'close_to'] as $field) {
             if (isset($data[$field])) {
                 $updates[] = "$field = ?";
                 $params[] = $data[$field];

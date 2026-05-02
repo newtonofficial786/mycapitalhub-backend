@@ -16,3 +16,7 @@ ALTER TABLE withdrawals ADD COLUMN wallet_type ENUM('main', 'stable', 'vip', 're
 
 -- Migrate existing balance to main_wallet (for existing users)
 UPDATE users SET main_wallet = balance, stable_wallet = total_income WHERE balance > 0 OR total_income > 0;
+
+-- Add withdrawal window columns to withdraw_settings
+ALTER TABLE withdraw_settings ADD COLUMN close_from VARCHAR(5) DEFAULT '07:00';
+ALTER TABLE withdraw_settings ADD COLUMN close_to VARCHAR(5) DEFAULT '17:00';
