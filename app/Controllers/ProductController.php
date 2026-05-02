@@ -253,12 +253,19 @@ class VipController {
             error('Package not found');
         }
         
-        $stmt = $db->prepare("SELECT main_wallet FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT main_wallet, level FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $currentUser = $stmt->fetch();
         $currentBalance = floatval($currentUser['main_wallet'] ?? 0);
         
         $price = floatval($package['min_recharge'] ?? 0);
+        
+        $userLevel = intval($currentUser['level'] ?? 0);
+        $requiredLevel = intval($package['level'] ?? 0);
+        
+        if ($userLevel < $requiredLevel) {
+            error('This VIP package requires Level ' . $requiredLevel . '. Your current level: ' . $userLevel);
+        }
         
         if ($currentBalance < $price) {
             error('Insufficient balance in main wallet. Your balance: ₹' . $currentBalance . ', Price: ₹' . $price);
