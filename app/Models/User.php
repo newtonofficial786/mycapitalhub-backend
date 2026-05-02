@@ -14,7 +14,7 @@ class User {
     }
 
     public function findById($id) {
-        $stmt = $this->db->prepare("SELECT id, mobile, referral_code, referrer_id, level, balance, total_recharge, total_withdraw, total_income, team_income, created_at FROM users WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT id, mobile, referral_code, referrer_id, level, balance, main_wallet, stable_wallet, vip_wallet, referral_wallet, total_recharge, total_withdraw, total_income, team_income, created_at FROM users WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
@@ -51,26 +51,31 @@ class User {
     }
 
     public function updateBalance($userId, $amount, $type, $description, $status = 'completed') {
+        return $this->updateWalletBalance($userId, $amount, $type, 'main', $description, $status);
+    }
+    
+    public function updateWalletBalance($userId, $amount, $type, $walletType, $description, $status = 'completed') {
         $this->db->beginTransaction();
         
         try {
-            $stmt = $this->db->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
+            $walletColumn = $this->getWalletColumn($walletType);
+            $stmt = $this->db->prepare("SELECT {$walletColumn} as wallet_balance FROM users WHERE id = ? FOR UPDATE");
             $stmt->execute([$userId]);
             $user = $stmt->fetch();
             
-            $newBalance = $user['balance'] + $amount;
+            $newBalance = $user['wallet_balance'] + $amount;
             if ($newBalance < 0) {
-                throw new Exception("Insufficient balance");
+                throw new Exception("Insufficient balance in {$walletType} wallet");
             }
             
-            $stmt = $this->db->prepare("UPDATE users SET balance = ? WHERE id = ?");
+            $stmt = $this->db->prepare("UPDATE users SET {$walletColumn} = ? WHERE id = ?");
             $stmt->execute([$newBalance, $userId]);
             
             $stmt = $this->db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ");
-            $stmt->execute([$userId, $type, $amount, $user['balance'], $newBalance, $status, $description]);
+            $stmt->execute([$userId, $type, $amount, $user['wallet_balance'], $newBalance, $status, $description, $walletType]);
             
             $this->db->commit();
             return $this->db->lastInsertId();
@@ -80,39 +85,57 @@ class User {
         }
     }
     
+    private function getWalletColumn($walletType) {
+        $columns = [
+            'main' => 'main_wallet',
+            'stable' => 'stable_wallet',
+            'vip' => 'vip_wallet',
+            'referral' => 'referral_wallet',
+        ];
+        return $columns[$walletType] ?? 'main_wallet';
+    }
+    
+    public function getWalletBalances($userId) {
+        $stmt = $this->db->prepare("SELECT main_wallet, stable_wallet, vip_wallet, referral_wallet, balance FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        return $stmt->fetch();
+    }
+    
     public function updateBalanceWithBankDetails($userId, $amount, $type, $description, $bankDetails, $status = 'pending') {
+        return $this->updateWalletBalanceWithBankDetails($userId, $amount, $type, 'main', $description, $bankDetails, $status);
+    }
+    
+    public function updateWalletBalanceWithBankDetails($userId, $amount, $type, $walletType, $description, $bankDetails, $status = 'pending') {
         $this->db->beginTransaction();
         
         try {
-            $stmt = $this->db->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
+            $walletColumn = $this->getWalletColumn($walletType);
+            $stmt = $this->db->prepare("SELECT {$walletColumn} as wallet_balance FROM users WHERE id = ? FOR UPDATE");
             $stmt->execute([$userId]);
             $user = $stmt->fetch();
             
-            $newBalance = $user['balance'] + $amount;
+            $newBalance = $user['wallet_balance'] + $amount;
             if ($newBalance < 0) {
-                throw new Exception("Insufficient balance");
+                throw new Exception("Insufficient balance in {$walletType} wallet");
             }
             
-            $stmt = $this->db->prepare("UPDATE users SET balance = ? WHERE id = ?");
+            $stmt = $this->db->prepare("UPDATE users SET {$walletColumn} = ? WHERE id = ?");
             $stmt->execute([$newBalance, $userId]);
             
             $stmt = $this->db->prepare("
                 INSERT INTO wallet_transactions 
-                (user_id, type, amount, balance_before, balance_after, status, description, bank_name, bank_account, account_holder, ifsc_code)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ");
             $stmt->execute([
                 $userId, 
                 $type, 
                 $amount, 
-                $user['balance'], 
+                $user['wallet_balance'], 
                 $newBalance, 
                 $status, 
                 $description,
-                $bankDetails['bank_name'] ?? '',
-                $bankDetails['bank_account'] ?? '',
-                $bankDetails['account_holder'] ?? '',
-                $bankDetails['ifsc_code'] ?? ''
+                $walletType
             ]);
             
             $this->db->commit();
@@ -181,11 +204,12 @@ class User {
             return;
         }
         
-        // Add commission to referrer's balance
-        $this->updateBalance(
+        // Add commission to referrer's referral wallet
+        $this->updateWalletBalance(
             $referrerId,
             $commissionAmount,
             'commission',
+            'referral',
             "Referral commission from user #{$rechargedUserId} recharge of ₹{$rechargeAmount}"
         );
     }

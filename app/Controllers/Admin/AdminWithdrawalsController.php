@@ -20,15 +20,23 @@ class AdminWithdrawalsController {
         $limit = min(intval($data['limit'] ?? 20), 100);
         $offset = intval($data['offset'] ?? 0);
         $status = $data['status'] ?? '';
+        $walletType = $data['wallet_type'] ?? '';
         
         $db = getDb();
-        $where = '1=1';
+        $where = [];
         $params = [];
         
         if ($status) {
-            $where = 'w.status = ?';
+            $where[] = 'w.status = ?';
             $params[] = $status;
         }
+        
+        if ($walletType && in_array($walletType, ['main', 'stable', 'vip', 'referral'])) {
+            $where[] = 'w.wallet_type = ?';
+            $params[] = $walletType;
+        }
+        
+        $whereClause = !empty($where) ? implode(' AND ', $where) : '1=1';
         
         $params[] = $limit;
         $params[] = $offset;
@@ -37,7 +45,7 @@ class AdminWithdrawalsController {
             SELECT w.*, u.mobile, u.referral_code
             FROM withdrawals w
             JOIN users u ON w.user_id = u.id
-            WHERE $where
+            WHERE $whereClause
             ORDER BY w.created_at DESC LIMIT ? OFFSET ?
         ");
         $stmt->execute($params);
@@ -50,8 +58,10 @@ class AdminWithdrawalsController {
         authenticateAdmin();
         $data = getJsonInput();
         $id = intval($data['id'] ?? 0);
+        $walletType = $data['wallet_type'] ?? 'main';
         
         if (!$id) error('Withdrawal ID required');
+        if (!in_array($walletType, ['main', 'stable', 'vip', 'referral'])) error('Invalid wallet type');
         
         $db = getDb();
         $stmt = $db->prepare("SELECT * FROM withdrawals WHERE id = ?");
@@ -61,16 +71,18 @@ class AdminWithdrawalsController {
         if (!$withdrawal) error('Withdrawal not found');
         if ($withdrawal['status'] !== 'pending') error('Withdrawal not pending');
         
+        $walletColumn = $this->getWalletColumn($walletType);
+        
         $db->beginTransaction();
         try {
-            $stmt = $db->prepare("UPDATE withdrawals SET status = 'completed', updated_at = NOW() WHERE id = ?");
-            $stmt->execute([$id]);
+            $stmt = $db->prepare("UPDATE withdrawals SET status = 'completed', updated_at = NOW(), wallet_type = ? WHERE id = ?");
+            $stmt->execute([$walletType, $id]);
             
             $stmt = $db->prepare("UPDATE wallet_transactions SET status = 'completed' WHERE type = 'withdraw' AND user_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1");
             $stmt->execute([$withdrawal['user_id']]);
             
-            $stmt = $db->prepare("UPDATE users SET total_withdraw = total_withdraw + ? WHERE id = ?");
-            $stmt->execute([$withdrawal['amount'], $withdrawal['user_id']]);
+            $stmt = $db->prepare("UPDATE users SET total_withdraw = total_withdraw + ?, {$walletColumn} = {$walletColumn} - ? WHERE id = ?");
+            $stmt->execute([$withdrawal['amount'], $withdrawal['amount'], $withdrawal['user_id']]);
             
             $db->commit();
             response(null, 'Withdrawal approved');
@@ -96,6 +108,9 @@ class AdminWithdrawalsController {
         if (!$withdrawal) error('Withdrawal not found');
         if ($withdrawal['status'] !== 'pending') error('Withdrawal not pending');
         
+        $walletType = $withdrawal['wallet_type'] ?? 'main';
+        $walletColumn = $this->getWalletColumn($walletType);
+        
         $db->beginTransaction();
         try {
             $stmt = $db->prepare("UPDATE withdrawals SET status = 'failed', updated_at = NOW() WHERE id = ?");
@@ -104,12 +119,12 @@ class AdminWithdrawalsController {
             $stmt = $db->prepare("UPDATE wallet_transactions SET status = 'failed' WHERE type = 'withdraw' AND user_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1");
             $stmt->execute([$withdrawal['user_id']]);
             
-            $stmt = $db->prepare("UPDATE users SET balance = balance + ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE users SET {$walletColumn} = {$walletColumn} + ? WHERE id = ?");
             $stmt->execute([abs($withdrawal['amount']), $withdrawal['user_id']]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                SELECT ?, 'other', ?, balance, balance + ?, 'completed', ?
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                SELECT ?, 'other', ?, {$walletColumn}, {$walletColumn} + ?, 'completed', ?, ?
                 FROM users WHERE id = ?
             ");
             $amount = abs($withdrawal['amount']);
@@ -118,6 +133,7 @@ class AdminWithdrawalsController {
                 $amount,
                 $amount,
                 "Withdrawal #$id rejected: $reason",
+                $walletType,
                 $withdrawal['user_id']
             ]);
             
@@ -144,6 +160,9 @@ class AdminWithdrawalsController {
         if (!$withdrawal) error('Withdrawal not found');
         if ($withdrawal['status'] !== 'completed') error('Withdrawal must be completed');
 
+        $walletType = $withdrawal['wallet_type'] ?? 'main';
+        $walletColumn = $this->getWalletColumn($walletType);
+
         $db->beginTransaction();
         try {
             $stmt = $db->prepare("UPDATE withdrawals SET status = 'pending', updated_at = NOW() WHERE id = ?");
@@ -152,7 +171,7 @@ class AdminWithdrawalsController {
             $stmt = $db->prepare("UPDATE wallet_transactions SET status = 'pending' WHERE type = 'withdraw' AND user_id = ? AND status = 'completed' ORDER BY created_at DESC LIMIT 1");
             $stmt->execute([$withdrawal['user_id']]);
 
-            $stmt = $db->prepare("UPDATE users SET total_withdraw = total_withdraw - ?, balance = balance + ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE users SET total_withdraw = total_withdraw - ?, {$walletColumn} = {$walletColumn} + ? WHERE id = ?");
             $stmt->execute([$withdrawal['amount'], $withdrawal['amount'], $withdrawal['user_id']]);
 
             $db->commit();
@@ -161,5 +180,15 @@ class AdminWithdrawalsController {
             $db->rollBack();
             error('Failed to revert: ' . $e->getMessage());
         }
+    }
+    
+    private function getWalletColumn($walletType) {
+        $columns = [
+            'main' => 'main_wallet',
+            'stable' => 'stable_wallet',
+            'vip' => 'vip_wallet',
+            'referral' => 'referral_wallet',
+        ];
+        return $columns[$walletType] ?? 'main_wallet';
     }
 }

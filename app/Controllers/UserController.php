@@ -125,7 +125,10 @@ class UserController {
         $db = getDb();
         $stmt = $db->prepare("
             SELECT 
-                balance,
+                main_wallet,
+                stable_wallet,
+                vip_wallet,
+                referral_wallet,
                 total_withdraw,
                 total_income,
                 team_income,
@@ -158,7 +161,11 @@ class UserController {
         $userIncome = $totalBonus + $totalCommission;
         
         response([
-            'balance' => $wallet['balance'],
+            'main_wallet' => floatval($wallet['main_wallet'] ?? 0),
+            'stable_wallet' => floatval($wallet['stable_wallet'] ?? 0),
+            'vip_wallet' => floatval($wallet['vip_wallet'] ?? 0),
+            'referral_wallet' => floatval($wallet['referral_wallet'] ?? 0),
+            'balance' => $wallet['main_wallet'],
             'total_recharge' => floatval($rechargeStats['total_completed_recharge'] ?? 0),
             'total_withdraw' => $wallet['total_withdraw'],
             'total_income' => $userIncome,

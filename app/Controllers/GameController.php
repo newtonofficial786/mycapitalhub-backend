@@ -37,9 +37,9 @@ class GameController {
         }
         
         try {
-            $this->userModel->updateBalance($user['id'], -$betAmount, 'bet', "Bet on {$gameType}");
+            $this->userModel->updateWalletBalance($user['id'], -$betAmount, 'bet', 'stable', "Bet on {$gameType}");
         } catch (Exception $e) {
-            error('Insufficient balance');
+            error('Insufficient balance in stable wallet');
         }
         
         $db = getDb();
@@ -56,7 +56,7 @@ class GameController {
         if ($isWin) {
             $winAmount = $betAmount * $odds;
             try {
-                $this->userModel->updateBalance($user['id'], $winAmount, 'win', "Win on {$gameType}");
+                $this->userModel->updateWalletBalance($user['id'], $winAmount, 'win', 'stable', "Win on {$gameType}");
             } catch (Exception $e) {
                 $winAmount = 0;
             }

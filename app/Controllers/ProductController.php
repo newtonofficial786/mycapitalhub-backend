@@ -54,22 +54,22 @@ class ProductController {
             error('Product not found');
         }
         
-        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT main_wallet FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $userData = $stmt->fetch();
         
-        if ($userData['balance'] < $product['price']) {
-            error('Insufficient balance');
+        if ($userData['main_wallet'] < $product['price']) {
+            error('Insufficient balance in main wallet');
         }
         
         $db->beginTransaction();
         
         try {
-            $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+            $stmt = $db->prepare("SELECT main_wallet FROM users WHERE id = ?");
             $stmt->execute([$user['id']]);
-            $userBefore = $stmt->fetch()['balance'] ?? 0;
+            $userBefore = floatval($stmt->fetch()['main_wallet'] ?? 0);
             
-            $stmt = $db->prepare("UPDATE users SET balance = balance - ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE users SET main_wallet = main_wallet - ? WHERE id = ?");
             $stmt->execute([$product['price'], $user['id']]);
             
             $expiryDate = date('Y-m-d', strtotime('+' . $product['duration_days'] . ' days'));
@@ -83,8 +83,8 @@ class ProductController {
             $productName = $product['name'] ?? 'Product';
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                VALUES (?, 'bet', ?, ?, ?, 'completed', ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, 'bet', ?, ?, ?, 'completed', ?, 'stable')
             ");
             $stmt->execute([$user['id'], -$product['price'], $userBefore, $userBefore - $product['price'], 'Investment: ' . $productName]);
             
@@ -163,20 +163,20 @@ class ProductController {
                 }
             }
             
-            $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+            $stmt = $db->prepare("SELECT stable_wallet FROM users WHERE id = ?");
             $stmt->execute([$user['id']]);
-            $balanceBefore = floatval($stmt->fetch()['balance'] ?? 0);
+            $balanceBefore = floatval($stmt->fetch()['stable_wallet'] ?? 0);
             $balanceAfter = $balanceBefore + $income;
             
-            $stmt = $db->prepare("UPDATE users SET balance = ?, total_income = total_income + ? WHERE id = ?");
-            $stmt->execute([$balanceAfter, $income, $user['id']]);
+            $stmt = $db->prepare("UPDATE users SET stable_wallet = ? WHERE id = ?");
+            $stmt->execute([$balanceAfter, $user['id']]);
             
             $stmt = $db->prepare("UPDATE user_products SET last_claimed = NOW() WHERE id = ?");
             $stmt->execute([$productId]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                VALUES (?, 'bonus', ?, ?, ?, 'completed', ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, 'bonus', ?, ?, ?, 'completed', ?, 'stable')
             ");
             $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, "Daily income: {$product['name']}"]);
             
@@ -259,11 +259,11 @@ class VipController {
             error('Package not found');
         }
         
-        $stmt = $db->prepare("SELECT balance, level FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT main_wallet, level FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $currentUser = $stmt->fetch();
         $currentLevel = intval($currentUser['level'] ?? 0);
-        $currentBalance = floatval($currentUser['balance'] ?? 0);
+        $currentBalance = floatval($currentUser['main_wallet'] ?? 0);
         
         $price = floatval($package['min_recharge'] ?? 0);
         
@@ -272,13 +272,13 @@ class VipController {
         }
         
         if ($currentBalance < $price) {
-            error('Insufficient balance. Your balance: ' . $currentBalance . ', Price: ' . $price);
+            error('Insufficient balance in main wallet. Your balance: ' . $currentBalance . ', Price: ' . $price);
         }
         
         $db->beginTransaction();
         
         try {
-            $stmt = $db->prepare("UPDATE users SET balance = balance - ?, level = ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE users SET main_wallet = main_wallet - ?, level = ? WHERE id = ?");
             $stmt->execute([$price, $package['level'], $user['id']]);
             
             $stmt = $db->prepare("DELETE FROM user_vip WHERE user_id = ?");
@@ -291,10 +291,10 @@ class VipController {
             $stmt->execute([$user['id'], $packageId]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                VALUES (?, 'bet', ?, ?, ?, 'completed', ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, 'bet', ?, ?, ?, 'completed', ?, 'vip')
             ");
-            $stmt->execute([$user['id'], -$price, $currentUser['balance'], $currentUser['balance'] - $price, 'VIP Upgrade: ' . $package['name']]);
+            $stmt->execute([$user['id'], -$price, $currentUser['main_wallet'], $currentUser['main_wallet'] - $price, 'VIP Upgrade: ' . $package['name']]);
             
             $db->commit();
             
@@ -368,20 +368,20 @@ class VipController {
                 }
             }
             
-            $stmt = $db->prepare("SELECT balance FROM users WHERE id = ?");
+            $stmt = $db->prepare("SELECT vip_wallet FROM users WHERE id = ?");
             $stmt->execute([$user['id']]);
-            $balanceBefore = floatval($stmt->fetch()['balance'] ?? 0);
+            $balanceBefore = floatval($stmt->fetch()['vip_wallet'] ?? 0);
             $balanceAfter = $balanceBefore + $income;
             
             $stmt = $db->prepare("UPDATE user_vip SET total_earned = total_earned + ?, last_claimed = NOW() WHERE id = ?");
             $stmt->execute([$income, $packageId]);
             
-            $stmt = $db->prepare("UPDATE users SET balance = ?, total_income = total_income + ? WHERE id = ?");
-            $stmt->execute([$balanceAfter, $income, $user['id']]);
+            $stmt = $db->prepare("UPDATE users SET vip_wallet = ? WHERE id = ?");
+            $stmt->execute([$balanceAfter, $user['id']]);
             
             $stmt = $db->prepare("
-                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description)
-                VALUES (?, 'bonus', ?, ?, ?, 'completed', ?)
+                INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
+                VALUES (?, 'bonus', ?, ?, ?, 'completed', ?, 'vip')
             ");
             $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, 'VIP Daily Income: ' . $vip['name']]);
             

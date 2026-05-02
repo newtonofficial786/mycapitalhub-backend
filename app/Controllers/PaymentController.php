@@ -93,7 +93,7 @@ class PaymentController {
         $stmt->execute([$id]);
         
         try {
-            $this->userModel->updateBalance($user['id'], $recharge['amount'], 'recharge', 'Recharge completed');
+            $this->userModel->updateWalletBalance($user['id'], $recharge['amount'], 'recharge', 'main', 'Recharge completed');
         } catch (Exception $e) {
             error('Failed to update balance');
         }
@@ -120,6 +120,11 @@ class PaymentController {
         
         $amount = floatval($data['amount'] ?? 0);
         $withdrawalPin = $data['withdrawal_pin'] ?? '';
+        $walletType = $data['wallet_type'] ?? 'main';
+        
+        if (!in_array($walletType, ['main', 'stable', 'vip', 'referral'])) {
+            error('Invalid wallet type');
+        }
         
         if ($amount <= 0) {
             error('Invalid amount');
@@ -218,13 +223,14 @@ class PaymentController {
             error('Maximum withdrawal amount is ₹' . $maxAmount);
         }
         
-        // Check user balance (with lock)
-        $stmt = $db->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
+        // Check user wallet balance (with lock)
+        $walletColumn = $this->getWalletColumn($walletType);
+        $stmt = $db->prepare("SELECT {$walletColumn} as wallet_balance FROM users WHERE id = ? FOR UPDATE");
         $stmt->execute([$user['id']]);
-        $userBalance = floatval($stmt->fetch()['balance'] ?? 0);
+        $userBalance = floatval($stmt->fetch()['wallet_balance'] ?? 0);
         
         if ($userBalance < $amount) {
-            error('Insufficient balance. Your balance: ₹' . $userBalance);
+            error('Insufficient balance in ' . ucfirst($walletType) . ' wallet. Your balance: ₹' . $userBalance);
         }
         
         // Calculate fee
@@ -239,26 +245,37 @@ class PaymentController {
                 'account_holder' => $accountHolder,
                 'ifsc_code' => $ifscCode
             ];
-            $txnId = $this->userModel->updateBalanceWithBankDetails($user['id'], -$amount, 'withdraw', 'Withdrawal request - Fee: ₹' . $fee, $bankData, 'pending');
+            $txnId = $this->userModel->updateWalletBalanceWithBankDetails($user['id'], -$amount, 'withdraw', $walletType, 'Withdrawal request - Fee: ₹' . $fee, $bankData, 'pending');
         } catch (Exception $e) {
             error('Insufficient balance or transaction failed: ' . $e->getMessage());
         }
         
         $stmt = $db->prepare("
-            INSERT INTO withdrawals (user_id, amount, bank_name, bank_account, account_holder, ifsc_code, status)
-            VALUES (?, ?, ?, ?, ?, ?, 'pending')
+            INSERT INTO withdrawals (user_id, amount, bank_name, bank_account, account_holder, ifsc_code, wallet_type, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
         ");
-        $stmt->execute([$user['id'], $amount, $bankName, $bankAccount, $accountHolder, $ifscCode]);
+        $stmt->execute([$user['id'], $amount, $bankName, $bankAccount, $accountHolder, $ifscCode, $walletType]);
         
         response([
             'id' => $txnId,
             'amount' => $amount,
             'status' => 'pending',
+            'wallet_type' => $walletType,
             'bank_name' => $bankName,
             'bank_account' => $bankAccount,
             'account_holder' => $accountHolder,
             'ifsc_code' => $ifscCode
         ], 'Withdrawal request created');
+    }
+    
+    private function getWalletColumn($walletType) {
+        $columns = [
+            'main' => 'main_wallet',
+            'stable' => 'stable_wallet',
+            'vip' => 'vip_wallet',
+            'referral' => 'referral_wallet',
+        ];
+        return $columns[$walletType] ?? 'main_wallet';
     }
 
     public function getWithdrawalHistory() {
@@ -291,7 +308,7 @@ class PaymentController {
         
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT balance, total_withdraw 
+            SELECT main_wallet, stable_wallet, vip_wallet, referral_wallet, total_withdraw 
             FROM users 
             WHERE id = ?
         ");
@@ -308,7 +325,11 @@ class PaymentController {
         $pending = $stmt->fetch();
         
         response([
-            'available_balance' => floatval($info['balance']),
+            'main_wallet' => floatval($info['main_wallet'] ?? 0),
+            'stable_wallet' => floatval($info['stable_wallet'] ?? 0),
+            'vip_wallet' => floatval($info['vip_wallet'] ?? 0),
+            'referral_wallet' => floatval($info['referral_wallet'] ?? 0),
+            'available_balance' => floatval($info['main_wallet'] ?? 0),
             'total_withdrawn' => floatval($info['total_withdraw']),
             'pending_withdrawals' => floatval($pending['pending_amount'] ?? 0)
         ]);
