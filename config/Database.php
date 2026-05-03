@@ -8,7 +8,7 @@ class Database {
     private $config;
 
     private function __construct() {
-        $env = env('APP_ENV') ?: 'local';
+        $env = env('APP_ENV') ?: 'production';
         
         $configFile = __DIR__ . '/' . $env . '.php';
         

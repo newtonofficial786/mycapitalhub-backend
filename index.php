@@ -18,6 +18,18 @@ ini_set('error_log', __DIR__ . '/php-error.log');
 
 $uri = isset($_SERVER['REQUEST_URI']) ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : '';
 $uri = trim($uri, '/');
+
+// Strip subdirectory prefix (e.g., 'tatainvest' or 'backend') but keep 'api'
+$scriptDir = trim(dirname($_SERVER['SCRIPT_NAME']), '/');
+if ($scriptDir) {
+    $parts = explode('/', $scriptDir);
+    foreach ($parts as $part) {
+        if ($part && $part !== 'api' && strpos($uri, $part . '/') === 0) {
+            $uri = substr($uri, strlen($part . '/'));
+        }
+    }
+}
+
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Handle CORS preflight
@@ -42,6 +54,20 @@ function load($path) {
 }
 
 try {
+    // Test endpoint - no dependencies
+    if ($uri === 'api/test' && $method === 'GET') {
+        http_response_code(200);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => 'API is working',
+            'timestamp' => date('Y-m-d H:i:s'),
+            'php_version' => PHP_VERSION,
+            'server' => $_SERVER['SERVER_SOFTWARE'] ?? 'unknown'
+        ]);
+        return;
+    }
+
     // Public endpoints
     if ($uri === 'api/banners' && $method === 'GET') {
         load('/bootstrap.php');

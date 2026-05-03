@@ -1,11 +1,11 @@
 <?php
 return [
     'db' => [
-        'host' => getenv('DB_HOST') ?: 'localhost',
-        'port' => getenv('DB_PORT') ?: '3306',
-        'database' => getenv('DB_DATABASE') ?: 'gaming_platform',
-        'username' => getenv('DB_USERNAME') ?: 'root',
-        'password' => getenv('DB_PASSWORD') ?: '',
+        'host' => 'sdb-77.hosting.stackcp.net',
+        'port' => '3306',
+        'database' => 'tatainvest-35303735512d',
+        'username' => 'admin-5bc5',
+        'password' => 'Newton@786',
         'charset' => 'utf8mb4'
     ],
     'app' => [
