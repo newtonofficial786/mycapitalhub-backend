@@ -1,7 +1,15 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+require_once __DIR__ . '/bootstrap.php';
+
+$env = env('APP_ENV') ?? 'production';
+if ($env !== 'production') {
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+} else {
+    error_reporting(0);
+    ini_set('display_errors', '0');
+}
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = trim($uri, '/');

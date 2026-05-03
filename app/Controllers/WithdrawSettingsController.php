@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../Helpers.php';
+require_once __DIR__ . '/../Middleware/AuthMiddleware.php';
 
 class WithdrawSettingsController {
     public function getSettings() {

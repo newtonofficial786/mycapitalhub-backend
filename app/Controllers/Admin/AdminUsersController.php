@@ -95,7 +95,7 @@ class AdminUsersController {
         $updates = [];
         $params = [];
         
-        $allowed = ['level', 'status', 'balance', 'is_admin'];
+        $allowed = ['level', 'status'];
         foreach ($allowed as $field) {
             if (isset($data[$field])) {
                 $updates[] = "$field = ?";
@@ -194,7 +194,7 @@ class AdminUsersController {
         
         $db = getDb();
         $stmt = $db->prepare("UPDATE users SET withdrawal_pin = ? WHERE id = ?");
-        $stmt->execute([$newPin, $userId]);
+        $stmt->execute([hashPassword($newPin), $userId]);
         
         response(null, 'Withdrawal PIN reset');
     }

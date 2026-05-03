@@ -118,7 +118,8 @@ class PaymentController {
             $rechargeData = $stmt->fetch();
             $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
             
-            $stmt = $db->query("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= $totalRecharge ORDER BY level DESC LIMIT 1");
+            $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
+            $stmt->execute([$totalRecharge]);
             $newLevel = $stmt->fetch();
             
             if ($newLevel) {
@@ -265,7 +266,7 @@ class PaymentController {
         $stmt->execute([$user['id']]);
         $userData = $stmt->fetch();
         
-        if ($userData['withdrawal_pin'] !== $withdrawalPin) {
+        if (!verifyPassword($withdrawalPin, $userData['withdrawal_pin'])) {
             error('Invalid withdrawal pin');
         }
         

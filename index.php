@@ -1,6 +1,19 @@
 <?php
-// CORS headers - MUST be set before any output
-header('Access-Control-Allow-Origin: *');
+// Load environment helpers first
+require_once __DIR__ . '/bootstrap.php';
+
+// Security headers - MUST be set before any output
+header('X-Frame-Options: DENY');
+header('X-Content-Type-Options: nosniff');
+header('X-XSS-Protection: 1; mode=block');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+
+// CORS - restrict to specific origins
+$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://najira.in'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Access-Control-Max-Age: 86400');
@@ -11,8 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+$env = env('APP_ENV') ?? 'production';
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+ini_set('display_errors', '1');
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/php-error.log');
 
@@ -47,7 +61,7 @@ if ($uri === '' || $uri === '/') {
 
 function load($path) {
     if (file_exists(__DIR__ . $path)) {
-        include __DIR__ . $path;
+        include_once __DIR__ . $path;
         return true;
     }
     return false;
@@ -982,7 +996,8 @@ try {
     header('Content-Type: application/json');
     echo json_encode(['error' => 'Endpoint not found']);
 } catch (Throwable $e) {
+    error_log('[API Error] ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
     http_response_code(500);
     header('Content-Type: application/json');
-    echo json_encode(['error' => $e->getMessage()]);
+    echo json_encode(['error' => 'Internal server error']);
 }

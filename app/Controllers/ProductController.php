@@ -123,7 +123,7 @@ class ProductController {
             $productId = $data['id'] ?? $data['product_id'] ?? null;
             
             if (!$productId) {
-                error('Product ID required. Received: ' . json_encode($data), 400);
+                error('Product ID is required', 400);
             }
             
             $db = getDb();

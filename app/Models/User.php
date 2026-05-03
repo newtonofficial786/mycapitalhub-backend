@@ -50,6 +50,30 @@ class User {
         return $this->db->lastInsertId();
     }
 
+    public function update($userId, $data) {
+        $fields = [];
+        $values = [];
+        foreach ($data as $key => $value) {
+            $fields[] = "{$key} = ?";
+            $values[] = $value;
+        }
+        if (empty($fields)) return true;
+        $values[] = $userId;
+        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($values);
+        return true;
+    }
+
+    public function createToken($userId, $token, $expiresAt) {
+        $stmt = $this->db->prepare("
+            INSERT INTO api_tokens (user_id, token, expires_at)
+            VALUES (?, ?, ?)
+        ");
+        $stmt->execute([$userId, $token, $expiresAt]);
+        return $this->db->lastInsertId();
+    }
+
     public function updateBalance($userId, $amount, $type, $description, $status = 'completed') {
         return $this->updateWalletBalance($userId, $amount, $type, 'main', $description, $status);
     }
@@ -142,7 +166,7 @@ class User {
             return $this->db->lastInsertId();
         } catch (Exception $e) {
             $this->db->rollBack();
-            error('Database error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            error('Transaction failed. Please try again.');
         }
     }
 

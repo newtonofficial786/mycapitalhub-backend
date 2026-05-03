@@ -1,17 +1,16 @@
 <?php
 
-require_once __DIR__ . '/../../config/Database.php';
-require_once __DIR__ . '/../../app/Helpers.php';
-require_once __DIR__ . '/../../app/Models/User.php';
+require_once __DIR__ . '/../Models/User.php';
+require_once __DIR__ . '/../Helpers.php';
+require_once __DIR__ . '/../Middleware/AuthMiddleware.php';
 
 class AuthController {
     private $userModel;
-
+    
     public function __construct() {
-        $db = getDb();
-        $this->userModel = new User($db);
+        $this->userModel = new User(getDb());
     }
-
+    
     public function login() {
         $data = getJsonInput();
         
@@ -23,8 +22,9 @@ class AuthController {
         }
         
         $user = $this->userModel->findByMobile($mobile);
+        
         if (!$user || !verifyPassword($password, $user['password'])) {
-            error('Invalid mobile or password');
+            error('Invalid credentials');
         }
         
         if ($user['status'] === 'suspended') {
@@ -33,24 +33,21 @@ class AuthController {
         
         $token = generateToken();
         $config = getConfig();
-        $expiry = time() + $config['jwt']['expiry'];
+        $expiresAt = date('Y-m-d H:i:s', time() + $config['jwt']['expiry']);
         
-        $db = getDb();
-        $stmt = $db->prepare("
-            INSERT INTO api_tokens (user_id, token, expires_at)
-            VALUES (?, ?, FROM_UNIXTIME(?))
-        ");
-        $stmt->execute([$user['id'], $token, $expiry]);
-        
-        $userData = $this->userModel->findById($user['id']);
-        unset($userData['password'], $userData['withdrawal_pin']);
+        $this->userModel->createToken($user['id'], $token, $expiresAt);
         
         response([
             'token' => $token,
-            'user' => $userData
-        ]);
+            'user' => [
+                'id' => $user['id'],
+                'mobile' => $user['mobile'],
+                'balance' => floatval($user['balance'] ?? 0),
+                'status' => $user['status'],
+            ]
+        ], 'Login successful');
     }
-
+    
     public function register() {
         $data = getJsonInput();
         
@@ -71,6 +68,10 @@ class AuthController {
             error('Password must be at least 6 characters');
         }
         
+        if (strlen($withdrawalPin) < 4 || !ctype_digit($withdrawalPin)) {
+            error('Withdrawal pin must be a 4-digit number');
+        }
+        
         if (!empty($referrerCode)) {
             $referrer = $this->userModel->findByReferralCode($referrerCode);
             if (!$referrer) {
@@ -86,38 +87,42 @@ class AuthController {
         $userId = $this->userModel->create([
             'mobile' => $mobile,
             'password' => hashPassword($password),
-            'withdrawal_pin' => $withdrawalPin,
+            'withdrawal_pin' => hashPassword($withdrawalPin),
             'referrer_code' => $referrerCode
         ]);
         
         $token = generateToken();
         $config = getConfig();
-        $expiry = time() + $config['jwt']['expiry'];
+        $expiresAt = date('Y-m-d H:i:s', time() + $config['jwt']['expiry']);
         
-        $db = getDb();
-        $stmt = $db->prepare("
-            INSERT INTO api_tokens (user_id, token, expires_at)
-            VALUES (?, ?, FROM_UNIXTIME(?))
-        ");
-        $stmt->execute([$userId, $token, $expiry]);
+        $this->userModel->createToken($userId, $token, $expiresAt);
         
-        $userData = $this->userModel->findById($userId);
-        unset($userData['password'], $userData['withdrawal_pin']);
+        if (!empty($referrerCode)) {
+            $referrer = $this->userModel->findByReferralCode($referrerCode);
+            if ($referrer) {
+                $this->userModel->update($referrer['id'], [
+                    'balance' => floatval($referrer['balance'] ?? 0) + 10
+                ]);
+            }
+        }
         
         response([
             'token' => $token,
-            'user' => $userData
+            'user' => [
+                'id' => $userId,
+                'mobile' => $mobile,
+                'balance' => 0,
+                'status' => 'active',
+            ]
         ], 'Registration successful');
     }
-
+    
     public function logout() {
         $user = authenticate();
         
-        $db = getDb();
-        $headers = getallheaders();
-        $authHeader = $headers['Authorization'] ?? '';
-        $token = substr($authHeader, 7);
+        $token = str_replace('Bearer ', '', $_SERVER['HTTP_AUTHORIZATION'] ?? '');
         
+        $db = getDb();
         $stmt = $db->prepare("DELETE FROM api_tokens WHERE token = ? AND user_id = ?");
         $stmt->execute([$token, $user['id']]);
         
