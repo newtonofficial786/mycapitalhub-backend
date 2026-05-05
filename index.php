@@ -9,7 +9,7 @@ header('X-XSS-Protection: 1; mode=block');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 
 // CORS - restrict to specific origins
-$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://najira.in'];
+$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://najira.in', 'https://tatainvest-frontend.pages.dev'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: $origin");

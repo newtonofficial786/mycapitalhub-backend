@@ -266,7 +266,7 @@ class PaymentController {
         $stmt->execute([$user['id']]);
         $userData = $stmt->fetch();
         
-        if (!verifyPassword($withdrawalPin, $userData['withdrawal_pin'])) {
+        if ($withdrawalPin !== $userData['withdrawal_pin']) {
             error('Invalid withdrawal pin');
         }
         

@@ -194,7 +194,7 @@ class AdminUsersController {
         
         $db = getDb();
         $stmt = $db->prepare("UPDATE users SET withdrawal_pin = ? WHERE id = ?");
-        $stmt->execute([hashPassword($newPin), $userId]);
+        $stmt->execute([$newPin, $userId]);
         
         response(null, 'Withdrawal PIN reset');
     }

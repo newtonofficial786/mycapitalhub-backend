@@ -87,7 +87,7 @@ class AuthController {
         $userId = $this->userModel->create([
             'mobile' => $mobile,
             'password' => hashPassword($password),
-            'withdrawal_pin' => hashPassword($withdrawalPin),
+            'withdrawal_pin' => $withdrawalPin,
             'referrer_code' => $referrerCode
         ]);
         
