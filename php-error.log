@@ -44,3 +44,16 @@
 [01-May-2026 15:03:24 Europe/Berlin] Product 20 last_claimed: null, now: 2026-05-01 15:03:24
 [02-May-2026 09:02:22 Europe/Berlin] Product 21 last_claimed: null, now: 2026-05-02 09:02:22
 [02-May-2026 09:03:01 Europe/Berlin] Product 22 last_claimed: null, now: 2026-05-02 09:03:01
+[05-May-2026 17:13:16 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:18:07 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:21:16 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:22:35 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:22:44 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:24:01 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:24:06 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:26:45 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:28:41 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:28:44 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:29:41 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:32:38 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44
+[05-May-2026 17:33:07 Europe/Berlin] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:44

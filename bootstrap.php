@@ -6,7 +6,7 @@ if (!function_exists('env')) {
         
         if ($cache === null) {
             $cache = [];
-            $envFile = dirname(__DIR__) . '/.env';
+            $envFile = __DIR__ . '/.env';
             if (file_exists($envFile)) {
                 $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
                 foreach ($lines as $line) {
