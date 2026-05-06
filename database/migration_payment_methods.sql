@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS payment_methods (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO payment_methods (name, subtitle, backend_key, icon_name, min_amount, max_amount, processing_time, instructions, active, sort_order) VALUES
-('WatchPay', 'Powered by YoYoPay (UPI/IMPS)', 'yoyopay', 'credit-card', 100, 100000, 'Instant', 'You will be redirected to the payment gateway to complete your payment.', 1, 1),
+('WatchPay', 'Powered by WatchPays (UPI/IMPS)', 'watchpays', 'credit-card', 100, 100000, 'Instant', 'You will be redirected to the payment gateway to complete your payment.', 1, 1),
 ('EasyPay', 'Bank Transfer (Admin Verified)', 'bank_transfer', 'bank', 100, 100000, '1-24 hours', 'Transfer funds to the provided bank account. Admin will verify and credit your wallet.', 1, 2),
 ('QuickPay', 'Powered by Google Pay', 'gpay', 'gpay', 100, 100000, 'Instant', 'Coming soon.', 0, 3),
 ('FastPay', 'Powered by PhonePe', 'phonepe', 'phonepe', 100, 100000, 'Instant', 'Coming soon.', 0, 4),

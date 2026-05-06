@@ -315,27 +315,36 @@ try {
         $c->getWithdrawalInfo();
         return;
     }
-    if ($uri === 'api/payment/yoyopay/create' && $method === 'POST') {
+    if ($uri === 'api/payment/watchpays/create' && $method === 'POST') {
         load('/bootstrap.php');
         load('/config/Database.php');
         load('/app/Helpers.php');
         load('/app/Middleware/AuthMiddleware.php');
         load('/app/Models/User.php');
-        load('/app/Services/YoYoPayService.php');
+        load('/app/Services/WatchPaysService.php');
         load('/app/Controllers/PaymentController.php');
         $c = new PaymentController();
-        $c->createYoyopayRecharge();
+        $c->createWatchPaysRecharge();
         return;
     }
-    if ($uri === 'api/payment/yoyopay/callback' && $method === 'POST') {
+    if ($uri === 'api/payment/watchpays/callback' && $method === 'POST') {
         load('/bootstrap.php');
         load('/config/Database.php');
         load('/app/Helpers.php');
         load('/app/Models/User.php');
-        load('/app/Services/YoYoPayService.php');
+        load('/app/Services/WatchPaysService.php');
         load('/app/Controllers/PaymentController.php');
         $c = new PaymentController();
-        $c->handleYoyopayCallback();
+        $c->handleWatchPaysCallback();
+        return;
+    }
+    if ($uri === 'api/payment/result' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->getPaymentResult($_GET['type'] ?? 'success');
         return;
     }
     if ($uri === 'api/team' && $method === 'GET') {
@@ -1076,6 +1085,28 @@ try {
         load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
         $c = new AdminPaymentMethodsController();
         $c->toggleActive();
+        return;
+    }
+    if ($uri === 'api/admin/payment-result' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentResultController.php');
+        $c = new AdminPaymentResultController();
+        $c->getAll();
+        return;
+    }
+    if ($uri === 'api/admin/payment-result/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentResultController.php');
+        $c = new AdminPaymentResultController();
+        $c->update();
         return;
     }
     

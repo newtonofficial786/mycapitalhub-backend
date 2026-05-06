@@ -448,7 +448,15 @@ class PaymentController {
         ]);
     }
 
-    public function createYoyopayRecharge() {
+    public function getPaymentResult($type) {
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM payment_result WHERE status_type = ? LIMIT 1");
+        $stmt->execute([$type]);
+        $result = $stmt->fetch();
+        response($result);
+    }
+
+    public function createWatchPaysRecharge() {
         $user = authenticate();
         $data = getJsonInput();
 
@@ -458,90 +466,103 @@ class PaymentController {
             error('Invalid amount');
         }
 
-        require_once __DIR__ . '/../../Services/YoYoPayService.php';
-        $yoyopay = new YoYoPayService();
+        require_once __DIR__ . '/../Services/WatchPaysService.php';
+        $watchpays = new WatchPaysService();
 
-        $orderId = 'RC' . date('YmdHis') . $user['id'] . rand(100, 999);
+        $orderId = 'WP' . date('YmdHis') . $user['id'] . rand(100, 999);
 
-        $clientIp = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $clientIp = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
-        }
+        $appUrl = env('APP_URL', 'http://localhost:8000');
+        $callbackUrl = $appUrl . '/api/payment/watchpays/callback';
 
-        $result = $yoyopay->createPayOrder([
+        $result = $watchpays->createPaymentOrder([
             'amount' => $amount,
             'order_id' => $orderId,
-            'ip' => $clientIp,
-            'remark' => 'Recharge by user ' . $user['id']
+            'callback_url' => $callbackUrl,
+            'extra' => json_encode(['user_id' => $user['id']])
         ]);
 
-        if ($result['code'] !== 200) {
-            error('Payment gateway error: ' . ($result['msg'] ?? 'Unknown error'));
+        if (!$result['success']) {
+            error('Payment gateway error: ' . ($result['error'] ?? 'Unknown error'));
         }
 
         $db = getDb();
         $stmt = $db->prepare("
-            INSERT INTO recharges (user_id, amount, payment_method, transaction_id, status, yoyopay_order_id)
-            VALUES (?, ?, 'yoyopay', ?, 'pending', ?)
+            INSERT INTO recharges (user_id, amount, payment_method, transaction_id, status, yoyopay_order_id, gateway_order_id)
+            VALUES (?, ?, 'watchpays', ?, 'pending', ?, ?)
         ");
-        $stmt->execute([$user['id'], $amount, $orderId, $orderId]);
+        $stmt->execute([$user['id'], $amount, $orderId, $orderId, $result['order_no'] ?? '']);
 
-        $paymentUrl = $result['data'] ?? '';
+        $paymentUrl = $result['payment_url'] ?? '';
+
+        $appFrontend = env('APP_URL', 'http://localhost:8000');
+        $resultUrl = rtrim($appFrontend, '/') . '/payment-result?order=' . $orderId;
 
         response([
             'id' => $db->lastInsertId(),
             'amount' => $amount,
             'payment_url' => $paymentUrl,
             'merchant_order_id' => $orderId,
+            'result_url' => $resultUrl,
             'status' => 'pending'
         ], 'Payment order created. Redirect to payment_url to complete payment.');
     }
 
-    public function handleYoyopayCallback() {
+    public function handleWatchPaysCallback() {
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
 
         if (!$data) {
-            error_log('[YoYoPay Callback] Invalid input: ' . $input);
+            error_log('[WatchPays Callback] Invalid input: ' . $input);
             http_response_code(200);
             header('Content-Type: application/json');
-            echo json_encode(['code' => 200, 'msg' => 'ignored']);
+            echo 'success';
             return;
         }
 
-        $merchantOrderId = $data['merchantOrderId'] ?? '';
-        $platformOrderId = $data['orderId'] ?? '';
-        $orderStatus = intval($data['orderStatus'] ?? 0);
-        $transAmt = floatval($data['transAmt'] ?? 0);
+        $gatewayOrderNo = $data['orderNo'] ?? '';
+        $merchantOrderNo = $data['merchantOrder'] ?? '';
+        $status = $data['status'] ?? '';
+        $amount = floatval($data['amount'] ?? 0);
 
-        error_log('[YoYoPay Callback] Order: ' . $merchantOrderId . ', Status: ' . $orderStatus . ', Amount: ' . $transAmt);
+        error_log('[WatchPays Callback] GatewayOrder: ' . $gatewayOrderNo . ', MerchantOrder: ' . $merchantOrderNo . ', Status: ' . $status . ', Amount: ' . $amount);
 
         $db = getDb();
-        $stmt = $db->prepare("SELECT * FROM recharges WHERE yoyopay_order_id = ? AND status = 'pending'");
-        $stmt->execute([$merchantOrderId]);
+        $stmt = $db->prepare("SELECT * FROM recharges WHERE (yoyopay_order_id = ? OR gateway_order_id = ?) AND status = 'pending'");
+        $stmt->execute([$merchantOrderNo, $gatewayOrderNo]);
         $recharge = $stmt->fetch();
 
         if (!$recharge) {
-            error_log('[YoYoPay Callback] Recharge not found or already processed: ' . $merchantOrderId);
+            error_log('[WatchPays Callback] Recharge not found or already processed: ' . $merchantOrderNo);
             http_response_code(200);
             header('Content-Type: application/json');
-            echo json_encode(['code' => 200, 'msg' => 'ignored']);
+            echo 'success';
             return;
         }
 
-        if ($orderStatus === 3) {
-            $stmt = $db->prepare("UPDATE recharges SET status = 'completed', transaction_id = ?, updated_at = NOW() WHERE id = ?");
-            $stmt->execute([$platformOrderId, $recharge['id']]);
+        if ($amount > 0 && abs($amount - floatval($recharge['amount'])) > 0.01) {
+            error_log('[WatchPays Callback] Amount mismatch: expected ' . $recharge['amount'] . ' got ' . $amount);
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo 'success';
+            return;
+        }
 
-            $this->userModel->updateWalletBalance($recharge['user_id'], $transAmt, 'recharge', 'main', 'YoYoPay recharge completed');
+        $paymentStatus = 'failed';
+        if (strtolower($status) === 'success') {
+            $paymentStatus = 'success';
+            $stmt = $db->prepare("UPDATE recharges SET status = 'completed', transaction_id = ?, updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$gatewayOrderNo, $recharge['id']]);
+
+            $creditAmount = floatval($recharge['amount']);
+            $this->userModel->updateWalletBalance($recharge['user_id'], $creditAmount, 'recharge', 'main', 'WatchPays recharge completed');
 
             $stmt = $db->prepare("UPDATE users SET total_recharge = total_recharge + ? WHERE id = ?");
-            $stmt->execute([$transAmt, $recharge['user_id']]);
+            $stmt->execute([$creditAmount, $recharge['user_id']]);
 
             try {
-                $this->userModel->payReferralCommission($recharge['user_id'], $transAmt);
+                $this->userModel->payReferralCommission($recharge['user_id'], $creditAmount);
             } catch (Exception $e) {
-                error_log('[YoYoPay Callback] Commission failed: ' . $e->getMessage());
+                error_log('[WatchPays Callback] Commission failed: ' . $e->getMessage());
             }
 
             try {
@@ -560,18 +581,21 @@ class PaymentController {
                     $stmt->execute([$level, $recharge['user_id'], $level]);
                 }
             } catch (Exception $e) {
-                error_log('[YoYoPay Callback] Level up failed: ' . $e->getMessage());
+                error_log('[WatchPays Callback] Level up failed: ' . $e->getMessage());
             }
 
-            error_log('[YoYoPay Callback] Recharge completed: ' . $merchantOrderId);
+            error_log('[WatchPays Callback] Recharge completed: ' . $merchantOrderNo);
         } else {
             $stmt = $db->prepare("UPDATE recharges SET status = 'failed', updated_at = NOW() WHERE id = ?");
             $stmt->execute([$recharge['id']]);
-            error_log('[YoYoPay Callback] Recharge failed: ' . $merchantOrderId);
+            error_log('[WatchPays Callback] Recharge failed: ' . $merchantOrderNo);
         }
 
-        http_response_code(200);
-        header('Content-Type: application/json');
-        echo json_encode(['code' => 200, 'msg' => 'success']);
+        $appUrl = env('APP_URL', 'http://localhost:8000');
+        $frontendUrl = rtrim($appUrl, '/') . '/#/payment-result?status=' . $paymentStatus;
+
+        http_response_code(302);
+        header('Location: ' . $frontendUrl);
+        exit;
     }
 }
