@@ -102,3 +102,19 @@
 [06-May-2026 20:03:24 Europe/Berlin] [WatchPays Request] Data: {"merchant_id":"100555221","amount":"800.00","merchant_order_no":"WP2026050620032412722","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"5188fdc3fdc75086d513a921e924f80d"}
 [06-May-2026 20:03:24 Europe/Berlin] [WatchPays Response] HTTP: 200, Error: 
 [06-May-2026 20:03:24 Europe/Berlin] [WatchPays Response] Body: {"success":false,"message":"Invalid merchant credentials"}
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays] Params: {"merchant_id":"100555221","amount":"800.00","merchant_order_no":"WP2026050620061412420","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"a9545d8687d5c0579fc0ae4d91d69073"}
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays] Merchant ID: 100555221
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays] API Key set: yes
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays] Signature: a9545d8687d5c0579fc0ae4d91d69073
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays Request] Data: {"merchant_id":"100555221","amount":"800.00","merchant_order_no":"WP2026050620061412420","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"a9545d8687d5c0579fc0ae4d91d69073"}
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays Response] HTTP: 200, Error: 
+[06-May-2026 20:06:14 Europe/Berlin] [WatchPays Response] Body: {"success":false,"message":"Invalid merchant credentials"}
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays] Params: {"merchant_id":"100555221","amount":"800.00","merchant_order_no":"WP2026050620062212408","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"4a50a5d4d08f74f184a1413a8a735e36"}
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays] Merchant ID: 100555221
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays] API Key set: yes
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays] Signature: 4a50a5d4d08f74f184a1413a8a735e36
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays Request] Data: {"merchant_id":"100555221","amount":"800.00","merchant_order_no":"WP2026050620062212408","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"4a50a5d4d08f74f184a1413a8a735e36"}
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays Response] HTTP: 200, Error: 
+[06-May-2026 20:06:22 Europe/Berlin] [WatchPays Response] Body: {"success":false,"message":"Invalid merchant credentials"}

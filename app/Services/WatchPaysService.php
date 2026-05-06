@@ -90,11 +90,13 @@ class WatchPaysService
             $params['extra'] = $extra;
         }
 
-        $params['signature'] = $this->generateSignature($params);
+        $signature = $this->generateSignature($params);
+        $params['signature'] = $signature;
 
         error_log('[WatchPays] Params: ' . json_encode($params));
         error_log('[WatchPays] Merchant ID: ' . $this->merchantId);
         error_log('[WatchPays] API Key set: ' . (!empty($this->apiKey) ? 'yes' : 'no'));
+        error_log('[WatchPays] Signature: ' . $signature);
 
         return $this->makeRequest('/create', $params);
     }
