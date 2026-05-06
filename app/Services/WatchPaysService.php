@@ -38,9 +38,6 @@ class WatchPaysService
     {
         $url = $this->gateway . $endpoint;
 
-        error_log('[WatchPays Request] URL: ' . $url);
-        error_log('[WatchPays Request] Data: ' . json_encode($data));
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -54,11 +51,7 @@ class WatchPaysService
 
         $response = curl_exec($ch);
         $error = curl_error($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
-        error_log('[WatchPays Response] HTTP: ' . $httpCode . ', Error: ' . $error);
-        error_log('[WatchPays Response] Body: ' . $response);
 
         if ($error) {
             return ['success' => false, 'error' => 'Request failed: ' . $error];
@@ -66,7 +59,7 @@ class WatchPaysService
 
         $result = json_decode($response, true);
         if (!$result) {
-            return ['success' => false, 'error' => 'Invalid response: ' . substr($response, 0, 200)];
+            return ['success' => false, 'error' => 'Invalid response'];
         }
 
         return $result;
@@ -81,6 +74,7 @@ class WatchPaysService
 
         $params = [
             'merchant_id' => $this->merchantId,
+            'api_key' => $this->apiKey,
             'amount' => $amount,
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,
@@ -90,13 +84,15 @@ class WatchPaysService
             $params['extra'] = $extra;
         }
 
-        $signature = $this->generateSignature($params);
-        $params['signature'] = $signature;
+        $signatureParams = [
+            'merchant_id' => $this->merchantId,
+            'amount' => $amount,
+            'merchant_order_no' => $merchantOrderNo,
+            'callback_url' => $callbackUrl,
+        ];
 
-        error_log('[WatchPays] Params: ' . json_encode($params));
-        error_log('[WatchPays] Merchant ID: ' . $this->merchantId);
-        error_log('[WatchPays] API Key set: ' . (!empty($this->apiKey) ? 'yes' : 'no'));
-        error_log('[WatchPays] Signature: ' . $signature);
+        $signature = $this->generateSignature($signatureParams);
+        $params['signature'] = $signature;
 
         return $this->makeRequest('/create', $params);
     }

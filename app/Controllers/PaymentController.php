@@ -512,7 +512,6 @@ class PaymentController {
         $data = json_decode($input, true);
 
         if (!$data) {
-            error_log('[WatchPays Callback] Invalid input: ' . $input);
             http_response_code(200);
             header('Content-Type: application/json');
             echo 'success';
@@ -524,15 +523,12 @@ class PaymentController {
         $status = $data['status'] ?? '';
         $amount = floatval($data['amount'] ?? 0);
 
-        error_log('[WatchPays Callback] GatewayOrder: ' . $gatewayOrderNo . ', MerchantOrder: ' . $merchantOrderNo . ', Status: ' . $status . ', Amount: ' . $amount);
-
         $db = getDb();
         $stmt = $db->prepare("SELECT * FROM recharges WHERE (yoyopay_order_id = ? OR gateway_order_id = ?) AND status = 'pending'");
         $stmt->execute([$merchantOrderNo, $gatewayOrderNo]);
         $recharge = $stmt->fetch();
 
         if (!$recharge) {
-            error_log('[WatchPays Callback] Recharge not found or already processed: ' . $merchantOrderNo);
             http_response_code(200);
             header('Content-Type: application/json');
             echo 'success';
@@ -540,7 +536,6 @@ class PaymentController {
         }
 
         if ($amount > 0 && abs($amount - floatval($recharge['amount'])) > 0.01) {
-            error_log('[WatchPays Callback] Amount mismatch: expected ' . $recharge['amount'] . ' got ' . $amount);
             http_response_code(200);
             header('Content-Type: application/json');
             echo 'success';
@@ -562,7 +557,7 @@ class PaymentController {
             try {
                 $this->userModel->payReferralCommission($recharge['user_id'], $creditAmount);
             } catch (Exception $e) {
-                error_log('[WatchPays Callback] Commission failed: ' . $e->getMessage());
+                // Commission payment failed
             }
 
             try {
@@ -581,14 +576,11 @@ class PaymentController {
                     $stmt->execute([$level, $recharge['user_id'], $level]);
                 }
             } catch (Exception $e) {
-                error_log('[WatchPays Callback] Level up failed: ' . $e->getMessage());
+                // Level up failed
             }
-
-            error_log('[WatchPays Callback] Recharge completed: ' . $merchantOrderNo);
         } else {
             $stmt = $db->prepare("UPDATE recharges SET status = 'failed', updated_at = NOW() WHERE id = ?");
             $stmt->execute([$recharge['id']]);
-            error_log('[WatchPays Callback] Recharge failed: ' . $merchantOrderNo);
         }
 
         $appUrl = env('APP_URL', 'http://localhost:8000');
