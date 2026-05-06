@@ -273,6 +273,15 @@ try {
         $c->getRechargeHistory();
         return;
     }
+    if ($uri === 'api/payment/methods' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->getRechargeMethods();
+        return;
+    }
     if ($uri === 'api/payment/withdraw' && $method === 'POST') {
         load('/bootstrap.php');
         load('/config/Database.php');
@@ -304,6 +313,29 @@ try {
         load('/app/Controllers/PaymentController.php');
         $c = new PaymentController();
         $c->getWithdrawalInfo();
+        return;
+    }
+    if ($uri === 'api/payment/yoyopay/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/YoYoPayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createYoyopayRecharge();
+        return;
+    }
+    if ($uri === 'api/payment/yoyopay/callback' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Models/User.php');
+        load('/app/Services/YoYoPayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->handleYoyopayCallback();
         return;
     }
     if ($uri === 'api/team' && $method === 'GET') {
@@ -989,6 +1021,61 @@ try {
         load('/app/Controllers/Admin/AdminGamesController.php');
         $c = new AdminGamesController();
         $c->getStats();
+        return;
+    }
+    if ($uri === 'api/admin/payment-methods' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
+        $c = new AdminPaymentMethodsController();
+        $c->getAll();
+        return;
+    }
+    if ($uri === 'api/admin/payment-methods/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
+        $c = new AdminPaymentMethodsController();
+        $c->create();
+        return;
+    }
+    if ($uri === 'api/admin/payment-methods/update' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
+        $c = new AdminPaymentMethodsController();
+        $c->update();
+        return;
+    }
+    if ($uri === 'api/admin/payment-methods/delete' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
+        $c = new AdminPaymentMethodsController();
+        $c->delete();
+        return;
+    }
+    if ($uri === 'api/admin/payment-methods/toggle' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
+        $c = new AdminPaymentMethodsController();
+        $c->toggleActive();
         return;
     }
     

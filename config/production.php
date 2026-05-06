@@ -17,6 +17,14 @@ return [
     'jwt' => [
         'expiry' => env('JWT_EXPIRY', 86400)
     ],
+    'yoyopay' => [
+        'merchant_id' => env('YOYOPAY_MERCHANT_ID', ''),
+        'secret_key' => env('YOYOPAY_SECRET_KEY', ''),
+        'country_code' => env('YOYOPAY_COUNTRY_CODE', 'IN'),
+        'pay_type' => env('YOYOPAY_PAY_TYPE', 'IMPS'),
+        'gateway' => env('YOYOPAY_GATEWAY', 'https://merchant.yoyopays.com'),
+        'callback_url' => env('YOYOPAY_CALLBACK_URL', '')
+    ],
     'debug' => false,
     'display_errors' => false
 ];

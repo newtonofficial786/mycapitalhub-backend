@@ -16,22 +16,22 @@ class PaymentController {
     public function createRecharge() {
         $user = authenticate();
         $data = getJsonInput();
-        
+
         $amount = floatval($data['amount'] ?? 0);
         $paymentMethod = $data['payment_method'] ?? 'bank_transfer';
         $transactionId = $data['transaction_id'] ?? '';
-        
+
         if ($amount <= 0) {
             error('Invalid amount');
         }
-        
+
         $db = getDb();
         $stmt = $db->prepare("
             INSERT INTO recharges (user_id, amount, payment_method, transaction_id, status)
             VALUES (?, ?, ?, ?, 'pending')
         ");
         $stmt->execute([$user['id'], $amount, $paymentMethod, $transactionId]);
-        
+
         response([
             'id' => $db->lastInsertId(),
             'amount' => $amount,
@@ -40,69 +40,65 @@ class PaymentController {
     }
 
     public function getRechargeMethods() {
-        $methods = [
-            ['id' => 'bank_transfer', 'name' => 'Bank Transfer', 'min_amount' => 100, 'max_amount' => 100000],
-            ['id' => 'usdt', 'name' => 'USDT', 'min_amount' => 100, 'max_amount' => 50000],
-            ['id' => 'crypto', 'name' => 'Crypto', 'min_amount' => 100, 'max_amount' => 100000]
-        ];
-        
-        response($methods);
+        $db = getDb();
+        $items = $db->query("SELECT * FROM payment_methods WHERE active = 1 ORDER BY sort_order ASC, id ASC")->fetchAll();
+        response($items);
     }
 
     public function getRechargeHistory() {
         $user = authenticate();
         $data = getJsonInput();
-        
+
         $limit = intval($data['limit'] ?? 20);
         $offset = intval($data['offset'] ?? 0);
-        
+
         if ($limit > 100) $limit = 100;
-        
+
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT * FROM recharges 
+            SELECT * FROM recharges
             WHERE user_id = ? AND status = 'completed'
             ORDER BY created_at DESC LIMIT ? OFFSET ?
         ");
         $stmt->execute([$user['id'], $limit, $offset]);
-        
+
         $history = $stmt->fetchAll();
         response($history);
     }
 
     public function confirmRecharge($id) {
         $user = authenticate();
-        
+
         $db = getDb();
         $stmt = $db->prepare("SELECT * FROM recharges WHERE id = ? AND user_id = ?");
         $stmt->execute([$id, $user['id']]);
         $recharge = $stmt->fetch();
-        
+
         if (!$recharge) {
             error('Recharge not found');
         }
-        
+
         if ($recharge['status'] === 'completed') {
             error('Recharge already completed');
         }
-        
+
         $stmt = $db->prepare("
             UPDATE recharges SET status = 'completed', updated_at = NOW()
             WHERE id = ?
         ");
         $stmt->execute([$id]);
-        
+
         try {
             $this->userModel->updateWalletBalance($user['id'], $recharge['amount'], 'recharge', 'main', 'Recharge completed');
         } catch (Exception $e) {
             error('Failed to update balance');
         }
-        
+
         $stmt = $db->prepare("
             UPDATE users SET total_recharge = total_recharge + ? WHERE id = ?
         ");
         $stmt->execute([$recharge['amount'], $user['id']]);
-        
+
         // Pay referral commission to the referrer (if any)
         try {
             $this->userModel->payReferralCommission($user['id'], $recharge['amount']);
@@ -110,18 +106,18 @@ class PaymentController {
             // Don't fail the recharge if commission payment fails
             error_log("Commission payment failed: " . $e->getMessage());
         }
-        
+
         // Auto level-up based on total recharge
         try {
             $stmt = $db->prepare("SELECT total_recharge FROM users WHERE id = ?");
             $stmt->execute([$user['id']]);
             $rechargeData = $stmt->fetch();
             $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
-            
+
             $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
             $stmt->execute([$totalRecharge]);
             $newLevel = $stmt->fetch();
-            
+
             if ($newLevel) {
                 $level = intval($newLevel['level']);
                 $stmt = $db->prepare("UPDATE users SET level = ? WHERE id = ? AND level < ?");
@@ -130,48 +126,48 @@ class PaymentController {
         } catch (Exception $e) {
             error_log("Level up check failed: " . $e->getMessage());
         }
-        
+
         response(null, 'Recharge completed');
     }
 
     public function createWithdrawal() {
         $user = authenticate();
         $data = getJsonInput();
-        
+
         $amount = floatval($data['amount'] ?? 0);
         $withdrawalPin = $data['withdrawal_pin'] ?? '';
         $walletType = $data['wallet_type'] ?? 'main';
-        
+
         if (!in_array($walletType, ['main', 'stable', 'vip', 'referral'])) {
             error('Invalid wallet type');
         }
-        
+
         if ($amount <= 0) {
             error('Invalid amount');
         }
-        
+
         $db = getDb();
-        
+
         // Check if user already has ANY pending withdrawal
         $stmt = $db->prepare("
-            SELECT id, amount, created_at FROM withdrawals 
+            SELECT id, amount, created_at FROM withdrawals
             WHERE user_id = ? AND status = 'pending'
             ORDER BY created_at DESC LIMIT 1
         ");
         $stmt->execute([$user['id']]);
         $existingPending = $stmt->fetch();
-        
+
         if ($existingPending) {
             $created = new DateTime($existingPending['created_at']);
             $now = new DateTime();
             $diff = $now->diff($created);
             $minutes = $diff->days * 24 * 60 + $diff->h * 60 + $diff->i;
-            
+
             // Get processing time from settings for display
             $settingsStmt = $db->query("SELECT processing_time FROM withdraw_settings WHERE active = 1 LIMIT 1");
             $settings = $settingsStmt->fetch();
             $processingTime = $settings['processing_time'] ?? '1-24 hours';
-            
+
             error(sprintf(
                 "You already have a pending withdrawal of ₹%s (ID: %s) created %d minutes ago. Processing time: %s. Please wait for it to complete before requesting another withdrawal.",
                 number_format($existingPending['amount'], 2, '.', ''),
@@ -180,21 +176,21 @@ class PaymentController {
                 $processingTime
             ), 400);
         }
-        
+
         // Prevent duplicate pending withdrawals (same amount within last 10 seconds) - additional guard
         $stmt = $db->prepare("
-            SELECT id FROM withdrawals 
-            WHERE user_id = ? AND amount = ? AND status = 'pending' 
+            SELECT id FROM withdrawals
+            WHERE user_id = ? AND amount = ? AND status = 'pending'
             AND created_at >= DATE_SUB(NOW(), INTERVAL 10 SECOND)
         ");
         $stmt->execute([$user['id'], $amount]);
         if ($stmt->fetch()) {
             error('A withdrawal with this amount is already being processed. Please wait.', 400);
         }
-        
+
         // Also check for duplicate pending wallet_transactions (defense in depth)
         $stmt = $db->prepare("
-            SELECT id FROM wallet_transactions 
+            SELECT id FROM wallet_transactions
             WHERE user_id = ? AND type = 'withdraw' AND amount = ? AND status = 'pending'
             AND created_at >= DATE_SUB(NOW(), INTERVAL 10 SECOND)
         ");
@@ -202,17 +198,17 @@ class PaymentController {
         if ($stmt->fetch()) {
             error('A withdrawal transaction is already being processed. Please wait.', 400);
         }
-        
+
         // Get withdraw settings
         $stmt = $db->query("SELECT * FROM withdraw_settings WHERE active = 1 LIMIT 1");
         $settings = $stmt->fetch();
-        
+
         // Check withdrawal window (close_from / close_to)
         date_default_timezone_set('Asia/Kolkata');
         $closeFrom = $settings['close_from'] ?? '00:00';
         $closeTo = $settings['close_to'] ?? '23:59';
         $now = date('H:i');
-        
+
         $isClosed = false;
         if ($closeFrom < $closeTo) {
             // Window is within the same day (e.g., 07:00 to 17:00)
@@ -222,7 +218,7 @@ class PaymentController {
             if ($now < $closeFrom && $now > $closeTo) $isClosed = false;
             else $isClosed = true;
         }
-        
+
         if ($isClosed) {
             // Calculate next opening time
             $nextOpen = new DateTime($closeFrom);
@@ -232,7 +228,7 @@ class PaymentController {
             }
             $diff = $nowDt->diff($nextOpen);
             $totalSeconds = ($diff->h * 3600) + ($diff->i * 60) + $diff->s;
-            
+
             error(sprintf(
                 "Withdrawals are closed. Please wait %dh %dm %ds until %s to withdraw.",
                 $diff->h,
@@ -241,35 +237,35 @@ class PaymentController {
                 $closeFrom
             ), 400);
         }
-        
+
         $minAmount = floatval($settings['min_amount'] ?? 100);
         $maxAmount = floatval($settings['max_amount'] ?? 100000);
         $feePercentage = floatval($settings['fee_percentage'] ?? 2);
-        
+
         // Get user bank details (full)
         $stmt = $db->prepare("SELECT account_holder, bank_name, account_number, ifsc_code FROM user_bank_details WHERE user_id = ?");
         $stmt->execute([$user['id']]);
         $bankDetails = $stmt->fetch();
-        
+
         if (!$bankDetails || empty($bankDetails['account_holder']) || empty($bankDetails['account_number']) || empty($bankDetails['ifsc_code'])) {
             error('Please add complete bank details first');
         }
-        
+
         // Use bank details from database (full, unmasked)
         $bankName = $bankDetails['bank_name'] ?? '';
         $bankAccount = $bankDetails['account_number'] ?? '';
         $accountHolder = $bankDetails['account_holder'] ?? '';
         $ifscCode = $bankDetails['ifsc_code'] ?? '';
-        
+
         // Verify withdrawal pin
         $stmt = $db->prepare("SELECT withdrawal_pin FROM users WHERE id = ? FOR UPDATE");
         $stmt->execute([$user['id']]);
         $userData = $stmt->fetch();
-        
+
         if ($withdrawalPin !== $userData['withdrawal_pin']) {
             error('Invalid withdrawal pin');
         }
-        
+
         // Check min/max amount
         if ($amount < $minAmount) {
             error('Minimum withdrawal amount is ₹' . $minAmount);
@@ -277,21 +273,21 @@ class PaymentController {
         if ($amount > $maxAmount) {
             error('Maximum withdrawal amount is ₹' . $maxAmount);
         }
-        
+
         // Check user wallet balance (with lock)
         $walletColumn = $this->getWalletColumn($walletType);
         $stmt = $db->prepare("SELECT {$walletColumn} as wallet_balance FROM users WHERE id = ? FOR UPDATE");
         $stmt->execute([$user['id']]);
         $userBalance = floatval($stmt->fetch()['wallet_balance'] ?? 0);
-        
+
         if ($userBalance < $amount) {
             error('Insufficient balance in ' . ucfirst($walletType) . ' wallet. Your balance: ₹' . $userBalance);
         }
-        
+
         // Calculate fee
         $fee = ($amount * $feePercentage) / 100;
         $receiveAmount = $amount - $fee;
-        
+
         try {
             // Include bank details in wallet transaction
             $bankData = [
@@ -304,13 +300,13 @@ class PaymentController {
         } catch (Exception $e) {
             error('Insufficient balance or transaction failed: ' . $e->getMessage());
         }
-        
+
         $stmt = $db->prepare("
             INSERT INTO withdrawals (user_id, amount, bank_name, bank_account, account_holder, ifsc_code, wallet_type, status)
             VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
         ");
         $stmt->execute([$user['id'], $amount, $bankName, $bankAccount, $accountHolder, $ifscCode, $walletType]);
-        
+
         response([
             'id' => $txnId,
             'amount' => $amount,
@@ -322,7 +318,7 @@ class PaymentController {
             'ifsc_code' => $ifscCode
         ], 'Withdrawal request created');
     }
-    
+
     private function getWalletColumn($walletType) {
         $columns = [
             'main' => 'main_wallet',
@@ -336,49 +332,49 @@ class PaymentController {
     public function getWithdrawalHistory() {
         $user = authenticate();
         $data = getJsonInput();
-        
+
         $limit = intval($data['limit'] ?? 20);
         $offset = intval($data['offset'] ?? 0);
-        
+
         if ($limit > 100) $limit = 100;
-        
+
         $db = getDb();
-        
+
         // Get from wallet_transactions where type = 'withdraw' (including bank details if stored)
         $stmt = $db->prepare("
             SELECT id, user_id, type, amount, balance_before, balance_after, status, description, created_at,
                    bank_name, bank_account, account_holder, ifsc_code
-            FROM wallet_transactions 
+            FROM wallet_transactions
             WHERE user_id = ? AND type = 'withdraw'
             ORDER BY created_at DESC LIMIT ? OFFSET ?
         ");
         $stmt->execute([$user['id'], $limit, $offset]);
-        
+
         $history = $stmt->fetchAll();
         response($history);
     }
 
     public function getWithdrawalInfo() {
         $user = authenticate();
-        
+
         $db = getDb();
         $stmt = $db->prepare("
-            SELECT main_wallet, stable_wallet, vip_wallet, referral_wallet, total_withdraw 
-            FROM users 
+            SELECT main_wallet, stable_wallet, vip_wallet, referral_wallet, total_withdraw
+            FROM users
             WHERE id = ?
         ");
         $stmt->execute([$user['id']]);
         $info = $stmt->fetch();
-        
+
         // Also calculate pending withdrawal amount from wallet_transactions
         $stmt = $db->prepare("
             SELECT SUM(ABS(amount)) as pending_amount
-            FROM wallet_transactions 
+            FROM wallet_transactions
             WHERE user_id = ? AND type = 'withdraw' AND status = 'pending'
         ");
         $stmt->execute([$user['id']]);
         $pending = $stmt->fetch();
-        
+
         response([
             'main_wallet' => floatval($info['main_wallet'] ?? 0),
             'stable_wallet' => floatval($info['stable_wallet'] ?? 0),
@@ -392,13 +388,12 @@ class PaymentController {
 
     public function getWithdrawalSettings() {
         $user = authenticate();
-        
+
         $db = getDb();
         $stmt = $db->query("SELECT * FROM withdraw_settings WHERE active = 1 LIMIT 1");
         $settings = $stmt->fetch();
-        
+
         if (!$settings) {
-            // Fallback defaults
             $settings = [
                 'min_amount' => 100,
                 'max_amount' => 100000,
@@ -408,18 +403,16 @@ class PaymentController {
                 'processing_time' => '1-24 hours'
             ];
         }
-        
-        // Calculate time window state on server
+
         $closeFrom = $settings['close_from'] ?? '00:00';
         $closeTo = $settings['close_to'] ?? '23:59';
         $now = date('H:i');
         $serverTimestamp = time();
-        
+
         $isClosed = false;
         $targetTimestamp = null;
-        
+
         if ($closeFrom < $closeTo) {
-            // Same-day window (e.g., 07:00 to 17:00)
             if ($now < $closeFrom) {
                 $isClosed = true;
                 $targetTimestamp = strtotime($closeFrom);
@@ -427,14 +420,11 @@ class PaymentController {
                 $isClosed = true;
                 $targetTimestamp = strtotime($closeFrom . ' +1 day');
             }
-            // If between open and close, it's open - target is close time
             if (!$isClosed) {
                 $targetTimestamp = strtotime($closeTo);
             }
         } else {
-            // Overnight window (e.g., 18:00 to 07:00)
             if ($now >= $closeFrom || $now <= $closeTo) {
-                // Currently open - target is close time today
                 $targetTimestamp = strtotime($closeTo);
                 if ($now > $closeTo) $targetTimestamp = strtotime($closeTo . ' +1 day');
             } else {
@@ -442,8 +432,7 @@ class PaymentController {
                 $targetTimestamp = strtotime($closeFrom);
             }
         }
-        
-        // Return full settings
+
         response([
             'min_amount' => floatval($settings['min_amount'] ?? 100),
             'max_amount' => floatval($settings['max_amount'] ?? 100000),
@@ -457,5 +446,132 @@ class PaymentController {
             'target_time' => $targetTimestamp,
             'is_closed' => $isClosed
         ]);
+    }
+
+    public function createYoyopayRecharge() {
+        $user = authenticate();
+        $data = getJsonInput();
+
+        $amount = floatval($data['amount'] ?? 0);
+
+        if ($amount <= 0) {
+            error('Invalid amount');
+        }
+
+        require_once __DIR__ . '/../../Services/YoYoPayService.php';
+        $yoyopay = new YoYoPayService();
+
+        $orderId = 'RC' . date('YmdHis') . $user['id'] . rand(100, 999);
+
+        $clientIp = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $clientIp = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+        }
+
+        $result = $yoyopay->createPayOrder([
+            'amount' => $amount,
+            'order_id' => $orderId,
+            'ip' => $clientIp,
+            'remark' => 'Recharge by user ' . $user['id']
+        ]);
+
+        if ($result['code'] !== 200) {
+            error('Payment gateway error: ' . ($result['msg'] ?? 'Unknown error'));
+        }
+
+        $db = getDb();
+        $stmt = $db->prepare("
+            INSERT INTO recharges (user_id, amount, payment_method, transaction_id, status, yoyopay_order_id)
+            VALUES (?, ?, 'yoyopay', ?, 'pending', ?)
+        ");
+        $stmt->execute([$user['id'], $amount, $orderId, $orderId]);
+
+        $paymentUrl = $result['data'] ?? '';
+
+        response([
+            'id' => $db->lastInsertId(),
+            'amount' => $amount,
+            'payment_url' => $paymentUrl,
+            'merchant_order_id' => $orderId,
+            'status' => 'pending'
+        ], 'Payment order created. Redirect to payment_url to complete payment.');
+    }
+
+    public function handleYoyopayCallback() {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (!$data) {
+            error_log('[YoYoPay Callback] Invalid input: ' . $input);
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'ignored']);
+            return;
+        }
+
+        $merchantOrderId = $data['merchantOrderId'] ?? '';
+        $platformOrderId = $data['orderId'] ?? '';
+        $orderStatus = intval($data['orderStatus'] ?? 0);
+        $transAmt = floatval($data['transAmt'] ?? 0);
+
+        error_log('[YoYoPay Callback] Order: ' . $merchantOrderId . ', Status: ' . $orderStatus . ', Amount: ' . $transAmt);
+
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM recharges WHERE yoyopay_order_id = ? AND status = 'pending'");
+        $stmt->execute([$merchantOrderId]);
+        $recharge = $stmt->fetch();
+
+        if (!$recharge) {
+            error_log('[YoYoPay Callback] Recharge not found or already processed: ' . $merchantOrderId);
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'ignored']);
+            return;
+        }
+
+        if ($orderStatus === 3) {
+            $stmt = $db->prepare("UPDATE recharges SET status = 'completed', transaction_id = ?, updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$platformOrderId, $recharge['id']]);
+
+            $this->userModel->updateWalletBalance($recharge['user_id'], $transAmt, 'recharge', 'main', 'YoYoPay recharge completed');
+
+            $stmt = $db->prepare("UPDATE users SET total_recharge = total_recharge + ? WHERE id = ?");
+            $stmt->execute([$transAmt, $recharge['user_id']]);
+
+            try {
+                $this->userModel->payReferralCommission($recharge['user_id'], $transAmt);
+            } catch (Exception $e) {
+                error_log('[YoYoPay Callback] Commission failed: ' . $e->getMessage());
+            }
+
+            try {
+                $stmt = $db->prepare("SELECT total_recharge FROM users WHERE id = ?");
+                $stmt->execute([$recharge['user_id']]);
+                $userData = $stmt->fetch();
+                $totalRecharge = floatval($userData['total_recharge'] ?? 0);
+
+                $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
+                $stmt->execute([$totalRecharge]);
+                $newLevel = $stmt->fetch();
+
+                if ($newLevel) {
+                    $level = intval($newLevel['level']);
+                    $stmt = $db->prepare("UPDATE users SET level = ? WHERE id = ? AND level < ?");
+                    $stmt->execute([$level, $recharge['user_id'], $level]);
+                }
+            } catch (Exception $e) {
+                error_log('[YoYoPay Callback] Level up failed: ' . $e->getMessage());
+            }
+
+            error_log('[YoYoPay Callback] Recharge completed: ' . $merchantOrderId);
+        } else {
+            $stmt = $db->prepare("UPDATE recharges SET status = 'failed', updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$recharge['id']]);
+            error_log('[YoYoPay Callback] Recharge failed: ' . $merchantOrderId);
+        }
+
+        http_response_code(200);
+        header('Content-Type: application/json');
+        echo json_encode(['code' => 200, 'msg' => 'success']);
     }
 }
