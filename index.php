@@ -119,6 +119,15 @@ try {
         $c->register();
         return;
     }
+    if ($uri === 'api/maintenance/status' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/MaintenanceController.php');
+        $c = new MaintenanceController();
+        $c->getStatus();
+        return;
+    }
     if ($uri === 'api/auth/login' && $method === 'POST') {
         load('/bootstrap.php');
         load('/config/Database.php');
@@ -964,6 +973,28 @@ try {
         load('/app/Controllers/Admin/AdminSettingsController.php');
         $c = new AdminSettingsController();
         $c->deleteLevel();
+        return;
+    }
+    if ($uri === 'api/admin/maintenance' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/MaintenanceController.php');
+        $c = new MaintenanceController();
+        $c->getSettings();
+        return;
+    }
+    if ($uri === 'api/admin/maintenance/save' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/MaintenanceController.php');
+        $c = new MaintenanceController();
+        $c->save();
         return;
     }
     if ($uri === 'api/user/level' && $method === 'GET') {

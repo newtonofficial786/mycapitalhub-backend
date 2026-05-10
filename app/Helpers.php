@@ -25,16 +25,16 @@ if (!function_exists('response')) {
 }
 
 if (!function_exists('error')) {
-    function error($message = 'Error', $status = 400) {
+    function error($message = 'Error', $status = 400, $extra = []) {
         http_response_code($status);
         header('Content-Type: application/json');
         if (ob_get_length()) ob_clean();
         $env = env('APP_ENV') ?: 'production';
         $responseMessage = ($env !== 'production' || $status < 500) ? $message : 'Internal server error';
-        echo json_encode([
+        echo json_encode(array_merge([
             'success' => false,
             'error' => $responseMessage
-        ]);
+        ], $extra));
         exit;
     }
 }
