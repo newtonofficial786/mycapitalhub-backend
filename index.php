@@ -1172,6 +1172,100 @@ try {
         return;
     }
     
+    if ($uri === 'api/admin/images' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/ImageManagerController.php');
+        $c = new ImageManagerController();
+        $c->list();
+        return;
+    }
+    if ($uri === 'api/admin/images/upload' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/ImageManagerController.php');
+        $c = new ImageManagerController();
+        $c->upload();
+        return;
+    }
+    if ($uri === 'api/admin/images/delete' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/ImageManagerController.php');
+        $c = new ImageManagerController();
+        $c->delete();
+        return;
+    }
+    if ($uri === 'api/admin/images/details' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/ImageManagerController.php');
+        $c = new ImageManagerController();
+        $c->getDetails();
+        return;
+    }
+    if ($uri === 'api/uploads/images' && strpos($uri, '/uploads/images') === 0) {
+        $filename = basename($_SERVER['REQUEST_URI']);
+        $filepath = __DIR__ . '/uploads/images/' . $filename;
+        if ($filename && file_exists($filepath)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $filepath);
+            finfo_close($finfo);
+            header('Content-Type: ' . $mime);
+            header('Content-Length: ' . filesize($filepath));
+            readfile($filepath);
+            return;
+        }
+        http_response_code(404);
+        echo 'Not found';
+        return;
+    }
+    if (strpos($uri, 'uploads/images/') === 0) {
+        $filename = basename($uri);
+        $filepath = __DIR__ . '/uploads/images/' . $filename;
+        if ($filename && file_exists($filepath)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $filepath);
+            finfo_close($finfo);
+            header('Content-Type: ' . $mime);
+            header('Content-Length: ' . filesize($filepath));
+            readfile($filepath);
+            return;
+        }
+        http_response_code(404);
+        echo 'Not found';
+        return;
+    }
+    if (strpos($uri, '/api/uploads/images/') === 0) {
+        $filename = basename($uri);
+        $filepath = __DIR__ . '/uploads/images/' . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $filename);
+        if ($filename && file_exists($filepath) && is_file($filepath)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $filepath);
+            finfo_close($finfo);
+            header('Content-Type: ' . $mime);
+            header('Content-Length: ' . filesize($filepath));
+            readfile($filepath);
+            return;
+        }
+        error_log("Uploads 404 - uri: $uri, filename: $filename, exists: " . (file_exists($filepath) ? 'yes' : 'no'));
+        http_response_code(404);
+        echo 'Not found';
+        return;
+    }
+
     http_response_code(404);
     header('Content-Type: application/json');
     echo json_encode(['error' => 'Endpoint not found']);
