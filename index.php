@@ -997,6 +997,37 @@ try {
         $c->save();
         return;
     }
+    if ($uri === 'api/recharge/settings' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/RechargeSettingsController.php');
+        $c = new RechargeSettingsController();
+        $c->index();
+        return;
+    }
+    if ($uri === 'api/admin/recharge/settings' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/RechargeSettingsController.php');
+        $c = new RechargeSettingsController();
+        $c->adminList();
+        return;
+    }
+    if ($uri === 'api/admin/recharge/settings/save' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/RechargeSettingsController.php');
+        $c = new RechargeSettingsController();
+        $c->save();
+        return;
+    }
     if ($uri === 'api/user/level' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');
