@@ -166,6 +166,20 @@ class ProductController
                     $minutes = floor(($remaining % 3600) / 60);
                     error("Please wait {$hours}h {$minutes}m before claiming again", 400);
                 }
+                // Accumulate income for all missed calendar days
+                $lastDate = (clone $last)->setTime(0, 0, 0);
+                $todayDate = (clone $now)->setTime(0, 0, 0);
+                $missedDays = (int)$lastDate->diff($todayDate)->days;
+                if ($missedDays > 0) {
+                    $income = $income * $missedDays;
+                }
+            }
+
+            // Build description with date range for accumulated claims
+            $description = "Daily income: {$product['name']}";
+            if ($lastClaimed && isset($missedDays) && $missedDays > 1) {
+                $startDate = (clone $lastDate)->add(new DateInterval('P1D'));
+                $description .= " (" . $startDate->format('d/m/Y') . " - " . $todayDate->format('d/m/Y') . ")";
             }
 
             $stmt = $db->prepare("SELECT stable_wallet FROM users WHERE id = ?");
@@ -183,7 +197,7 @@ class ProductController
                 INSERT INTO wallet_transactions (user_id, type, amount, balance_before, balance_after, status, description, wallet_type)
                 VALUES (?, 'bonus', ?, ?, ?, 'completed', ?, 'stable')
             ");
-            $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, "Daily income: {$product['name']}"]);
+            $stmt->execute([$user['id'], $income, $balanceBefore, $balanceAfter, $description]);
 
             response([
                 'amount' => $income,

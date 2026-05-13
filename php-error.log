@@ -36,3 +36,23 @@
 [11-May-2026 08:23:38 Europe/Berlin] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.media_library' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:98
 [11-May-2026 08:24:01 Europe/Berlin] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.media_library' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:98
 [11-May-2026 08:24:01 Europe/Berlin] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.media_library' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:98
+[13-May-2026 15:55:49 Europe/Berlin] Product 26 last_claimed: null, now: 2026-05-13 15:55:49
+[13-May-2026 16:06:02 Europe/Berlin] Product 27 last_claimed: null, now: 2026-05-13 16:06:02
+[13-May-2026 16:18:28 Europe/Berlin] Product 28 last_claimed: null, now: 2026-05-13 16:18:28
+[13-May-2026 16:19:05 Europe/Berlin] Product 29 last_claimed: null, now: 2026-05-13 16:19:05
+[13-May-2026 16:28:11 Europe/Berlin] Product 30 last_claimed: null, now: 2026-05-13 16:28:11
+[13-May-2026 16:28:22 Europe/Berlin] Product 31 last_claimed: null, now: 2026-05-13 16:28:22
+[13-May-2026 18:11:34 Europe/Berlin] Product 26 last_claimed: 2026-05-04 19:25:49, now: 2026-05-13 18:11:34
+[13-May-2026 18:11:34 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:41:34, now: 2026-05-13 18:11:34
+[13-May-2026 18:14:50 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:41:34, now: 2026-05-13 18:14:50
+[13-May-2026 18:14:50 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:44:50, now: 2026-05-13 18:14:50
+[13-May-2026 18:15:47 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:44:50, now: 2026-05-13 18:15:47
+[13-May-2026 18:15:47 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:45:47, now: 2026-05-13 18:15:47
+[13-May-2026 18:16:34 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:45:47, now: 2026-05-13 18:16:34
+[13-May-2026 18:16:34 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:46:34, now: 2026-05-13 18:16:34
+[13-May-2026 18:27:39 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:46:34, now: 2026-05-13 18:27:39
+[13-May-2026 18:35:40 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:57:39, now: 2026-05-13 18:35:40
+[13-May-2026 18:43:28 Europe/Berlin] Product 26 last_claimed: 2026-05-03 22:05:40, now: 2026-05-13 18:43:28
+[13-May-2026 18:48:23 Europe/Berlin] Product 26 last_claimed: 2026-05-03 22:13:28, now: 2026-05-13 18:48:23
+[13-May-2026 18:49:55 Europe/Berlin] Product 32 last_claimed: null, now: 2026-05-13 18:49:55
+[13-May-2026 18:50:58 Europe/Berlin] Product 33 last_claimed: null, now: 2026-05-13 18:50:58
