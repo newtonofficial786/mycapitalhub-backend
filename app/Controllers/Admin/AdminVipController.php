@@ -28,11 +28,14 @@ class AdminVipController {
         if (empty($name)) error('Name required');
         
         $db = getDb();
+        $colorFrom = $data['color_from'] ?? '#6b7280';
+        $colorTo = $data['color_to'] ?? '#1f2937';
+        
         $stmt = $db->prepare("
-            INSERT INTO vip_packages (name, min_recharge, daily_income, reward_amount, wait_minutes, level, active)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO vip_packages (name, min_recharge, daily_income, reward_amount, wait_minutes, level, active, color_from, color_to)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        $stmt->execute([$name, $minRecharge, $dailyIncome, $rewardAmount, $waitMinutes, $level, $active]);
+        $stmt->execute([$name, $minRecharge, $dailyIncome, $rewardAmount, $waitMinutes, $level, $active, $colorFrom, $colorTo]);
         
         response(['id' => $db->lastInsertId()], 'VIP package created');
     }
