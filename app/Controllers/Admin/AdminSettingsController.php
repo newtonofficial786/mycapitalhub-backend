@@ -183,12 +183,11 @@ class AdminSettingsController {
         $user = authenticate();
         
         $db = getDb();
-        $stmt = $db->prepare("SELECT total_recharge, level FROM users WHERE id = ?");
+        // Use accurate sum from recharges table (not stale users.total_recharge)
+        $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total_recharge FROM recharges WHERE user_id = ? AND status = 'completed'");
         $stmt->execute([$user['id']]);
-        $userData = $stmt->fetch();
-        
-        $totalRecharge = floatval($userData['total_recharge'] ?? 0);
-        $storedLevel = intval($userData['level'] ?? 0);
+        $rechargeData = $stmt->fetch();
+        $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
         
         $stmt = $db->query("SELECT * FROM user_level_settings WHERE active = 1 ORDER BY min_recharge DESC");
         $levels = $stmt->fetchAll();
@@ -201,10 +200,8 @@ class AdminSettingsController {
             }
         }
         
-        $currentLevel = max($storedLevel, $calculatedLevel);
-        
         response([
-            'level' => $currentLevel,
+            'level' => $calculatedLevel,
             'total_recharge' => $totalRecharge,
             'levels' => $levels
         ]);

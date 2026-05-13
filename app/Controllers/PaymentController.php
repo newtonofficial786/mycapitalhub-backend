@@ -109,7 +109,7 @@ class PaymentController {
 
         // Auto level-up based on total recharge
         try {
-            $stmt = $db->prepare("SELECT total_recharge FROM users WHERE id = ?");
+            $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total_recharge FROM recharges WHERE user_id = ? AND status = 'completed'");
             $stmt->execute([$user['id']]);
             $rechargeData = $stmt->fetch();
             $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
@@ -561,10 +561,10 @@ class PaymentController {
             }
 
             try {
-                $stmt = $db->prepare("SELECT total_recharge FROM users WHERE id = ?");
+                $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total_recharge FROM recharges WHERE user_id = ? AND status = 'completed'");
                 $stmt->execute([$recharge['user_id']]);
-                $userData = $stmt->fetch();
-                $totalRecharge = floatval($userData['total_recharge'] ?? 0);
+                $rechargeData = $stmt->fetch();
+                $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
 
                 $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
                 $stmt->execute([$totalRecharge]);

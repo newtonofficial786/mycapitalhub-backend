@@ -156,6 +156,14 @@ class UserController {
         $stmt->execute([$user['id']]);
         $rechargeStats = $stmt->fetch();
         
+        // Recalculate level from total_recharge
+        $totalRecharge = floatval($rechargeStats['total_completed_recharge'] ?? 0);
+        $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
+        $stmt->execute([$totalRecharge]);
+        $levelRow = $stmt->fetch();
+        $calculatedLevel = $levelRow ? intval($levelRow['level']) : 0;
+        $level = max(intval($wallet['level'] ?? 0), $calculatedLevel);
+
         $totalBonus = floatval($stats['total_bonus'] ?? 0);
         $totalCommission = floatval($stats['total_commission'] ?? 0);
         $userIncome = $totalBonus + $totalCommission;
@@ -166,11 +174,11 @@ class UserController {
             'vip_wallet' => floatval($wallet['vip_wallet'] ?? 0),
             'referral_wallet' => floatval($wallet['referral_wallet'] ?? 0),
             'balance' => $wallet['main_wallet'],
-            'total_recharge' => floatval($rechargeStats['total_completed_recharge'] ?? 0),
+            'total_recharge' => $totalRecharge,
             'total_withdraw' => $wallet['total_withdraw'],
             'total_income' => $userIncome,
             'team_income' => $wallet['team_income'],
-            'level' => $wallet['level'],
+            'level' => $level,
             'total_wins' => $stats['total_wins'] ?? 0,
             'total_bets' => $stats['total_bets'] ?? 0,
             'total_commission' => $totalCommission,
