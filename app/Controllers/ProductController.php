@@ -123,7 +123,6 @@ class ProductController
     public function claimDailyIncome()
     {
         try {
-            date_default_timezone_set('Asia/Kolkata');
             $user = authenticate();
 
             // Accept both JSON and form-encoded
@@ -148,7 +147,6 @@ class ProductController
             }
 
             $db = getDb();
-            $db->exec("SET time_zone = '+05:30'");
             $stmt = $db->prepare("
                 SELECT up.id, up.last_claimed, p.daily_income, p.name
                 FROM user_products up
@@ -242,11 +240,9 @@ class VipController
 
     public function getUserVip()
     {
-        date_default_timezone_set('Asia/Kolkata');
         $user = authenticate();
 
         $db = getDb();
-        $db->exec("SET time_zone = '+05:30'");
         $stmt = $db->prepare("
             SELECT uv.*, vp.name, vp.daily_income, vp.level, vp.min_recharge, vp.reward_amount, vp.wait_minutes,
                    CASE
@@ -273,7 +269,6 @@ class VipController
 
     public function purchaseVip()
     {
-        date_default_timezone_set('Asia/Kolkata');
         $user = authenticate();
         $data = getJsonInput();
 
@@ -284,7 +279,6 @@ class VipController
         }
 
         $db = getDb();
-        $db->exec("SET time_zone = '+05:30'");
         $stmt = $db->prepare("SELECT * FROM vip_packages WHERE id = ? AND active = 1");
         $stmt->execute([$packageId]);
         $package = $stmt->fetch();
@@ -365,8 +359,6 @@ class VipController
             $db->commit();
 
             $claimableTime = new DateTime("+$waitMinutes minutes");
-            date_default_timezone_set('Asia/Kolkata');
-            $claimableTime->setTimezone(new DateTimeZone('Asia/Kolkata'));
 
             response([
                 'id' => $db->lastInsertId(),
@@ -382,11 +374,9 @@ class VipController
 
     public function claimVipIncome()
     {
-        date_default_timezone_set('Asia/Kolkata');
         $user = authenticate();
 
         $db = getDb();
-        $db->exec("SET time_zone = '+05:30'");
 
         try {
             $data = [];

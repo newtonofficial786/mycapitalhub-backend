@@ -6,8 +6,6 @@ require_once __DIR__ . '/../Middleware/AuthMiddleware.php';
 
 class WithdrawSettingsController {
     public function getSettings() {
-        date_default_timezone_set('Asia/Kolkata');
-        
         $db = getDb();
         $stmt = $db->query("SELECT * FROM withdraw_settings WHERE active = 1 LIMIT 1");
         $settings = $stmt->fetch();

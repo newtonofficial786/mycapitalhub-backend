@@ -9,7 +9,7 @@ header('X-XSS-Protection: 1; mode=block');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 
 // CORS - restrict to specific origins
-$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://najira.in', 'https://tatainvest-frontend.pages.dev'];
+$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://mycapitalhub.xyz', 'https://tatainvest-admin.pages.dev', 'https://tatainvest-frontend.pages.dev'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: $origin");
@@ -23,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
+
+date_default_timezone_set('Asia/Kolkata');
 
 $env = env('APP_ENV') ?? 'production';
 error_reporting(E_ALL);
@@ -59,7 +61,8 @@ if ($uri === '' || $uri === '/') {
     return;
 }
 
-function load($path) {
+function load($path)
+{
     if (file_exists(__DIR__ . $path)) {
         include_once __DIR__ . $path;
         return true;
@@ -148,7 +151,7 @@ try {
         $c->logout();
         return;
     }
-    
+
     // Auth required endpoints
     if ($uri === 'api/user/profile' && $method === 'GET') {
         load('/bootstrap.php');
@@ -477,7 +480,7 @@ try {
         $c->getCurrentPeriod();
         return;
     }
-    
+
     // Admin endpoints
     if ($uri === 'api/admin/auth/login' && $method === 'POST') {
         load('/bootstrap.php');
@@ -1171,7 +1174,7 @@ try {
         $c->update();
         return;
     }
-    
+
     if ($uri === 'api/admin/images' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');

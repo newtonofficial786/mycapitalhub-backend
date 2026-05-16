@@ -204,7 +204,6 @@ class PaymentController {
         $settings = $stmt->fetch();
 
         // Check withdrawal window (close_from / close_to)
-        date_default_timezone_set('Asia/Kolkata');
         $closeFrom = $settings['close_from'] ?? '00:00';
         $closeTo = $settings['close_to'] ?? '23:59';
         $now = date('H:i');

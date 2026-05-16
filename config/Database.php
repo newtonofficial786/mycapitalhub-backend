@@ -37,6 +37,7 @@ class Database {
                 PDO::ATTR_EMULATE_PREPARES => false,
                 PDO::ATTR_CASE => PDO::CASE_LOWER
             ]);
+            $this->pdo->exec("SET time_zone = '+05:30'");
         } catch (PDOException $e) {
             if ($this->config['debug'] ?? false) {
                 throw new Exception("Database connection failed: " . $e->getMessage());
