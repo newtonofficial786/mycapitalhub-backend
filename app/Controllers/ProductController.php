@@ -287,14 +287,23 @@ class VipController
             error('Package not found');
         }
 
-        $stmt = $db->prepare("SELECT main_wallet, level FROM users WHERE id = ?");
+        $stmt = $db->prepare("SELECT main_wallet FROM users WHERE id = ?");
         $stmt->execute([$user['id']]);
         $currentUser = $stmt->fetch();
         $currentBalance = floatval($currentUser['main_wallet'] ?? 0);
 
         $price = floatval($package['min_recharge'] ?? 0);
 
-        $userLevel = intval($currentUser['level'] ?? 0);
+        // Calculate actual level from completed recharges
+        $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total_recharge FROM recharges WHERE user_id = ? AND status = 'completed'");
+        $stmt->execute([$user['id']]);
+        $rechargeData = $stmt->fetch();
+        $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
+        $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
+        $stmt->execute([$totalRecharge]);
+        $levelRow = $stmt->fetch();
+        $userLevel = $levelRow ? intval($levelRow['level']) : 0;
+
         $requiredLevel = intval($package['level'] ?? 0);
 
         if ($userLevel < $requiredLevel) {
