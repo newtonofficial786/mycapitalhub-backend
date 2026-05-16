@@ -5,15 +5,18 @@ require_once __DIR__ . '/../../app/Helpers.php';
 require_once __DIR__ . '/../../app/Middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../../app/Models/User.php';
 
-class PaymentController {
+class PaymentController
+{
     private $userModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $db = getDb();
         $this->userModel = new User($db);
     }
 
-    public function createRecharge() {
+    public function createRecharge()
+    {
         $user = authenticate();
         $data = getJsonInput();
 
@@ -39,20 +42,23 @@ class PaymentController {
         ], 'Recharge request created');
     }
 
-    public function getRechargeMethods() {
+    public function getRechargeMethods()
+    {
         $db = getDb();
         $items = $db->query("SELECT * FROM payment_methods WHERE active = 1 ORDER BY sort_order ASC, id ASC")->fetchAll();
         response($items);
     }
 
-    public function getRechargeHistory() {
+    public function getRechargeHistory()
+    {
         $user = authenticate();
         $data = getJsonInput();
 
         $limit = intval($data['limit'] ?? 20);
         $offset = intval($data['offset'] ?? 0);
 
-        if ($limit > 100) $limit = 100;
+        if ($limit > 100)
+            $limit = 100;
 
         $db = getDb();
         $stmt = $db->prepare("
@@ -66,7 +72,8 @@ class PaymentController {
         response($history);
     }
 
-    public function confirmRecharge($id) {
+    public function confirmRecharge($id)
+    {
         $user = authenticate();
 
         $db = getDb();
@@ -130,7 +137,8 @@ class PaymentController {
         response(null, 'Recharge completed');
     }
 
-    public function createWithdrawal() {
+    public function createWithdrawal()
+    {
         $user = authenticate();
         $data = getJsonInput();
 
@@ -147,6 +155,19 @@ class PaymentController {
         }
 
         $db = getDb();
+
+        // If withdrawing from stable wallet, check no active stable products remain
+        if ($walletType === 'stable') {
+            $stmt = $db->prepare("
+                SELECT COUNT(*) as cnt FROM user_products
+                WHERE user_id = ? AND expiry_date >= CURRENT_DATE AND status = 'active'
+            ");
+            $stmt->execute([$user['id']]);
+            $activeCount = intval($stmt->fetch()['cnt'] ?? 0);
+            if ($activeCount > 0) {
+                error('Cannot withdraw from stable wallet while you have active stable plans. Please wait until all plans complete.');
+            }
+        }
 
         // Check if user already has ANY pending withdrawal
         $stmt = $db->prepare("
@@ -211,11 +232,14 @@ class PaymentController {
         $isClosed = false;
         if ($closeFrom < $closeTo) {
             // Window is within the same day (e.g., 07:00 to 17:00)
-            if ($now < $closeFrom || $now > $closeTo) $isClosed = true;
+            if ($now < $closeFrom || $now > $closeTo)
+                $isClosed = true;
         } else {
             // Window spans midnight (e.g., 18:00 to 07:00)
-            if ($now < $closeFrom && $now > $closeTo) $isClosed = false;
-            else $isClosed = true;
+            if ($now < $closeFrom && $now > $closeTo)
+                $isClosed = false;
+            else
+                $isClosed = true;
         }
 
         if ($isClosed) {
@@ -318,7 +342,8 @@ class PaymentController {
         ], 'Withdrawal request created');
     }
 
-    private function getWalletColumn($walletType) {
+    private function getWalletColumn($walletType)
+    {
         $columns = [
             'main' => 'main_wallet',
             'stable' => 'stable_wallet',
@@ -328,14 +353,16 @@ class PaymentController {
         return $columns[$walletType] ?? 'main_wallet';
     }
 
-    public function getWithdrawalHistory() {
+    public function getWithdrawalHistory()
+    {
         $user = authenticate();
         $data = getJsonInput();
 
         $limit = intval($data['limit'] ?? 20);
         $offset = intval($data['offset'] ?? 0);
 
-        if ($limit > 100) $limit = 100;
+        if ($limit > 100)
+            $limit = 100;
 
         $db = getDb();
 
@@ -353,7 +380,8 @@ class PaymentController {
         response($history);
     }
 
-    public function getWithdrawalInfo() {
+    public function getWithdrawalInfo()
+    {
         $user = authenticate();
 
         $db = getDb();
@@ -385,7 +413,8 @@ class PaymentController {
         ]);
     }
 
-    public function getWithdrawalSettings() {
+    public function getWithdrawalSettings()
+    {
         $user = authenticate();
 
         $db = getDb();
@@ -425,7 +454,8 @@ class PaymentController {
         } else {
             if ($now >= $closeFrom || $now <= $closeTo) {
                 $targetTimestamp = strtotime($closeTo);
-                if ($now > $closeTo) $targetTimestamp = strtotime($closeTo . ' +1 day');
+                if ($now > $closeTo)
+                    $targetTimestamp = strtotime($closeTo . ' +1 day');
             } else {
                 $isClosed = true;
                 $targetTimestamp = strtotime($closeFrom);
@@ -447,7 +477,8 @@ class PaymentController {
         ]);
     }
 
-    public function getPaymentResult($type) {
+    public function getPaymentResult($type)
+    {
         $db = getDb();
         $stmt = $db->prepare("SELECT * FROM payment_result WHERE status_type = ? LIMIT 1");
         $stmt->execute([$type]);
@@ -455,7 +486,8 @@ class PaymentController {
         response($result);
     }
 
-    public function createWatchPaysRecharge() {
+    public function createWatchPaysRecharge()
+    {
         $user = authenticate();
         $data = getJsonInput();
 
@@ -506,7 +538,8 @@ class PaymentController {
         ], 'Payment order created. Redirect to payment_url to complete payment.');
     }
 
-    public function handleWatchPaysCallback() {
+    public function handleWatchPaysCallback()
+    {
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
 
