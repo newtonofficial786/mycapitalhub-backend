@@ -35,6 +35,20 @@ class ProductController
         $stmt->execute([$user['id']]);
         $products = $stmt->fetchAll();
 
+        $now = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
+        $serverTimestamp = $now->getTimestamp();
+
+        foreach ($products as &$p) {
+            $p['server_time'] = $serverTimestamp;
+            if ($p['last_claimed']) {
+                $last = new DateTime($p['last_claimed'], new DateTimeZone('Asia/Kolkata'));
+                $next = clone $last;
+                $next->modify('+1 day');
+                $p['claimable_at'] = $next->format('c');
+                $p['claimable_timestamp'] = $next->getTimestamp();
+            }
+        }
+
         response($products);
     }
 
@@ -83,6 +97,7 @@ class ProductController
                 VALUES (?, ?, ?, 'active')
             ");
             $stmt->execute([$user['id'], $productId, $expiryDate]);
+            $userProductId = $db->lastInsertId();
 
             $productName = $product['name'] ?? 'Product';
 
@@ -95,7 +110,7 @@ class ProductController
             $db->commit();
 
             response([
-                'id' => $db->lastInsertId(),
+                'id' => $userProductId,
                 'expiry_date' => $expiryDate,
                 'daily_income' => $product['daily_income']
             ], 'Product purchased successfully');
@@ -108,6 +123,7 @@ class ProductController
     public function claimDailyIncome()
     {
         try {
+            date_default_timezone_set('Asia/Kolkata');
             $user = authenticate();
 
             // Accept both JSON and form-encoded
@@ -132,6 +148,7 @@ class ProductController
             }
 
             $db = getDb();
+            $db->exec("SET time_zone = '+05:30'");
             $stmt = $db->prepare("
                 SELECT up.id, up.last_claimed, p.daily_income, p.name
                 FROM user_products up

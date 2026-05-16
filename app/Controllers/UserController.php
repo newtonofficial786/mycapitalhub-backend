@@ -161,8 +161,7 @@ class UserController {
         $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
         $stmt->execute([$totalRecharge]);
         $levelRow = $stmt->fetch();
-        $calculatedLevel = $levelRow ? intval($levelRow['level']) : 0;
-        $level = max(intval($wallet['level'] ?? 0), $calculatedLevel);
+        $level = $levelRow ? intval($levelRow['level']) : 0;
 
         $totalBonus = floatval($stats['total_bonus'] ?? 0);
         $totalCommission = floatval($stats['total_commission'] ?? 0);

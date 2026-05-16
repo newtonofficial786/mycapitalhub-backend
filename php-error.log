@@ -56,3 +56,60 @@
 [13-May-2026 18:48:23 Europe/Berlin] Product 26 last_claimed: 2026-05-03 22:13:28, now: 2026-05-13 18:48:23
 [13-May-2026 18:49:55 Europe/Berlin] Product 32 last_claimed: null, now: 2026-05-13 18:49:55
 [13-May-2026 18:50:58 Europe/Berlin] Product 33 last_claimed: null, now: 2026-05-13 18:50:58
+[16-May-2026 09:50:13 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:17 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:21 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:25 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:29 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:34 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:38 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:42 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:46 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:50 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:50:54 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 13:20:58 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:02 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:06 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:10 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:15 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 13:21:19 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:23 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 13:21:27 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:31 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:35 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:39 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:43 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:47 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:51 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:51:55 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 13:21:59 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:52:04 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:52:08 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:52:12 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:52:16 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 13:22:20 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:52:24 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 13:22:28 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:52:32 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 09:52:36 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
+[16-May-2026 10:04:18 Europe/Berlin] Product 37 last_claimed: null, now: 2026-05-16 10:04:18
+[16-May-2026 10:04:21 Europe/Berlin] Product 36 last_claimed: null, now: 2026-05-16 10:04:21
+[16-May-2026 10:10:43 Europe/Berlin] Product 39 last_claimed: null, now: 2026-05-16 10:10:43
+[16-May-2026 10:10:43 Europe/Berlin] Product 38 last_claimed: null, now: 2026-05-16 10:10:43
+[16-May-2026 10:14:47 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:14:47
+[16-May-2026 10:14:47 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:14:47
+[16-May-2026 10:14:57 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:14:57
+[16-May-2026 10:15:09 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:15:09
+[16-May-2026 10:15:40 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:15:40
+[16-May-2026 13:49:02 Asia/Kolkata] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 13:49:02
+[16-May-2026 13:49:02 Asia/Kolkata] Product 39 last_claimed: 2026-05-16 13:49:02, now: 2026-05-16 13:49:02
+[16-May-2026 13:52:43 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:52:43, now: 2026-05-16 13:52:43
+[16-May-2026 13:52:44 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:52:43, now: 2026-05-16 13:52:44
+[16-May-2026 13:53:43 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:53:43, now: 2026-05-16 13:53:43
+[16-May-2026 13:53:43 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:53:43, now: 2026-05-16 13:53:43
+[16-May-2026 13:58:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:58:00, now: 2026-05-16 13:58:00
+[16-May-2026 13:58:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:58:00, now: 2026-05-16 13:58:00
+[16-May-2026 13:59:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:59:00, now: 2026-05-16 13:59:00
+[16-May-2026 13:59:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:59:00, now: 2026-05-16 13:59:00
+[16-May-2026 14:00:24 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 14:00:00, now: 2026-05-16 14:00:24
+[16-May-2026 14:03:20 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 14:03:00, now: 2026-05-16 14:03:20

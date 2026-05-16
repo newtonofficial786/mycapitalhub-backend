@@ -192,16 +192,16 @@ class AdminSettingsController {
         $stmt = $db->query("SELECT * FROM user_level_settings WHERE active = 1 ORDER BY min_recharge DESC");
         $levels = $stmt->fetchAll();
         
-        $calculatedLevel = 0;
+        $level = 0;
         foreach ($levels as $lvl) {
             if ($totalRecharge >= floatval($lvl['min_recharge'])) {
-                $calculatedLevel = intval($lvl['level']);
+                $level = intval($lvl['level']);
                 break;
             }
         }
         
         response([
-            'level' => $calculatedLevel,
+            'level' => $level,
             'total_recharge' => $totalRecharge,
             'levels' => $levels
         ]);

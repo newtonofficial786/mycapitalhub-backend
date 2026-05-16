@@ -1248,7 +1248,7 @@ try {
         echo 'Not found';
         return;
     }
-    if (strpos($uri, '/api/uploads/images/') === 0) {
+    if (strpos($uri, 'api/uploads/images/') === 0) {
         $filename = basename($uri);
         $filepath = __DIR__ . '/uploads/images/' . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $filename);
         if ($filename && file_exists($filepath) && is_file($filepath)) {

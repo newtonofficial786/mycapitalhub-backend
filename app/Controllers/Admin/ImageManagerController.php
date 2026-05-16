@@ -182,11 +182,16 @@ class ImageManagerController {
     }
 
     private function getBaseUrl() {
-        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+        $protocol = 'http';
+        if (
+            (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+        ) {
+            $protocol = 'https';
+        }
         $host = $_SERVER['HTTP_HOST'] ?? 'najira.in';
         $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
         if ($scriptDir === '/' || $scriptDir === '\\') $scriptDir = '';
-        $scriptDir = str_replace('/api', '', $scriptDir);
         return rtrim($protocol . '://' . $host . $scriptDir, '/');
     }
 }
