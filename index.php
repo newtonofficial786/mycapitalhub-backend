@@ -350,6 +350,17 @@ try {
         $c->handleWatchPaysCallback();
         return;
     }
+    if ($uri === 'api/payment/watchpays/query' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->queryWatchPaysOrder();
+        return;
+    }
     if ($uri === 'api/payment/galepay/create' && $method === 'POST') {
         load('/bootstrap.php');
         load('/config/Database.php');

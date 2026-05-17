@@ -504,11 +504,13 @@ class PaymentController
 
         $appUrl = env('APP_URL', 'http://localhost:8000');
         $callbackUrl = $appUrl . '/api/payment/watchpays/callback';
+        $returnUrl = rtrim($appUrl, '/') . '/payment-result?order=' . $orderId;
 
         $result = $watchpays->createPaymentOrder([
             'amount' => $amount,
             'order_id' => $orderId,
             'callback_url' => $callbackUrl,
+            'return_url' => $returnUrl,
             'extra' => json_encode(['user_id' => $user['id']])
         ]);
 
@@ -546,7 +548,7 @@ class PaymentController
         if (!$data) {
             http_response_code(200);
             header('Content-Type: application/json');
-            echo 'success';
+            echo json_encode(['code' => 200, 'msg' => 'success']);
             return;
         }
 
@@ -563,20 +565,18 @@ class PaymentController
         if (!$recharge) {
             http_response_code(200);
             header('Content-Type: application/json');
-            echo 'success';
+            echo json_encode(['code' => 200, 'msg' => 'success']);
             return;
         }
 
         if ($amount > 0 && abs($amount - floatval($recharge['amount'])) > 0.01) {
             http_response_code(200);
             header('Content-Type: application/json');
-            echo 'success';
+            echo json_encode(['code' => 200, 'msg' => 'success']);
             return;
         }
 
-        $paymentStatus = 'failed';
         if (strtolower($status) === 'success') {
-            $paymentStatus = 'success';
             $stmt = $db->prepare("UPDATE recharges SET status = 'completed', transaction_id = ?, updated_at = NOW() WHERE id = ?");
             $stmt->execute([$gatewayOrderNo, $recharge['id']]);
 
@@ -615,12 +615,38 @@ class PaymentController
             $stmt->execute([$recharge['id']]);
         }
 
-        $appUrl = env('APP_URL', 'http://localhost:8000');
-        $frontendUrl = rtrim($appUrl, '/') . '/#/payment-result?status=' . $paymentStatus;
-
-        http_response_code(302);
-        header('Location: ' . $frontendUrl);
+        http_response_code(200);
+        header('Content-Type: application/json');
+        echo json_encode(['code' => 200, 'msg' => 'success']);
         exit;
+    }
+
+    public function queryWatchPaysOrder()
+    {
+        $user = authenticate();
+        $data = getJsonInput();
+
+        $orderId = $data['order_id'] ?? '';
+
+        if (!$orderId) {
+            error('Order ID is required');
+        }
+
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM recharges WHERE yoyopay_order_id = ? AND user_id = ?");
+        $stmt->execute([$orderId, $user['id']]);
+        $recharge = $stmt->fetch();
+
+        if (!$recharge) {
+            error('Order not found');
+        }
+
+        response([
+            'order_id' => $orderId,
+            'status' => $recharge['status'],
+            'amount' => floatval($recharge['amount']),
+            'local_status' => $recharge['status'],
+        ]);
     }
 
     public function createGalePayRecharge()

@@ -38,6 +38,9 @@ class WatchPaysService
     {
         $url = $this->gateway . $endpoint;
 
+        error_log('[WatchPays Request] URL: ' . $url);
+        error_log('[WatchPays Request] Data: ' . json_encode($data));
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -50,8 +53,15 @@ class WatchPaysService
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
         $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
         curl_close($ch);
+
+        error_log('[WatchPays Response] HTTP: ' . $httpCode);
+        error_log('[WatchPays Response] Body: ' . $response);
+        if ($error) {
+            error_log('[WatchPays Error] ' . $error);
+        }
 
         if ($error) {
             return ['success' => false, 'error' => 'Request failed: ' . $error];
