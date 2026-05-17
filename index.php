@@ -350,6 +350,41 @@ try {
         $c->handleWatchPaysCallback();
         return;
     }
+    if ($uri === 'api/payment/galepay/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/GalePayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createGalePayRecharge();
+        return;
+    }
+    if ($uri === 'api/payment/galepay/callback' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Models/User.php');
+        load('/app/Services/GalePayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->handleGalePayCallback();
+        return;
+    }
+    if ($uri === 'api/payment/galepay/query' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/GalePayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->queryGalePayOrder();
+        return;
+    }
     if ($uri === 'api/payment/result' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');

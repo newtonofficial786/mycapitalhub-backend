@@ -622,4 +622,224 @@ class PaymentController
         header('Location: ' . $frontendUrl);
         exit;
     }
+
+    public function createGalePayRecharge()
+    {
+        $user = authenticate();
+        $data = getJsonInput();
+
+        $amount = floatval($data['amount'] ?? 0);
+
+        if ($amount <= 0) {
+            error('Invalid amount');
+        }
+
+        require_once __DIR__ . '/../Services/GalePayService.php';
+        $galepay = new GalePayService();
+
+        $orderId = 'GP' . date('YmdHis') . $user['id'] . rand(100, 999);
+
+        $appUrl = env('APP_URL', 'http://localhost:8000');
+        $callbackUrl = rtrim($appUrl, '/') . '/api/payment/galepay/callback';
+        $returnUrl = rtrim($appUrl, '/') . '/payment-result?order=' . $orderId;
+
+        $phone = $user['mobile'] ?? '9102380668';
+        $email = $user['email'] ?? 'user@example.com';
+
+        $result = $galepay->createPayIn([
+            'amount' => $amount,
+            'order_id' => $orderId,
+            'callback_url' => $callbackUrl,
+            'return_url' => $returnUrl,
+            'phone' => $phone,
+            'email' => $email,
+        ]);
+
+        if (!$result['success']) {
+            error('Payment gateway error: ' . ($result['error'] ?? 'Unknown error'));
+        }
+
+        $paymentData = $result['data'];
+        $paymentUrl = $paymentData['paymentUrl'] ?? '';
+
+        $db = getDb();
+        $stmt = $db->prepare("
+            INSERT INTO recharges (user_id, amount, payment_method, transaction_id, status, yoyopay_order_id, gateway_order_id, payment_url)
+            VALUES (?, ?, 'galepay', ?, 'pending', ?, ?, ?)
+        ");
+        $stmt->execute([
+            $user['id'],
+            $amount,
+            $orderId,
+            $orderId,
+            $paymentData['orderNo'] ?? '',
+            $paymentUrl
+        ]);
+
+        $appFrontend = env('APP_URL', 'http://localhost:8000');
+        $resultUrl = rtrim($appFrontend, '/') . '/payment-result?order=' . $orderId;
+
+        response([
+            'id' => $db->lastInsertId(),
+            'amount' => $amount,
+            'payment_url' => $paymentUrl,
+            'merchant_order_id' => $orderId,
+            'gateway_order_no' => $paymentData['orderNo'] ?? '',
+            'result_url' => $resultUrl,
+            'status' => 'pending'
+        ], 'Payment order created. Redirect to payment_url to complete payment.');
+    }
+
+    public function handleGalePayCallback()
+    {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (!$data) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'success']);
+            return;
+        }
+
+        require_once __DIR__ . '/../Services/GalePayService.php';
+        $galepay = new GalePayService();
+
+        $callbackResult = $galepay->handleCallback($data);
+
+        if (!$callbackResult['success']) {
+            error_log('[GalePay] Invalid signature: ' . json_encode($data));
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 500, 'msg' => 'invalid signature']);
+            return;
+        }
+
+        $mchOrderId = $callbackResult['mchOrderId'];
+        $gatewayOrderNo = $callbackResult['orderNo'];
+        $payStatus = $callbackResult['payStatus'];
+        $amount = floatval($callbackResult['amount']);
+
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM recharges WHERE (yoyopay_order_id = ? OR gateway_order_id = ?) AND status = 'pending'");
+        $stmt->execute([$mchOrderId, $gatewayOrderNo]);
+        $recharge = $stmt->fetch();
+
+        if (!$recharge) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'success']);
+            return;
+        }
+
+        if ($amount > 0 && abs($amount - floatval($recharge['amount'])) > 0.01) {
+            error_log('[GalePay] Amount mismatch for order ' . $mchOrderId . ': expected ' . $recharge['amount'] . ', got ' . $amount);
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'success']);
+            return;
+        }
+
+        if ($payStatus === '1') {
+            $stmt = $db->prepare("UPDATE recharges SET status = 'completed', transaction_id = ?, updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$gatewayOrderNo, $recharge['id']]);
+
+            $creditAmount = floatval($recharge['amount']);
+            $this->userModel->updateWalletBalance($recharge['user_id'], $creditAmount, 'recharge', 'main', 'GalePay recharge completed');
+
+            $stmt = $db->prepare("UPDATE users SET total_recharge = total_recharge + ? WHERE id = ?");
+            $stmt->execute([$creditAmount, $recharge['user_id']]);
+
+            try {
+                $this->userModel->payReferralCommission($recharge['user_id'], $creditAmount);
+            } catch (Exception $e) {
+                error_log('[GalePay] Commission payment failed: ' . $e->getMessage());
+            }
+
+            try {
+                $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total_recharge FROM recharges WHERE user_id = ? AND status = 'completed'");
+                $stmt->execute([$recharge['user_id']]);
+                $rechargeData = $stmt->fetch();
+                $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
+
+                $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
+                $stmt->execute([$totalRecharge]);
+                $newLevel = $stmt->fetch();
+
+                if ($newLevel) {
+                    $level = intval($newLevel['level']);
+                    $stmt = $db->prepare("UPDATE users SET level = ? WHERE id = ? AND level < ?");
+                    $stmt->execute([$level, $recharge['user_id'], $level]);
+                }
+            } catch (Exception $e) {
+                error_log('[GalePay] Level up failed: ' . $e->getMessage());
+            }
+        } else {
+            $stmt = $db->prepare("UPDATE recharges SET status = 'failed', updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$recharge['id']]);
+        }
+
+        http_response_code(200);
+        header('Content-Type: application/json');
+        echo json_encode(['code' => 200, 'msg' => 'success']);
+        exit;
+    }
+
+    public function queryGalePayOrder()
+    {
+        $user = authenticate();
+        $data = getJsonInput();
+
+        $orderId = $data['order_id'] ?? '';
+
+        if (!$orderId) {
+            error('Order ID is required');
+        }
+
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM recharges WHERE yoyopay_order_id = ? AND user_id = ?");
+        $stmt->execute([$orderId, $user['id']]);
+        $recharge = $stmt->fetch();
+
+        if (!$recharge) {
+            error('Order not found');
+        }
+
+        require_once __DIR__ . '/../Services/GalePayService.php';
+        $galepay = new GalePayService();
+
+        $result = $galepay->queryPayIn($orderId);
+
+        if (!$result['success']) {
+            error('Failed to query order: ' . ($result['error'] ?? 'Unknown error'));
+        }
+
+        $orderData = $result['data'];
+        $payStatus = $orderData['payStatus'] ?? '0';
+
+        if ($payStatus === '1' && $recharge['status'] === 'pending') {
+            $stmt = $db->prepare("UPDATE recharges SET status = 'completed', transaction_id = ?, updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$orderData['orderNo'] ?? '', $recharge['id']]);
+
+            $creditAmount = floatval($recharge['amount']);
+            $this->userModel->updateWalletBalance($recharge['user_id'], $creditAmount, 'recharge', 'main', 'GalePay recharge completed (query)');
+
+            $stmt = $db->prepare("UPDATE users SET total_recharge = total_recharge + ? WHERE id = ?");
+            $stmt->execute([$creditAmount, $recharge['user_id']]);
+
+            try {
+                $this->userModel->payReferralCommission($recharge['user_id'], $creditAmount);
+            } catch (Exception $e) {
+                error_log('[GalePay] Commission payment failed: ' . $e->getMessage());
+            }
+        }
+
+        response([
+            'order_id' => $orderId,
+            'status' => $payStatus === '1' ? 'completed' : 'pending',
+            'amount' => $orderData['amount'] ?? $recharge['amount'],
+            'pay_status' => $payStatus,
+            'local_status' => $recharge['status'],
+        ]);
+    }
 }
