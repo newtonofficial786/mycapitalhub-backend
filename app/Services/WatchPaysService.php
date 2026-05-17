@@ -55,7 +55,6 @@ class WatchPaysService
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
-        curl_close($ch);
 
         error_log('[WatchPays Response] HTTP: ' . $httpCode);
         error_log('[WatchPays Response] Body: ' . $response);

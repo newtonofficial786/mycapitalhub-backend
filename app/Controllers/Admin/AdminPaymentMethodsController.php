@@ -123,4 +123,21 @@ class AdminPaymentMethodsController {
         
         response(null, 'Toggled');
     }
+
+    public function setDefault() {
+        authenticateAdmin();
+        $data = getJsonInput();
+        $id = intval($data['id'] ?? 0);
+        
+        if (!$id) error('ID required');
+        
+        $db = getDb();
+        $stmt = $db->prepare("UPDATE payment_methods SET is_default = 0");
+        $stmt->execute();
+        
+        $stmt = $db->prepare("UPDATE payment_methods SET is_default = 1 WHERE id = ?");
+        $stmt->execute([$id]);
+        
+        response(null, 'Default gateway updated');
+    }
 }

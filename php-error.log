@@ -253,3 +253,40 @@
 [17-May-2026 14:30:55 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714305512186","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051714305512186","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"c8bc6b7bb8627530570172f38e2dc55f"}
 [17-May-2026 14:30:56 Asia/Kolkata] [GalePay Response] HTTP: 200
 [17-May-2026 14:30:56 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714305512186","amount":800.00,"payTime":"2026-05-17 17:00:56","orderNo":"PAYIN936596733464576","paymentUrl":"https://firepayment.org/payment7?orderId=W605171430567846406578f55&amount=799.99","upiUrl":"upi://pay?pa=9785452512@mbk&pn=Payment%20for%209785452512&tr=BMu3pWu&am=799.99&cu=INR&tn=BMu3pWu","payStatus":"0"}}
+[17-May-2026 14:52:49 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
+[17-May-2026 14:52:49 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714524912111","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051714524912111","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"6c5d58b75a2551f74febe8d8abdc1d12"}
+[17-May-2026 14:52:50 Asia/Kolkata] [GalePay Response] HTTP: 200
+[17-May-2026 14:52:50 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714524912111","amount":800.00,"payTime":"2026-05-17 17:22:51","orderNo":"PAYIN942109608939520","paymentUrl":"https://firepayment.org/payment7?orderId=W60517145251159613748adf8&amount=799.99","upiUrl":"upi://pay?pa=7851942598@mbkns&pn=Payment%20for%207851942598&tr=BqXJB7v&am=799.99&cu=INR&tn=BqXJB7v","payStatus":"0"}}
+[17-May-2026 14:53:06 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[17-May-2026 14:53:06 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714530612904","callback_url":"http:\/\/localhost:5173\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"048e5f079447bffd560d744bdb8f8fb1"}
+[17-May-2026 14:53:07 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[17-May-2026 14:53:07 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026051714530612904",
+    "order_no": "20000921089008",
+    "amount": "800.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921089008",
+    "status": "created"
+}
+[17-May-2026 15:07:58 Asia/Kolkata] Product 42 last_claimed: 2026-05-16 15:06:59, now: 2026-05-17 15:07:58
+[17-May-2026 15:07:58 Asia/Kolkata] Product 41 last_claimed: 2026-05-16 15:06:49, now: 2026-05-17 15:07:58
+[17-May-2026 15:07:58 Asia/Kolkata] Product 40 last_claimed: 2026-05-16 15:06:38, now: 2026-05-17 15:07:58
+[17-May-2026 15:15:50 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[17-May-2026 15:15:50 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051715155012949","callback_url":"http:\/\/localhost:5173\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"603eaded1aa4abafb29117e385f15b4a"}
+[17-May-2026 15:15:51 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[17-May-2026 15:15:51 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026051715155012949",
+    "order_no": "20000921089584",
+    "amount": "800.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921089584",
+    "status": "created"
+}
+[17-May-2026 15:20:23 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
+[17-May-2026 15:20:23 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051715202312352","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051715202312352","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"a955e4bbf94a719b289437b3ba14fd29"}
+[17-May-2026 15:20:24 Asia/Kolkata] [GalePay Response] HTTP: 200
+[17-May-2026 15:20:24 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051715202312352","amount":800.00,"payTime":"2026-05-17 17:50:25","orderNo":"PAYIN949047323299840","paymentUrl":"https://firepayment.org/payment7?orderId=W60517152025306667501864d&amount=799.99","upiUrl":"upi://pay?pa=9125779720-5@mbkns&pn=Payment%20for%209125779720-5&tr=BCAAA8o&am=799.99&cu=INR&tn=BCAAA8o","payStatus":"0"}}
+[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
+[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051715265312520","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051715265312520","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"a641ccddedcf8b5fb3e294bf20634551"}
+[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Response] HTTP: 200
+[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051715265312520","amount":800.00,"payTime":"2026-05-17 17:56:54","orderNo":"PAYIN950680245538816","paymentUrl":"https://kspay.shop/payment7?orderId=W6051715265465369f51","upiUrl":"upi://pay?pa=9187415157@freechareg&pn=Payment%20for%209187415157&tr=IV9Fm50&am=800.00&cu=INR&tn=IV9Fm50","payStatus":"0"}}

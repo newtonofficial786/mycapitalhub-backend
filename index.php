@@ -1198,6 +1198,17 @@ try {
         $c->toggleActive();
         return;
     }
+    if ($uri === 'api/admin/payment-methods/set-default' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
+        $c = new AdminPaymentMethodsController();
+        $c->setDefault();
+        return;
+    }
     if ($uri === 'api/admin/payment-result' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');

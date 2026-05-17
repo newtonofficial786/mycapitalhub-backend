@@ -68,6 +68,35 @@ class GalePayService
     /**
      * Make HTTP POST request to GalePay API.
      */
+    /**
+     * Translate GalePay Chinese error messages to English.
+     */
+    private function translateError(string $msg): string
+    {
+        $translations = [
+            '网关不存在' => 'Payment gateway not available. Please try again.',
+            '签名错误' => 'Authentication failed. Please try again.',
+            '订单号重复' => 'Order already exists. Please try with a different amount.',
+            '金额错误' => 'Invalid amount. Please check and try again.',
+            '商户号不存在' => 'Merchant account not found. Contact support.',
+            '参数错误' => 'Invalid request parameters. Please try again.',
+            '系统繁忙' => 'System busy. Please try again later.',
+            '订单不存在' => 'Order not found.',
+            '订单状态异常' => 'Order status abnormal. Contact support.',
+            '支付失败' => 'Payment failed. Please try again.',
+            '余额不足' => 'Insufficient balance.',
+            '通道维护中' => 'Payment channel under maintenance. Please try later.',
+        ];
+
+        foreach ($translations as $chinese => $english) {
+            if (strpos($msg, $chinese) !== false) {
+                return $english;
+            }
+        }
+
+        return $msg;
+    }
+
     private function makeRequest(string $endpoint, array $data): array
     {
         $url = $this->apiBase . $endpoint;
@@ -91,7 +120,6 @@ class GalePayService
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
-        curl_close($ch);
 
         error_log('[GalePay Response] HTTP: ' . $httpCode);
         error_log('[GalePay Response] Body: ' . $response);
@@ -111,7 +139,7 @@ class GalePayService
         if ($httpCode !== 200 || isset($result['code']) && $result['code'] !== 200) {
             return [
                 'success' => false,
-                'error' => $result['msg'] ?? 'GalePay API error',
+                'error' => $this->translateError($result['msg'] ?? 'Payment gateway error. Please try again.'),
                 'code' => $result['code'] ?? $httpCode,
             ];
         }
