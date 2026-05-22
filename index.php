@@ -396,6 +396,41 @@ try {
         $c->queryGalePayOrder();
         return;
     }
+    if ($uri === 'api/payment/jazpay/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/JazpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createJazpayRecharge();
+        return;
+    }
+    if ($uri === 'api/payment/jazpay/callback' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Models/User.php');
+        load('/app/Services/JazpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->handleJazpayCallback();
+        return;
+    }
+    if ($uri === 'api/payment/jazpay/query' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/JazpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->queryJazpayOrder();
+        return;
+    }
     if ($uri === 'api/payment/result' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');

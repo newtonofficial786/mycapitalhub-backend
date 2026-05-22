@@ -868,4 +868,188 @@ class PaymentController
             'local_status' => $recharge['status'],
         ]);
     }
+
+    public function createJazpayRecharge()
+    {
+        $user = authenticate();
+        $data = getJsonInput();
+
+        $amount = floatval($data['amount'] ?? 0);
+
+        if ($amount <= 0) {
+            error('Invalid amount');
+        }
+
+        require_once __DIR__ . '/../Services/JazpayService.php';
+        $jazpay = new JazpayService();
+
+        $orderId = 'JZ' . date('YmdHis') . $user['id'] . rand(100, 999);
+
+        $appUrl = env('APP_URL', 'http://localhost:8000');
+        $callbackUrl = rtrim($appUrl, '/') . '/api/payment/jazpay/callback';
+        $returnUrl = rtrim($appUrl, '/') . '/payment-result?order=' . $orderId;
+
+        $result = $jazpay->createPaymentOrder([
+            'amount' => $amount,
+            'order_id' => $orderId,
+            'callback_url' => $callbackUrl,
+        ]);
+
+        if (!$result['success']) {
+            error('Payment gateway error: ' . ($result['error'] ?? 'Unknown error'));
+        }
+
+        $paymentData = $result['data'];
+        $paymentUrl = $paymentData['payment_url'] ?? $paymentData['url'] ?? '';
+
+        $db = getDb();
+        $stmt = $db->prepare("
+            INSERT INTO recharges (user_id, amount, payment_method, transaction_id, status, yoyopay_order_id, gateway_order_id, payment_url)
+            VALUES (?, ?, 'jazpay', ?, 'pending', ?, ?, ?)
+        ");
+        $stmt->execute([
+            $user['id'],
+            $amount,
+            $orderId,
+            $orderId,
+            $paymentData['orderNo'] ?? '',
+            $paymentUrl
+        ]);
+
+        $appFrontend = env('APP_URL', 'http://localhost:8000');
+        $resultUrl = rtrim($appFrontend, '/') . '/payment-result?order=' . $orderId;
+
+        response([
+            'id' => $db->lastInsertId(),
+            'amount' => $amount,
+            'payment_url' => $paymentUrl,
+            'merchant_order_id' => $orderId,
+            'gateway_order_no' => $paymentData['orderNo'] ?? '',
+            'result_url' => $resultUrl,
+            'status' => 'pending'
+        ], 'Payment order created. Redirect to payment_url to complete payment.');
+    }
+
+    public function handleJazpayCallback()
+    {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (!$data) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'success']);
+            return;
+        }
+
+        require_once __DIR__ . '/../Services/JazpayService.php';
+        $jazpay = new JazpayService();
+
+        $callbackResult = $jazpay->handleCallback($data);
+
+        if (!$callbackResult['success']) {
+            error_log('[Jazpay] Invalid signature: ' . json_encode($data));
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 500, 'msg' => 'invalid signature']);
+            return;
+        }
+
+        $merchantOrder = $callbackResult['merchantOrder'];
+        $gatewayOrderNo = $callbackResult['orderNo'];
+        $status = $callbackResult['status'];
+        $amount = floatval($callbackResult['amount']);
+
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM recharges WHERE (yoyopay_order_id = ? OR gateway_order_id = ?) AND status = 'pending'");
+        $stmt->execute([$merchantOrder, $gatewayOrderNo]);
+        $recharge = $stmt->fetch();
+
+        if (!$recharge) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'success']);
+            return;
+        }
+
+        if ($amount > 0 && abs($amount - floatval($recharge['amount'])) > 0.01) {
+            error_log('[Jazpay] Amount mismatch for order ' . $merchantOrder . ': expected ' . $recharge['amount'] . ', got ' . $amount);
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['code' => 200, 'msg' => 'success']);
+            return;
+        }
+
+        if (strtolower($status) === 'success') {
+            $stmt = $db->prepare("UPDATE recharges SET status = 'completed', transaction_id = ?, updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$gatewayOrderNo, $recharge['id']]);
+
+            $creditAmount = floatval($recharge['amount']);
+            $this->userModel->updateWalletBalance($recharge['user_id'], $creditAmount, 'recharge', 'main', 'Jazpay recharge completed');
+
+            $stmt = $db->prepare("UPDATE users SET total_recharge = total_recharge + ? WHERE id = ?");
+            $stmt->execute([$creditAmount, $recharge['user_id']]);
+
+            try {
+                $this->userModel->payReferralCommission($recharge['user_id'], $creditAmount);
+            } catch (Exception $e) {
+                error_log('[Jazpay] Commission payment failed: ' . $e->getMessage());
+            }
+
+            try {
+                $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total_recharge FROM recharges WHERE user_id = ? AND status = 'completed'");
+                $stmt->execute([$recharge['user_id']]);
+                $rechargeData = $stmt->fetch();
+                $totalRecharge = floatval($rechargeData['total_recharge'] ?? 0);
+
+                $stmt = $db->prepare("SELECT level FROM user_level_settings WHERE active = 1 AND min_recharge <= ? ORDER BY level DESC LIMIT 1");
+                $stmt->execute([$totalRecharge]);
+                $newLevel = $stmt->fetch();
+
+                if ($newLevel) {
+                    $level = intval($newLevel['level']);
+                    $stmt = $db->prepare("UPDATE users SET level = ? WHERE id = ? AND level < ?");
+                    $stmt->execute([$level, $recharge['user_id'], $level]);
+                }
+            } catch (Exception $e) {
+                error_log('[Jazpay] Level up failed: ' . $e->getMessage());
+            }
+        } else {
+            $stmt = $db->prepare("UPDATE recharges SET status = 'failed', updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$recharge['id']]);
+        }
+
+        http_response_code(200);
+        header('Content-Type: application/json');
+        echo json_encode(['code' => 200, 'msg' => 'success']);
+        exit;
+    }
+
+    public function queryJazpayOrder()
+    {
+        $user = authenticate();
+        $data = getJsonInput();
+
+        $orderId = $data['order_id'] ?? '';
+
+        if (!$orderId) {
+            error('Order ID is required');
+        }
+
+        $db = getDb();
+        $stmt = $db->prepare("SELECT * FROM recharges WHERE yoyopay_order_id = ? AND user_id = ?");
+        $stmt->execute([$orderId, $user['id']]);
+        $recharge = $stmt->fetch();
+
+        if (!$recharge) {
+            error('Order not found');
+        }
+
+        response([
+            'order_id' => $orderId,
+            'status' => $recharge['status'],
+            'amount' => floatval($recharge['amount']),
+            'local_status' => $recharge['status'],
+        ]);
+    }
 }

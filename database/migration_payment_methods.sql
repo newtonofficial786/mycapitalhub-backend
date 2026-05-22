@@ -23,4 +23,5 @@ INSERT INTO payment_methods (name, subtitle, backend_key, icon_name, min_amount,
 ('GalePay', 'Powered by GalePay (UPI/IMPS)', 'galepay', 'upi', 100, 100000, 'Instant', 'You will be redirected to the payment gateway to complete your payment.', 1, 3, 0),
 ('QuickPay', 'Powered by Google Pay', 'gpay', 'gpay', 100, 100000, 'Instant', 'Coming soon.', 0, 4, 0),
 ('FastPay', 'Powered by PhonePe', 'phonepe', 'phonepe', 100, 100000, 'Instant', 'Coming soon.', 0, 5, 0),
-('SmartPay', 'Powered by Paytm', 'paytm', 'wallet', 100, 100000, 'Instant', 'Coming soon.', 0, 6, 0);
+('SmartPay', 'Powered by Paytm', 'paytm', 'wallet', 100, 100000, 'Instant', 'Coming soon.', 0, 6, 0),
+('JazPay', 'Powered by JazPay (Alipay/WeChat)', 'jazpay', 'upi', 100, 100000, 'Instant', 'You will be redirected to JazPay to complete your payment.', 1, 7, 0);
