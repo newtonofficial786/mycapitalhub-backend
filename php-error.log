@@ -331,3 +331,234 @@
     "payment_url": "https:\/\/cashiernew.blue-pay.vip\/#\/mobile?orderId=17794435677439wpfy",
     "status": "created"
 }
+[22-May-2026 16:22:20 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:22:20 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"ZP2026052216222012640","amount":"800.00","callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:22:22 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:22:22 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978617",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978617",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "ZP2026052216222012640",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978617",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978617\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"ZP2026052216222012640\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978617\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:22:35 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:22:35 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"ZP2026052216223512146","amount":"800.00","callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:22:36 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:22:36 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978619",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978619",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "ZP2026052216223512146",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978619",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978619\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"ZP2026052216223512146\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978619\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:25:03 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:25:03 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216250312520","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:25:05 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:25:05 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978631",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978631",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "2026052216250312520",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978631",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978631\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216250312520\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978631\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216255512618","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978633",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "2026052216255512618",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978633",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216255512618\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978633\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978633","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216255512618","status":"SUCCESS","status_mes":null,"sys_no":"20240675978633","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216255512618\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978633\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
+[22-May-2026 16:27:08 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:27:08 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216270812466","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:27:09 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:27:09 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978637",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "2026052216270812466",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978637",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216270812466\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978637\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:27:09 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978637","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216270812466","status":"SUCCESS","status_mes":null,"sys_no":"20240675978637","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216270812466\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978637\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
+[22-May-2026 16:27:21 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:27:21 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216272112560","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:27:22 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:27:22 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978638",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "2026052216272112560",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978638",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216272112560\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978638\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:27:22 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978638","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216272112560","status":"SUCCESS","status_mes":null,"sys_no":"20240675978638","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216272112560\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978638\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
+[22-May-2026 16:35:50 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:35:50 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216355012109","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:35:52 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:35:52 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978660",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "2026052216355012109",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978660",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216355012109\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978660\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:35:52 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978660","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216355012109","status":"SUCCESS","status_mes":null,"sys_no":"20240675978660","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216355012109\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978660\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
+[22-May-2026 16:36:50 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:36:50 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216365012153","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:36:51 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:36:51 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978666",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "2026052216365012153",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978666",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216365012153\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978666\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:36:51 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978666","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216365012153","status":"SUCCESS","status_mes":null,"sys_no":"20240675978666","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216365012153\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978666\",\"upi\":null}}","error":""}
+[22-May-2026 16:45:18 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[22-May-2026 16:45:18 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216451812619","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
+[22-May-2026 16:45:20 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[22-May-2026 16:45:20 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978685",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "2026052216451812619",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240675978685",
+            "upi": null
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216451812619\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978685\",\"upi\":null}}",
+    "error": ""
+}
+[22-May-2026 16:45:20 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978685","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216451812619","status":"SUCCESS","status_mes":null,"sys_no":"20240675978685","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216451812619\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978685\",\"upi\":null}}","error":""}
