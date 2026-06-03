@@ -78,6 +78,7 @@ class ZoxpayService
         $orderNo = $orderData['order_no'];
         $amount = intval($orderData['amount']);
         $callbackUrl = $orderData['callback_url'] ?? $this->callbackUrl;
+        $returnUrl = $orderData['return_url'] ?? '';
 
         $params = [
             'merchant_id' => $this->merchantId,
@@ -86,6 +87,10 @@ class ZoxpayService
             'amount' => $amount,
             'callback_url' => $callbackUrl,
         ];
+
+        if (!empty($returnUrl)) {
+            $params['return_url'] = $returnUrl;
+        }
 
         return $this->makeRequest('/payin.php', $params);
     }

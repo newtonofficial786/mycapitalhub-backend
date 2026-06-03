@@ -131,6 +131,7 @@ class JazpayService
         $merchantOrderNo = $orderData['order_id'];
         $amount = number_format($orderData['amount'], 2, '.', '');
         $callbackUrl = $orderData['callback_url'] ?? $this->callbackUrl;
+        $returnUrl = $orderData['return_url'] ?? '';
 
         $params = [
             'merchant_id' => $this->merchantId,
@@ -138,6 +139,10 @@ class JazpayService
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,
         ];
+
+        if (!empty($returnUrl)) {
+            $params['return_url'] = $returnUrl;
+        }
 
         $signature = $this->generateSignature($params);
 

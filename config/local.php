@@ -12,6 +12,7 @@ return [
         'name' => 'Gaming Platform',
         'url' => env('APP_URL', 'http://localhost:8000'),
         'api_url' => env('API_URL', 'http://localhost:8000/api'),
+        'frontend_url' => env('FRONTEND_URL', 'http://localhost:5173'),
         'env' => 'local'
     ],
     'jwt' => [
