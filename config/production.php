@@ -12,6 +12,7 @@ return [
         'name' => 'Gaming Platform',
         'url' => env('APP_URL', 'https://your-domain.com'),
         'api_url' => env('API_URL', 'https://your-domain.com/api'),
+        'frontend_url' => env('FRONTEND_URL', 'https://your-domain.com'),
         'env' => 'production'
     ],
     'jwt' => [
@@ -21,7 +22,7 @@ return [
         'merchant_id' => env('WATCHPAYS_MERCHANT_ID', ''),
         'api_key' => env('WATCHPAYS_API_KEY', ''),
         'gateway' => 'https://api.watchpays.com/v1',
-        'callback_url' => env('WATCHPAYS_CALLBACK_URL', '')
+        'callback_url' => env('WATCHPAYS_CALLBACK_URL', env('APP_URL', 'https://your-domain.com') . '/api/payment/watchpays/callback')
     ],
     'debug' => false,
     'display_errors' => false

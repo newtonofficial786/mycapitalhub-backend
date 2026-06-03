@@ -350,6 +350,122 @@ try {
         $c->handleWatchPaysCallback();
         return;
     }
+    if ($uri === 'api/payment/watchpays/query' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->queryWatchPaysOrder();
+        return;
+    }
+    if ($uri === 'api/payment/galepay/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/GalePayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createGalePayRecharge();
+        return;
+    }
+    if ($uri === 'api/payment/galepay/callback' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Models/User.php');
+        load('/app/Services/GalePayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->handleGalePayCallback();
+        return;
+    }
+    if ($uri === 'api/payment/galepay/query' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/GalePayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->queryGalePayOrder();
+        return;
+    }
+    if ($uri === 'api/payment/jazpay/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/JazpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createJazpayRecharge();
+        return;
+    }
+    if ($uri === 'api/payment/jazpay/callback' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Models/User.php');
+        load('/app/Services/JazpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->handleJazpayCallback();
+        return;
+    }
+    if ($uri === 'api/payment/jazpay/query' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/JazpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->queryJazpayOrder();
+        return;
+    }
+    if ($uri === 'api/payment/zoxpay/create' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/ZoxpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->createZoxpayRecharge();
+        return;
+    }
+    if ($uri === 'api/payment/zoxpay/callback' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Models/User.php');
+        load('/app/Services/ZoxpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->handleZoxpayCallback();
+        return;
+    }
+    if ($uri === 'api/payment/zoxpay/query' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Models/User.php');
+        load('/app/Services/ZoxpayService.php');
+        load('/app/Controllers/PaymentController.php');
+        $c = new PaymentController();
+        $c->queryZoxpayOrder();
+        return;
+    }
     if ($uri === 'api/payment/result' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');
@@ -1150,6 +1266,17 @@ try {
         load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
         $c = new AdminPaymentMethodsController();
         $c->toggleActive();
+        return;
+    }
+    if ($uri === 'api/admin/payment-methods/set-default' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminPaymentMethodsController.php');
+        $c = new AdminPaymentMethodsController();
+        $c->setDefault();
         return;
     }
     if ($uri === 'api/admin/payment-result' && $method === 'GET') {

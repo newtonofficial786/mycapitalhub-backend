@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS payment_methods;
+
 CREATE TABLE IF NOT EXISTS payment_methods (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL COMMENT 'Display name shown to users (e.g. WatchPay)',
@@ -10,13 +12,16 @@ CREATE TABLE IF NOT EXISTS payment_methods (
     instructions TEXT COMMENT 'Additional instructions shown to users',
     active TINYINT(1) DEFAULT 1,
     sort_order INT DEFAULT 0 COMMENT 'Display order in payment method list',
+    is_default TINYINT(1) DEFAULT 0 COMMENT 'Whether this is the default selected gateway',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO payment_methods (name, subtitle, backend_key, icon_name, min_amount, max_amount, processing_time, instructions, active, sort_order) VALUES
-('WatchPay', 'Powered by WatchPays (UPI/IMPS)', 'watchpays', 'credit-card', 100, 100000, 'Instant', 'You will be redirected to the payment gateway to complete your payment.', 1, 1),
-('EasyPay', 'Bank Transfer (Admin Verified)', 'bank_transfer', 'bank', 100, 100000, '1-24 hours', 'Transfer funds to the provided bank account. Admin will verify and credit your wallet.', 1, 2),
-('QuickPay', 'Powered by Google Pay', 'gpay', 'gpay', 100, 100000, 'Instant', 'Coming soon.', 0, 3),
-('FastPay', 'Powered by PhonePe', 'phonepe', 'phonepe', 100, 100000, 'Instant', 'Coming soon.', 0, 4),
-('SmartPay', 'Powered by Paytm', 'paytm', 'wallet', 100, 100000, 'Instant', 'Coming soon.', 0, 5);
+INSERT INTO payment_methods (name, subtitle, backend_key, icon_name, min_amount, max_amount, processing_time, instructions, active, sort_order, is_default) VALUES
+('WatchPay', 'Powered by WatchPays (UPI/IMPS)', 'watchpays', 'credit-card', 100, 100000, 'Instant', 'You will be redirected to the payment gateway to complete your payment.', 1, 1, 1),
+('EasyPay', 'Bank Transfer (Admin Verified)', 'bank_transfer', 'bank', 100, 100000, '1-24 hours', 'Transfer funds to the provided bank account. Admin will verify and credit your wallet.', 1, 2, 0),
+('GalePay', 'Powered by GalePay (UPI/IMPS)', 'galepay', 'upi', 100, 100000, 'Instant', 'You will be redirected to the payment gateway to complete your payment.', 1, 3, 0),
+('QuickPay', 'Powered by Google Pay', 'gpay', 'gpay', 100, 100000, 'Instant', 'Coming soon.', 0, 4, 0),
+('FastPay', 'Powered by PhonePe', 'phonepe', 'phonepe', 100, 100000, 'Instant', 'Coming soon.', 0, 5, 0),
+('SmartPay', 'Powered by Paytm', 'paytm', 'wallet', 100, 100000, 'Instant', 'Coming soon.', 0, 6, 0),
+('JazPay', 'Powered by JazPay (Alipay/WeChat)', 'jazpay', 'upi', 100, 100000, 'Instant', 'You will be redirected to JazPay to complete your payment.', 1, 7, 0);

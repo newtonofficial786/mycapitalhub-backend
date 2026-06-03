@@ -158,13 +158,15 @@ class ProductController
             $product = $stmt->fetch();
 
             if (!$product) {
-                error('Invalid product or not eligible for claim');
+                response(['claimed' => false, 'product_id' => $productId, 'message' => 'Product not found or expired']);
+                return;
             }
 
             $income = floatval($product['daily_income']);
 
             if ($income <= 0) {
-                error('No income available for this product');
+                response(['claimed' => false, 'product_id' => $productId, 'message' => 'No income available']);
+                return;
             }
 
             $lastClaimed = $product['last_claimed'] ?? null;
@@ -176,10 +178,8 @@ class ProductController
                 $next->add(new DateInterval('P1D'));
                 $now = new DateTime();
                 if ($now < $next) {
-                    $remaining = $next->getTimestamp() - $now->getTimestamp();
-                    $hours = floor($remaining / 3600);
-                    $minutes = floor(($remaining % 3600) / 60);
-                    error("Please wait {$hours}h {$minutes}m before claiming again", 400);
+                    response(['claimed' => false, 'product_id' => $productId, 'message' => 'Already claimed today']);
+                    return;
                 }
                 // Accumulate income for all missed calendar days
                 $lastDate = (clone $last)->setTime(0, 0, 0);

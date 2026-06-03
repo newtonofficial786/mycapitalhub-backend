@@ -38,6 +38,9 @@ class WatchPaysService
     {
         $url = $this->gateway . $endpoint;
 
+        error_log('[WatchPays Request] URL: ' . $url);
+        error_log('[WatchPays Request] Data: ' . json_encode($data));
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -50,8 +53,14 @@ class WatchPaysService
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
         $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
-        curl_close($ch);
+
+        error_log('[WatchPays Response] HTTP: ' . $httpCode);
+        error_log('[WatchPays Response] Body: ' . $response);
+        if ($error) {
+            error_log('[WatchPays Error] ' . $error);
+        }
 
         if ($error) {
             return ['success' => false, 'error' => 'Request failed: ' . $error];
@@ -70,15 +79,19 @@ class WatchPaysService
         $amount = number_format($orderData['amount'], 2, '.', '');
         $merchantOrderNo = $orderData['order_id'];
         $callbackUrl = $orderData['callback_url'] ?? $this->callbackUrl;
+        $returnUrl = $orderData['return_url'] ?? '';
         $extra = $orderData['extra'] ?? '';
 
         $params = [
             'merchant_id' => $this->merchantId,
-            'api_key' => $this->apiKey,
             'amount' => $amount,
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,
         ];
+
+        if (!empty($returnUrl)) {
+            $params['return_url'] = $returnUrl;
+        }
 
         if (!empty($extra)) {
             $params['extra'] = $extra;
@@ -90,6 +103,10 @@ class WatchPaysService
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,
         ];
+
+        if (!empty($returnUrl)) {
+            $signatureParams['return_url'] = $returnUrl;
+        }
 
         $signature = $this->generateSignature($signatureParams);
         $params['signature'] = $signature;
