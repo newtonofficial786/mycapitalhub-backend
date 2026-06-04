@@ -903,7 +903,8 @@ class PaymentController
         }
 
         $paymentData = $result['data'];
-        $paymentUrl = $paymentData['payment_url'] ?? $paymentData['url'] ?? '';
+        error_log('[Jazpay] API response data: ' . json_encode($paymentData));
+        $paymentUrl = $paymentData['payment_url'] ?? $paymentData['paymentUrl'] ?? $paymentData['pay_url'] ?? $paymentData['url'] ?? '';
 
         $db = getDb();
         $stmt = $db->prepare("
@@ -1091,7 +1092,7 @@ class PaymentController
         }
 
         $paymentData = $result['data'];
-        $paymentUrl = $paymentData['payment_url'] ?? $paymentData['url'] ?? '';
+        $paymentUrl = $paymentData['payment_url'] ?? $paymentData['paymentUrl'] ?? $paymentData['pay_url'] ?? $paymentData['url'] ?? '';
         if (!$paymentUrl && isset($paymentData['message']) && filter_var($paymentData['message'], FILTER_VALIDATE_URL)) {
             $paymentUrl = $paymentData['message'];
         }

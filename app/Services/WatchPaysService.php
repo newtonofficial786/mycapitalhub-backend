@@ -83,6 +83,7 @@ class WatchPaysService
 
         $params = [
             'merchant_id' => $this->merchantId,
+            'api_key' => $this->apiKey,
             'amount' => $amount,
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,

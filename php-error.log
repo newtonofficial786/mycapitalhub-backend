@@ -1,616 +1,100 @@
-[11-May-2026 05:45:55 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:45:59 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:46:03 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:46:07 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:46:11 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:46:15 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:46:19 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:46:23 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 05:46:28 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[11-May-2026 06:08:54 Europe/Berlin] [API Error] syntax error, unexpected token "public", expecting end of file in P:\Website Projects\Projects001\backend\app\Controllers\RechargeSettingsController.php:32
-[11-May-2026 06:08:54 Europe/Berlin] [API Error] syntax error, unexpected token "public", expecting end of file in P:\Website Projects\Projects001\backend\app\Controllers\RechargeSettingsController.php:32
-[11-May-2026 06:09:33 Europe/Berlin] [API Error] syntax error, unexpected token "public", expecting end of file in P:\Website Projects\Projects001\backend\app\Controllers\RechargeSettingsController.php:32
-[11-May-2026 08:10:00 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:00 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:10:00 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:00 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:10:07 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:07 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:10:07 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:07 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:10:30 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:30 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:10:30 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:30 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:10:34 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:34 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:10:34 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:10:34 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:19:04 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:19:04 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:19:04 Europe/Berlin] PHP Warning:  require_once(P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php): Failed to open stream: No such file or directory in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php on line 2
-[11-May-2026 08:19:04 Europe/Berlin] [API Error] Failed opening required 'P:\Website Projects\Projects001\backend\app\Controllers\Admin/../../config/Database.php' (include_path='C:\xampp\php\PEAR') in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:2
-[11-May-2026 08:20:53 Europe/Berlin] [API Error] Call to undefined method Database::query() in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:99
-[11-May-2026 08:20:53 Europe/Berlin] [API Error] Call to undefined method Database::query() in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:99
-[11-May-2026 08:23:38 Europe/Berlin] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.media_library' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:98
-[11-May-2026 08:23:38 Europe/Berlin] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.media_library' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:98
-[11-May-2026 08:24:01 Europe/Berlin] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.media_library' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:98
-[11-May-2026 08:24:01 Europe/Berlin] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.media_library' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\ImageManagerController.php:98
-[13-May-2026 15:55:49 Europe/Berlin] Product 26 last_claimed: null, now: 2026-05-13 15:55:49
-[13-May-2026 16:06:02 Europe/Berlin] Product 27 last_claimed: null, now: 2026-05-13 16:06:02
-[13-May-2026 16:18:28 Europe/Berlin] Product 28 last_claimed: null, now: 2026-05-13 16:18:28
-[13-May-2026 16:19:05 Europe/Berlin] Product 29 last_claimed: null, now: 2026-05-13 16:19:05
-[13-May-2026 16:28:11 Europe/Berlin] Product 30 last_claimed: null, now: 2026-05-13 16:28:11
-[13-May-2026 16:28:22 Europe/Berlin] Product 31 last_claimed: null, now: 2026-05-13 16:28:22
-[13-May-2026 18:11:34 Europe/Berlin] Product 26 last_claimed: 2026-05-04 19:25:49, now: 2026-05-13 18:11:34
-[13-May-2026 18:11:34 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:41:34, now: 2026-05-13 18:11:34
-[13-May-2026 18:14:50 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:41:34, now: 2026-05-13 18:14:50
-[13-May-2026 18:14:50 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:44:50, now: 2026-05-13 18:14:50
-[13-May-2026 18:15:47 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:44:50, now: 2026-05-13 18:15:47
-[13-May-2026 18:15:47 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:45:47, now: 2026-05-13 18:15:47
-[13-May-2026 18:16:34 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:45:47, now: 2026-05-13 18:16:34
-[13-May-2026 18:16:34 Europe/Berlin] Product 26 last_claimed: 2026-05-13 21:46:34, now: 2026-05-13 18:16:34
-[13-May-2026 18:27:39 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:46:34, now: 2026-05-13 18:27:39
-[13-May-2026 18:35:40 Europe/Berlin] Product 26 last_claimed: 2026-05-03 21:57:39, now: 2026-05-13 18:35:40
-[13-May-2026 18:43:28 Europe/Berlin] Product 26 last_claimed: 2026-05-03 22:05:40, now: 2026-05-13 18:43:28
-[13-May-2026 18:48:23 Europe/Berlin] Product 26 last_claimed: 2026-05-03 22:13:28, now: 2026-05-13 18:48:23
-[13-May-2026 18:49:55 Europe/Berlin] Product 32 last_claimed: null, now: 2026-05-13 18:49:55
-[13-May-2026 18:50:58 Europe/Berlin] Product 33 last_claimed: null, now: 2026-05-13 18:50:58
-[16-May-2026 09:50:13 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:17 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:21 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:25 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:29 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:34 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:38 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:42 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:46 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:50 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:50:54 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 13:20:58 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:02 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:06 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:10 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:15 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 13:21:19 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:23 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 13:21:27 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:31 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:35 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:39 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:43 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:47 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:51 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:51:55 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 13:21:59 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:52:04 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:52:08 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:52:12 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:52:16 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 13:22:20 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:52:24 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 13:22:28 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:52:32 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 09:52:36 Europe/Berlin] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:42
-[16-May-2026 10:04:18 Europe/Berlin] Product 37 last_claimed: null, now: 2026-05-16 10:04:18
-[16-May-2026 10:04:21 Europe/Berlin] Product 36 last_claimed: null, now: 2026-05-16 10:04:21
-[16-May-2026 10:10:43 Europe/Berlin] Product 39 last_claimed: null, now: 2026-05-16 10:10:43
-[16-May-2026 10:10:43 Europe/Berlin] Product 38 last_claimed: null, now: 2026-05-16 10:10:43
-[16-May-2026 10:14:47 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:14:47
-[16-May-2026 10:14:47 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:14:47
-[16-May-2026 10:14:57 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:14:57
-[16-May-2026 10:15:09 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:15:09
-[16-May-2026 10:15:40 Europe/Berlin] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 10:15:40
-[16-May-2026 13:49:02 Asia/Kolkata] Product 39 last_claimed: 2026-05-15 13:40:43, now: 2026-05-16 13:49:02
-[16-May-2026 13:49:02 Asia/Kolkata] Product 39 last_claimed: 2026-05-16 13:49:02, now: 2026-05-16 13:49:02
-[16-May-2026 13:52:43 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:52:43, now: 2026-05-16 13:52:43
-[16-May-2026 13:52:44 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:52:43, now: 2026-05-16 13:52:44
-[16-May-2026 13:53:43 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:53:43, now: 2026-05-16 13:53:43
-[16-May-2026 13:53:43 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:53:43, now: 2026-05-16 13:53:43
-[16-May-2026 13:58:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:58:00, now: 2026-05-16 13:58:00
-[16-May-2026 13:58:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:58:00, now: 2026-05-16 13:58:00
-[16-May-2026 13:59:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 13:59:00, now: 2026-05-16 13:59:00
-[16-May-2026 13:59:00 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 13:59:00, now: 2026-05-16 13:59:00
-[16-May-2026 14:00:24 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 14:00:00, now: 2026-05-16 14:00:24
-[16-May-2026 14:03:20 Asia/Kolkata] Product 38 last_claimed: 2026-05-15 14:03:00, now: 2026-05-16 14:03:20
-[17-May-2026 12:23:19 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:23:19 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051712231912965","amount":"800.00","channelCode":"300","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712231912965","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"4723a20140f50eb629b70a1b30e64c18"}
-[17-May-2026 12:23:20 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:23:20 Asia/Kolkata] [GalePay Response] Body: {"msg":"网关不存在","code":500}
-[17-May-2026 12:27:18 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:27:18 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051712271812807","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712271812807","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"7074871a65135179aab6420d5f76e72a"}
-[17-May-2026 12:27:18 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:27:18 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051712271812807","amount":800.00,"payTime":"2026-05-17 14:57:19","orderNo":"PAYIN905486112690176","paymentUrl":"https://firepayment.org/payment7?orderId=W60517122719435633226bf7c&amount=799.99","upiUrl":"upi://pay?pa=7091056579@mbkns&pn=Payment%20for%207091056579&tr=BfacZ5K&am=799.99&cu=INR&tn=BfacZ5K","payStatus":"0"}}
-[17-May-2026 12:29:44 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:29:44 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051712294412442","amount":"800.00","channelCode":"302","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712294412442","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"d3d4dd66c6bf7966f62213025a08231d"}
-[17-May-2026 12:29:45 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:29:45 Asia/Kolkata] [GalePay Response] Body: {"msg":"网关不存在","code":500}
-[17-May-2026 12:29:59 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:29:59 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051712295912715","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712295912715","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"82df6c6e4a16d5b5e2c1426d548b2ab0"}
-[17-May-2026 12:30:00 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:30:00 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051712295912715","amount":800.00,"payTime":"2026-05-17 15:00:01","orderNo":"PAYIN906163966742528","paymentUrl":"https://firepayment.org/payment7?orderId=W605171230010506432359f92&amount=799.99","upiUrl":"upi://pay?pa=9153483635@freecharge&pn=Payment%20for%209153483635&tr=BajaYH4&am=799.99&cu=INR&tn=BajaYH4","payStatus":"0"}}
-[17-May-2026 12:37:18 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:37:18 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1763362181","mchOrderId":"GP2026051712371812756","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712371812756","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"e388050e9c620466e7a599cc41ae02fc"}
-[17-May-2026 12:37:19 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:37:19 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1763362181","mchOrderId":"GP2026051712371812756","amount":800.00,"payTime":"2026-05-17 15:07:19","orderNo":"PAYIN908003932147712","paymentUrl":"https://www.shesgsad.com/plainPay?orderId=DS2055908004143190016","upiUrl":"?pa=im.201021932097@indus&pn=Payment Bank&am=799.38&tn=FmQ&tr=FmQ&cu=INR&featuretype=money_transfer","payStatus":"0"}}
-[17-May-2026 12:39:39 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:39:39 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1763362181","mchOrderId":"GP2026051712393912538","amount":"297.00","channelCode":"300","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712393912538","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"7d78ab2166e029fdee33d39dcd61e512"}
-[17-May-2026 12:39:40 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:39:40 Asia/Kolkata] [GalePay Response] Body: {"msg":"没有匹配金额的可用渠道","code":500}
-[17-May-2026 12:40:08 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:40:08 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1763362181","mchOrderId":"GP2026051712400812578","amount":"297.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712400812578","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"dcc71344aa0275d88f8dd4b60dd399dd"}
-[17-May-2026 12:40:09 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:40:09 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1763362181","mchOrderId":"GP2026051712400812578","amount":297.00,"payTime":"2026-05-17 15:10:10","orderNo":"PAYIN908719966949376","paymentUrl":"https://www.shesgsad.com/plainPay?orderId=DS2055908720182185984","upiUrl":"?pa=im.201021932097@indus&pn=Payment Bank&am=296.86&tn=Mz8&tr=Mz8&cu=INR&featuretype=money_transfer","payStatus":"0"}}
-[17-May-2026 12:42:30 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:42:30 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1763362181","mchOrderId":"GP2026051712423012728","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712423012728","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"0295b7ba833ba8f46b373776a11a6ceb"}
-[17-May-2026 12:42:31 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:42:31 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1763362181","mchOrderId":"GP2026051712423012728","amount":800.00,"payTime":"2026-05-17 15:12:32","orderNo":"PAYIN909313939378176","paymentUrl":"https://www.shesgsad.com/plainPay?orderId=DS2055909314158546944","upiUrl":"?pa=im.201021932097@indus&pn=Payment Bank&am=799.84&tn=ciJ&tr=ciJ&cu=INR&featuretype=money_transfer","payStatus":"0"}}
-[17-May-2026 12:48:04 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:48:04 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1763362181","mchOrderId":"GP2026051712480412964","amount":"800.00","channelCode":"300","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712480412964","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"6b12ac7f4674ccc00dd4ac7b0a4f0bf5"}
-[17-May-2026 12:48:05 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:48:05 Asia/Kolkata] [GalePay Response] Body: {"msg":"没有匹配金额的可用渠道","code":500}
-[17-May-2026 12:53:33 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 12:53:33 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1763362181","mchOrderId":"GP2026051712533312950","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051712533312950","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"9743318e081e802c2d6220a01c012e6d"}
-[17-May-2026 12:53:34 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 12:53:34 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1763362181","mchOrderId":"GP2026051712533312950","amount":800.00,"payTime":"2026-05-17 15:23:35","orderNo":"PAYIN912095429824512","paymentUrl":"https://www.shesgsad.com/plainPay?orderId=DS2055912095636410368","upiUrl":"?pa=JKBMERC00760523@jkb&pn=Payment Bank&am=799.26&tn=TXQ&tr=TXQ&cu=INR&featuretype=money_transfer","payStatus":"0"}}
-[17-May-2026 13:04:21 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 13:04:21 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051713042112755","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051713042112755","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"feecc1be8d461d8a748b4d00e24f2415"}
-[17-May-2026 13:04:22 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 13:04:22 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051713042112755","amount":800.00,"payTime":"2026-05-17 15:34:23","orderNo":"PAYIN914813238153216","paymentUrl":"https://firepayment.org/payment7?orderId=W60517130423198622106a516&amount=799.99","upiUrl":"upi://pay?pa=6305255227@mbkns&pn=Payment%20for%206305255227&tr=B0E021f&am=799.99&cu=INR&tn=B0E021f","payStatus":"0"}}
-[17-May-2026 13:37:22 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 13:37:22 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051713372212596","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051713372212596","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"07c3920385282a3f2670598ae8ea6a39"}
-[17-May-2026 13:37:23 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 13:37:23 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051713372212596","amount":800.00,"payTime":"2026-05-17 16:07:23","orderNo":"PAYIN923121076178944","paymentUrl":"https://firepayment.org/payment7?orderId=W6051713372394167079699e5&amount=799.99","upiUrl":"upi://pay?pa=9707725813@pthdfc&pn=Payment%20for%209707725813&tr=BgwOexh&am=799.99&cu=INR&tn=BgwOexh","payStatus":"0"}}
-[17-May-2026 13:56:28 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 13:56:28 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051713562812402","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051713562812402","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"97271e106107c8d15f4679f76f5c0094"}
-[17-May-2026 13:56:29 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 13:56:29 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051713562812402","amount":800.00,"payTime":"2026-05-17 16:26:30","orderNo":"PAYIN927928834887680","paymentUrl":"https://firepayment.org/payment7?orderId=W6051713563019866952082f7&amount=799.98","upiUrl":"upi://pay?pa=6002833847@mbkns&pn=Payment%20for%206002833847&tr=B7H9V7D&am=799.98&cu=INR&tn=B7H9V7D","payStatus":"0"}}
-[17-May-2026 14:20:42 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 14:20:42 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714204212997","amount":"800.00","channelCode":"301","returnUrl":"https:\/\/mycapitalhub.xyz\/payment-result?order=GP2026051714204212997","notifyUrl":"https:\/\/mycapitalhub.xyz\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"eb5a0f8f16240c9caa525709ad636fcb"}
-[17-May-2026 14:20:43 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 14:20:43 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714204212997","amount":800.00,"payTime":"2026-05-17 16:50:43","orderNo":"PAYIN934025453146112","paymentUrl":"https://firepayment.org/payment7?orderId=W60517142043747669217b642&amount=799.99","upiUrl":"upi://pay?pa=9864893746@mbkns&pn=Payment%20for%209864893746&tr=MM3fAEK&am=799.99&cu=INR&tn=MM3fAEK","payStatus":"0"}}
-[17-May-2026 14:21:42 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:21:42 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714214212480","callback_url":"https:\/\/mycapitalhub.xyz\/api\/payment\/watchpays\/callback","return_url":"https:\/\/mycapitalhub.xyz\/payment-result?order=WP2026051714214212480","extra":"{\"user_id\":12}","signature":"2661cedd72b8e9cd0fff9e669826d3fd"}
-[17-May-2026 14:21:42 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:21:42 Asia/Kolkata] [WatchPays Response] Body: {"success":false,"message":"Invalid signature"}
-[17-May-2026 14:22:49 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:22:49 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714224912659","callback_url":"https:\/\/mycapitalhub.xyz\/api\/payment\/watchpays\/callback","return_url":"https:\/\/mycapitalhub.xyz\/payment-result?order=WP2026051714224912659","extra":"{\"user_id\":12}","signature":"634a3075445cdbda33a278a9b5af1d3b"}
-[17-May-2026 14:22:50 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:22:50 Asia/Kolkata] [WatchPays Response] Body: {"success":false,"message":"Invalid signature"}
-[17-May-2026 14:23:51 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:23:51 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714235112405","callback_url":"https:\/\/mycapitalhub.xyz\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"71c0c11411a122237d73c68b3681cdd9"}
-[17-May-2026 14:23:52 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:23:52 Asia/Kolkata] [WatchPays Response] Body: {
+[04-Jun-2026 12:06:21 Asia/Kolkata] [Jazpay Request] URL: https://api.jazpays.com/v1/create
+[04-Jun-2026 12:06:21 Asia/Kolkata] [Jazpay Request] Data: {"merchant_id":"100222038","amount":"297.00","merchant_order_no":"JZ2026060412062112311","callback_url":"http:\/\/localhost:8000\/api\/payment\/jazpay\/callback","return_url":"http:\/\/localhost:5173\/payment-result?order=JZ2026060412062112311","api_key":"3ba846c55cb9bcab5c8a70bef01928d4","signature":"41f78f3086d500a46cba273e4a761488"}
+[04-Jun-2026 12:06:22 Asia/Kolkata] [Jazpay Response] HTTP: 200
+[04-Jun-2026 12:06:22 Asia/Kolkata] [Jazpay Response] Body: {"success":false,"message":"Invalid signature"}
+[04-Jun-2026 12:06:22 Asia/Kolkata] [Jazpay] API response data: {"success":false,"message":"Invalid signature"}
+[04-Jun-2026 12:07:34 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
+[04-Jun-2026 12:07:34 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026060412073412846","amount":"297.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026060412073412846","notifyUrl":"http:\/\/localhost:8000\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"ff0efe6fafa15af105eb8e1c6706d3fc"}
+[04-Jun-2026 12:07:35 Asia/Kolkata] [GalePay Response] HTTP: 200
+[04-Jun-2026 12:07:35 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026060412073412846","amount":297.00,"payTime":"2026-06-04 14:37:35","orderNo":"PAYIN423501761634304","paymentUrl":"https://firepayment.org/payment7?orderId=W60604120735498661250aa61&amount=296.99","upiUrl":"upi://pay?pa=7015055514@freecharge&pn=Payment%20for%207015055514&tr=BUPAPHo&am=296.99&cu=INR&tn=BUPAPHo","payStatus":"0"}}
+[04-Jun-2026 12:07:42 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[04-Jun-2026 12:07:42 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"ZX2026060412074212856","amount":297,"callback_url":"http:\/\/localhost:8000\/api\/payment\/zoxpay\/callback","return_url":"http:\/\/localhost:5173\/payment-result?order=ZX2026060412074212856"}
+[04-Jun-2026 12:07:45 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[04-Jun-2026 12:07:45 Asia/Kolkata] [Zoxpay Response] Body: {
     "success": true,
-    "merchant_order_no": "WP2026051714235112405",
-    "order_no": "20000921088266",
-    "amount": "800.00",
-    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921088266",
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=",
+    "gateway_response": {
+        "success": false,
+        "code": 50001,
+        "message": "fail",
+        "data": null
+    },
+    "raw": "{\"success\":false,\"code\":50001,\"message\":\"fail\",\"data\":null}",
+    "error": ""
+}
+[04-Jun-2026 12:07:45 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=","gateway_response":{"success":false,"code":50001,"message":"fail","data":null},"raw":"{\"success\":false,\"code\":50001,\"message\":\"fail\",\"data\":null}","error":""}
+[04-Jun-2026 12:09:04 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
+[04-Jun-2026 12:09:04 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"ZX2026060412090412402","amount":800,"callback_url":"http:\/\/localhost:8000\/api\/payment\/zoxpay\/callback","return_url":"http:\/\/localhost:5173\/payment-result?order=ZX2026060412090412402"}
+[04-Jun-2026 12:09:06 Asia/Kolkata] [Zoxpay Response] HTTP: 200
+[04-Jun-2026 12:09:06 Asia/Kolkata] [Zoxpay Response] Body: {
+    "success": true,
+    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240676031171",
+    "gateway_response": {
+        "success": true,
+        "code": 200,
+        "message": "\u8bf7\u6c42\u6210\u529f",
+        "data": {
+            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676031171",
+            "deeplink": null,
+            "mer_no": "1000240",
+            "order_amount": "800",
+            "order_no": "ZX2026060412090412402",
+            "status": "SUCCESS",
+            "status_mes": null,
+            "sys_no": "20240676031171",
+            "upi": "upi:\/\/pay?pa=7024189773@mbkns&pn=Payment%20for%207024189773&tr=Pm9P1DG&am=799.99&cu=INR&tn=Pm9P1DG"
+        }
+    },
+    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676031171\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"ZX2026060412090412402\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240676031171\",\"upi\":\"upi:\/\/pay?pa=7024189773@mbkns&pn=Payment%20for%207024189773&tr=Pm9P1DG&am=799.99&cu=INR&tn=Pm9P1DG\"}}",
+    "error": ""
+}
+[04-Jun-2026 12:09:06 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240676031171","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676031171","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"ZX2026060412090412402","status":"SUCCESS","status_mes":null,"sys_no":"20240676031171","upi":"upi:\/\/pay?pa=7024189773@mbkns&pn=Payment%20for%207024189773&tr=Pm9P1DG&am=799.99&cu=INR&tn=Pm9P1DG"}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676031171\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"ZX2026060412090412402\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240676031171\",\"upi\":\"upi:\/\/pay?pa=7024189773@mbkns&pn=Payment%20for%207024189773&tr=Pm9P1DG&am=799.99&cu=INR&tn=Pm9P1DG\"}}","error":""}
+[04-Jun-2026 12:09:31 Asia/Kolkata] [Jazpay Request] URL: https://api.jazpays.com/v1/create
+[04-Jun-2026 12:09:31 Asia/Kolkata] [Jazpay Request] Data: {"merchant_id":"100222038","amount":"297.00","merchant_order_no":"JZ2026060412093112471","callback_url":"http:\/\/localhost:8000\/api\/payment\/jazpay\/callback","api_key":"3ba846c55cb9bcab5c8a70bef01928d4","signature":"048af619e168fa25603a0c20db92e9fc","return_url":"http:\/\/localhost:5173\/payment-result?order=JZ2026060412093112471"}
+[04-Jun-2026 12:09:32 Asia/Kolkata] [Jazpay Response] HTTP: 200
+[04-Jun-2026 12:09:32 Asia/Kolkata] [Jazpay Response] Body: {
+    "success": true,
+    "merchant_order_no": "JZ2026060412093112471",
+    "platform_order_no": "JAZP2026060400014489",
+    "amount": "297.00",
+    "payment_url": "https:\/\/pay.payaia.com\/payment?orderId=PA260604120932170899",
     "status": "created"
 }
-[17-May-2026 14:25:19 Asia/Kolkata] Product 38 last_claimed: 2026-05-16 14:03:20, now: 2026-05-17 14:25:19
-[17-May-2026 14:25:41 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:25:41 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714254112177","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"3da577064845b577a0711418662ac5a3"}
-[17-May-2026 14:25:42 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:25:42 Asia/Kolkata] [WatchPays Response] Body: {
+[04-Jun-2026 12:09:32 Asia/Kolkata] [Jazpay] API response data: {"success":true,"merchant_order_no":"JZ2026060412093112471","platform_order_no":"JAZP2026060400014489","amount":"297.00","payment_url":"https:\/\/pay.payaia.com\/payment?orderId=PA260604120932170899","status":"created"}
+[04-Jun-2026 12:10:40 Asia/Kolkata] [Jazpay Request] URL: https://api.jazpays.com/v1/create
+[04-Jun-2026 12:10:40 Asia/Kolkata] [Jazpay Request] Data: {"merchant_id":"100222038","amount":"297.00","merchant_order_no":"JZ2026060412104012536","callback_url":"http:\/\/localhost:8000\/api\/payment\/jazpay\/callback","api_key":"3ba846c55cb9bcab5c8a70bef01928d4","signature":"8f631ab3af1f381e16da20f200743371","return_url":"http:\/\/localhost:5173\/payment-result?order=JZ2026060412104012536"}
+[04-Jun-2026 12:10:40 Asia/Kolkata] [Jazpay Response] HTTP: 200
+[04-Jun-2026 12:10:40 Asia/Kolkata] [Jazpay Response] Body: {
     "success": true,
-    "merchant_order_no": "WP2026051714254112177",
-    "order_no": "20000921088307",
-    "amount": "800.00",
-    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921088307",
+    "merchant_order_no": "JZ2026060412104012536",
+    "platform_order_no": "JAZP2026060400014492",
+    "amount": "297.00",
+    "payment_url": "https:\/\/cashier.ttpay.quest\/newcashier\/#\/v7?orderNum=CjYURUFjYnZ%2FZUlDbwcAZGlAdURAag%3D%3D&mchId=S820260521074923000148",
     "status": "created"
 }
-[17-May-2026 14:26:49 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:26:49 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714264912486","callback_url":"http:\/\/localhost:5173\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"a47c035f178b17faacbe1251678126a1"}
-[17-May-2026 14:26:49 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:26:49 Asia/Kolkata] [WatchPays Response] Body: {
+[04-Jun-2026 12:10:40 Asia/Kolkata] [Jazpay] API response data: {"success":true,"merchant_order_no":"JZ2026060412104012536","platform_order_no":"JAZP2026060400014492","amount":"297.00","payment_url":"https:\/\/cashier.ttpay.quest\/newcashier\/#\/v7?orderNum=CjYURUFjYnZ%2FZUlDbwcAZGlAdURAag%3D%3D&mchId=S820260521074923000148","status":"created"}
+[04-Jun-2026 18:46:21 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
+[04-Jun-2026 18:46:25 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
+[04-Jun-2026 18:46:30 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
+[04-Jun-2026 18:46:34 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
+[04-Jun-2026 18:46:45 Asia/Kolkata] Product 38 last_claimed: 2026-06-03 14:27:10, now: 2026-06-04 18:46:45
+[04-Jun-2026 18:46:53 Asia/Kolkata] [Jazpay Request] URL: https://api.jazpays.com/v1/create
+[04-Jun-2026 18:46:53 Asia/Kolkata] [Jazpay Request] Data: {"merchant_id":"100222038","amount":"297.00","merchant_order_no":"JZ2026060418465312763","callback_url":"http:\/\/localhost:8000\/api\/payment\/jazpay\/callback","api_key":"3ba846c55cb9bcab5c8a70bef01928d4","signature":"3160f6fea657935da079a183b9fc3521","return_url":"http:\/\/localhost:5173\/payment-result?order=JZ2026060418465312763"}
+[04-Jun-2026 18:46:55 Asia/Kolkata] [Jazpay Response] HTTP: 200
+[04-Jun-2026 18:46:55 Asia/Kolkata] [Jazpay Response] Body: {
     "success": true,
-    "merchant_order_no": "WP2026051714264912486",
-    "order_no": "20000921088333",
-    "amount": "800.00",
-    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921088333",
+    "merchant_order_no": "JZ2026060418465312763",
+    "platform_order_no": "JAZP2026060400014687",
+    "amount": "297.00",
+    "payment_url": "https:\/\/checkout.jazpayment.com\/cashier-chain-checkout-inr-upi\/#\/?orderNo=PININR1780579014648JUNN&timestamp=1780579014680&sign=BACD234AABEDDF8E29DC664EB5AA7A27",
     "status": "created"
 }
-[17-May-2026 14:27:23 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:27:23 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714272312346","callback_url":"http:\/\/localhost:5173\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"d4d0ad76297a7a56d8df73d55d107a35"}
-[17-May-2026 14:27:24 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:27:24 Asia/Kolkata] [WatchPays Response] Body: {
-    "success": true,
-    "merchant_order_no": "WP2026051714272312346",
-    "order_no": "20000921088355",
-    "amount": "800.00",
-    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921088355",
-    "status": "created"
-}
-[17-May-2026 14:28:32 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 14:28:32 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714283212450","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051714283212450","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"9a1fa3345fc05b16627643efedb2fb16"}
-[17-May-2026 14:28:32 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 14:28:32 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714283212450","amount":800.00,"payTime":"2026-05-17 16:58:33","orderNo":"PAYIN935994913755136","paymentUrl":"https://firepayment.org/payment7?orderId=W60517142833309641176b032&amount=799.99","upiUrl":"upi://pay?pa=9504013600@ptyes&pn=Payment%20for%209504013600&tr=B6M9zPP&am=799.99&cu=INR&tn=B6M9zPP","payStatus":"0"}}
-[17-May-2026 14:28:34 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/query
-[17-May-2026 14:28:34 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714283212450","sign":"c3140aa24904e0d5c8dca72f9b5864d7"}
-[17-May-2026 14:28:35 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 14:28:35 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714283212450","amount":800.0000,"payTime":"2026-05-17 16:58:33","orderNo":"PAYIN935994913755136","payStatus":"0"}}
-[17-May-2026 14:28:35 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/query
-[17-May-2026 14:28:35 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714283212450","sign":"c3140aa24904e0d5c8dca72f9b5864d7"}
-[17-May-2026 14:28:35 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 14:28:35 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714283212450","amount":800.0000,"payTime":"2026-05-17 16:58:33","orderNo":"PAYIN935994913755136","payStatus":"0"}}
-[17-May-2026 14:29:41 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:29:41 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714294112772","callback_url":"http:\/\/localhost:5173\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"fae3b6de83356ad25d078124da2486e3"}
-[17-May-2026 14:29:42 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:29:42 Asia/Kolkata] [WatchPays Response] Body: {
-    "success": true,
-    "merchant_order_no": "WP2026051714294112772",
-    "order_no": "20000921088416",
-    "amount": "800.00",
-    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921088416",
-    "status": "created"
-}
-[17-May-2026 14:30:19 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 14:30:19 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714301912163","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051714301912163","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"7a01dd81802922b7eef87e7738fb5d81"}
-[17-May-2026 14:30:20 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 14:30:20 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714301912163","amount":800.00,"payTime":"2026-05-17 17:00:20","orderNo":"PAYIN936445545582592","paymentUrl":"https://firepayment.org/payment7?orderId=W60517143020738670532bf18&amount=799.99","upiUrl":"upi://pay?pa=kuran-a@ptaxis&pn=Payment%20for%20kuran-a&tr=MAYb78h&am=799.99&cu=INR&tn=MAYb78h","payStatus":"0"}}
-[17-May-2026 14:30:55 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 14:30:55 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714305512186","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051714305512186","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"c8bc6b7bb8627530570172f38e2dc55f"}
-[17-May-2026 14:30:56 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 14:30:56 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714305512186","amount":800.00,"payTime":"2026-05-17 17:00:56","orderNo":"PAYIN936596733464576","paymentUrl":"https://firepayment.org/payment7?orderId=W605171430567846406578f55&amount=799.99","upiUrl":"upi://pay?pa=9785452512@mbk&pn=Payment%20for%209785452512&tr=BMu3pWu&am=799.99&cu=INR&tn=BMu3pWu","payStatus":"0"}}
-[17-May-2026 14:52:49 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 14:52:49 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051714524912111","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051714524912111","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"6c5d58b75a2551f74febe8d8abdc1d12"}
-[17-May-2026 14:52:50 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 14:52:50 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051714524912111","amount":800.00,"payTime":"2026-05-17 17:22:51","orderNo":"PAYIN942109608939520","paymentUrl":"https://firepayment.org/payment7?orderId=W60517145251159613748adf8&amount=799.99","upiUrl":"upi://pay?pa=7851942598@mbkns&pn=Payment%20for%207851942598&tr=BqXJB7v&am=799.99&cu=INR&tn=BqXJB7v","payStatus":"0"}}
-[17-May-2026 14:53:06 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 14:53:06 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051714530612904","callback_url":"http:\/\/localhost:5173\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"048e5f079447bffd560d744bdb8f8fb1"}
-[17-May-2026 14:53:07 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 14:53:07 Asia/Kolkata] [WatchPays Response] Body: {
-    "success": true,
-    "merchant_order_no": "WP2026051714530612904",
-    "order_no": "20000921089008",
-    "amount": "800.00",
-    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921089008",
-    "status": "created"
-}
-[17-May-2026 15:07:58 Asia/Kolkata] Product 42 last_claimed: 2026-05-16 15:06:59, now: 2026-05-17 15:07:58
-[17-May-2026 15:07:58 Asia/Kolkata] Product 41 last_claimed: 2026-05-16 15:06:49, now: 2026-05-17 15:07:58
-[17-May-2026 15:07:58 Asia/Kolkata] Product 40 last_claimed: 2026-05-16 15:06:38, now: 2026-05-17 15:07:58
-[17-May-2026 15:15:50 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
-[17-May-2026 15:15:50 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026051715155012949","callback_url":"http:\/\/localhost:5173\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"603eaded1aa4abafb29117e385f15b4a"}
-[17-May-2026 15:15:51 Asia/Kolkata] [WatchPays Response] HTTP: 200
-[17-May-2026 15:15:51 Asia/Kolkata] [WatchPays Response] Body: {
-    "success": true,
-    "merchant_order_no": "WP2026051715155012949",
-    "order_no": "20000921089584",
-    "amount": "800.00",
-    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000921089584",
-    "status": "created"
-}
-[17-May-2026 15:20:23 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 15:20:23 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051715202312352","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051715202312352","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"a955e4bbf94a719b289437b3ba14fd29"}
-[17-May-2026 15:20:24 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 15:20:24 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051715202312352","amount":800.00,"payTime":"2026-05-17 17:50:25","orderNo":"PAYIN949047323299840","paymentUrl":"https://firepayment.org/payment7?orderId=W60517152025306667501864d&amount=799.99","upiUrl":"upi://pay?pa=9125779720-5@mbkns&pn=Payment%20for%209125779720-5&tr=BCAAA8o&am=799.99&cu=INR&tn=BCAAA8o","payStatus":"0"}}
-[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
-[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026051715265312520","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026051715265312520","notifyUrl":"http:\/\/localhost:5173\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"a641ccddedcf8b5fb3e294bf20634551"}
-[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Response] HTTP: 200
-[17-May-2026 15:26:53 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026051715265312520","amount":800.00,"payTime":"2026-05-17 17:56:54","orderNo":"PAYIN950680245538816","paymentUrl":"https://kspay.shop/payment7?orderId=W6051715265465369f51","upiUrl":"upi://pay?pa=9187415157@freechareg&pn=Payment%20for%209187415157&tr=IV9Fm50&am=800.00&cu=INR&tn=IV9Fm50","payStatus":"0"}}
-[22-May-2026 15:16:12 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:18 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:22 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:26 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:30 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:34 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:38 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:42 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:46 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:50 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:54 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:16:59 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:03 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:07 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:11 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:15 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:19 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:23 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:27 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:31 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:35 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:39 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:43 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:48 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:52 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:17:56 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:18:00 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:18:04 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:18:14 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
-[22-May-2026 15:22:27 Asia/Kolkata] Product 38 last_claimed: 2026-05-17 14:25:19, now: 2026-05-22 15:22:27
-[22-May-2026 15:22:47 Asia/Kolkata] [Jazpay Request] URL: https://api.jazpays.com/v1/create
-[22-May-2026 15:22:47 Asia/Kolkata] [Jazpay Request] Data: {"merchant_id":"100222038","amount":"800.00","merchant_order_no":"JZ2026052215224712498","callback_url":"http:\/\/localhost:5173\/api\/payment\/jazpay\/callback","api_key":"3ba846c55cb9bcab5c8a70bef01928d4","signature":"e6311d9b3c0013956af87e0e92fa784b"}
-[22-May-2026 15:22:49 Asia/Kolkata] [Jazpay Response] HTTP: 200
-[22-May-2026 15:22:49 Asia/Kolkata] [Jazpay Response] Body: {
-    "success": true,
-    "merchant_order_no": "JZ2026052215224712498",
-    "platform_order_no": "JAZP2026052200003646",
-    "amount": "800.00",
-    "payment_url": "https:\/\/cashiernew.blue-pay.vip\/#\/mobile?orderId=17794435677439wpfy",
-    "status": "created"
-}
-[22-May-2026 16:22:20 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:22:20 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"ZP2026052216222012640","amount":"800.00","callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:22:22 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:22:22 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978617",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978617",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "ZP2026052216222012640",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978617",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978617\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"ZP2026052216222012640\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978617\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:22:35 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:22:35 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"ZP2026052216223512146","amount":"800.00","callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:22:36 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:22:36 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978619",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978619",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "ZP2026052216223512146",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978619",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978619\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"ZP2026052216223512146\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978619\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:25:03 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:25:03 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216250312520","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:25:05 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:25:05 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978631",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978631",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "2026052216250312520",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978631",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978631\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216250312520\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978631\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216255512618","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978633",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "2026052216255512618",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978633",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216255512618\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978633\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:25:55 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978633","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216255512618","status":"SUCCESS","status_mes":null,"sys_no":"20240675978633","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978633\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216255512618\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978633\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
-[22-May-2026 16:27:08 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:27:08 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216270812466","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:27:09 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:27:09 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978637",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "2026052216270812466",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978637",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216270812466\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978637\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:27:09 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978637","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216270812466","status":"SUCCESS","status_mes":null,"sys_no":"20240675978637","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978637\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216270812466\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978637\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
-[22-May-2026 16:27:21 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:27:21 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216272112560","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:27:22 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:27:22 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978638",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "2026052216272112560",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978638",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216272112560\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978638\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:27:22 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978638","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216272112560","status":"SUCCESS","status_mes":null,"sys_no":"20240675978638","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978638\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216272112560\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978638\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
-[22-May-2026 16:35:50 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:35:50 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216355012109","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:35:52 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:35:52 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978660",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "2026052216355012109",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978660",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216355012109\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978660\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:35:52 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978660","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216355012109","status":"SUCCESS","status_mes":null,"sys_no":"20240675978660","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978660\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216355012109\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978660\",\"upi\":null}}","error":""} | status type: string | status value: "NOT_SET"
-[22-May-2026 16:36:50 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:36:50 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216365012153","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:36:51 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:36:51 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978666",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "2026052216365012153",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978666",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216365012153\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978666\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:36:51 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978666","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216365012153","status":"SUCCESS","status_mes":null,"sys_no":"20240675978666","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978666\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216365012153\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978666\",\"upi\":null}}","error":""}
-[22-May-2026 16:45:18 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:45:18 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216451812619","amount":800,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:45:20 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:45:20 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978685",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "800",
-            "order_no": "2026052216451812619",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978685",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216451812619\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978685\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:45:20 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978685","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685","deeplink":null,"mer_no":"1000240","order_amount":"800","order_no":"2026052216451812619","status":"SUCCESS","status_mes":null,"sys_no":"20240675978685","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978685\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"800\",\"order_no\":\"2026052216451812619\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978685\",\"upi\":null}}","error":""}
-[22-May-2026 16:59:26 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[22-May-2026 16:59:26 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"2026052216592612123","amount":297,"callback_url":"http:\/\/localhost:5173\/api\/payment\/zoxpay\/callback"}
-[22-May-2026 16:59:28 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[22-May-2026 16:59:28 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978701",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978701",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "297",
-            "order_no": "2026052216592612123",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240675978701",
-            "upi": null
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978701\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"297\",\"order_no\":\"2026052216592612123\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978701\",\"upi\":null}}",
-    "error": ""
-}
-[22-May-2026 16:59:28 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240675978701","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978701","deeplink":null,"mer_no":"1000240","order_amount":"297","order_no":"2026052216592612123","status":"SUCCESS","status_mes":null,"sys_no":"20240675978701","upi":null}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240675978701\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"297\",\"order_no\":\"2026052216592612123\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240675978701\",\"upi\":null}}","error":""}
-[03-Jun-2026 15:24:02 Asia/Kolkata] [Zoxpay Request] URL: https://api.zoxpays.com/payin.php
-[03-Jun-2026 15:24:02 Asia/Kolkata] [Zoxpay Request] Data: {"merchant_id":"991991334","api_key":"991991334whuwhwj2k","order_no":"ZX2026060315240212786","amount":100,"callback_url":"http:\/\/localhost:8000\/api\/payment\/zoxpay\/callback","return_url":"http:\/\/localhost:5173\/payment-result?order=ZX2026060315240212786"}
-[03-Jun-2026 15:24:04 Asia/Kolkata] [Zoxpay Response] HTTP: 200
-[03-Jun-2026 15:24:04 Asia/Kolkata] [Zoxpay Response] Body: {
-    "success": true,
-    "payment_url": "https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240676029848",
-    "gateway_response": {
-        "success": true,
-        "code": 200,
-        "message": "\u8bf7\u6c42\u6210\u529f",
-        "data": {
-            "order_data": "https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676029848",
-            "deeplink": null,
-            "mer_no": "1000240",
-            "order_amount": "100",
-            "order_no": "ZX2026060315240212786",
-            "status": "SUCCESS",
-            "status_mes": null,
-            "sys_no": "20240676029848",
-            "upi": "upi:\/\/pay?pa=8106977562-2@mbkns&pn=Payment%20for%208106977562-2&tr=PAA2UXx&am=99.98&cu=INR&tn=PAA2UXx"
-        }
-    },
-    "raw": "{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676029848\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"100\",\"order_no\":\"ZX2026060315240212786\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240676029848\",\"upi\":\"upi:\/\/pay?pa=8106977562-2@mbkns&pn=Payment%20for%208106977562-2&tr=PAA2UXx&am=99.98&cu=INR&tn=PAA2UXx\"}}",
-    "error": ""
-}
-[03-Jun-2026 15:24:04 Asia/Kolkata] [Zoxpay] Parsed response: {"success":true,"payment_url":"https:\/\/zoxpays.com\/payment.php?link=https%3A%2F%2Fwww.clouds-pay.com%2Fcash%2Ftransfer%2Fdeposit%2F20240676029848","gateway_response":{"success":true,"code":200,"message":"\u8bf7\u6c42\u6210\u529f","data":{"order_data":"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676029848","deeplink":null,"mer_no":"1000240","order_amount":"100","order_no":"ZX2026060315240212786","status":"SUCCESS","status_mes":null,"sys_no":"20240676029848","upi":"upi:\/\/pay?pa=8106977562-2@mbkns&pn=Payment%20for%208106977562-2&tr=PAA2UXx&am=99.98&cu=INR&tn=PAA2UXx"}},"raw":"{\"success\":true,\"code\":200,\"message\":\"\u8bf7\u6c42\u6210\u529f\",\"data\":{\"order_data\":\"https:\/\/www.clouds-pay.com\/cash\/transfer\/deposit\/20240676029848\",\"deeplink\":null,\"mer_no\":\"1000240\",\"order_amount\":\"100\",\"order_no\":\"ZX2026060315240212786\",\"status\":\"SUCCESS\",\"status_mes\":null,\"sys_no\":\"20240676029848\",\"upi\":\"upi:\/\/pay?pa=8106977562-2@mbkns&pn=Payment%20for%208106977562-2&tr=PAA2UXx&am=99.98&cu=INR&tn=PAA2UXx\"}}","error":""}
+[04-Jun-2026 18:46:55 Asia/Kolkata] [Jazpay] API response data: {"success":true,"merchant_order_no":"JZ2026060418465312763","platform_order_no":"JAZP2026060400014687","amount":"297.00","payment_url":"https:\/\/checkout.jazpayment.com\/cashier-chain-checkout-inr-upi\/#\/?orderNo=PININR1780579014648JUNN&timestamp=1780579014680&sign=BACD234AABEDDF8E29DC664EB5AA7A27","status":"created"}
+[04-Jun-2026 18:47:24 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
+[04-Jun-2026 18:47:24 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026060418472412215","amount":"800.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026060418472412215","notifyUrl":"http:\/\/localhost:8000\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"35cf003b1204557df3dce911810a4658"}
+[04-Jun-2026 18:47:25 Asia/Kolkata] [GalePay Response] HTTP: 200
+[04-Jun-2026 18:47:25 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026060418472412215","amount":800.00,"payTime":"2026-06-04 21:17:25","orderNo":"PAYIN524122443538432","paymentUrl":"https://firepayment.org/payment7?orderId=W60604184725310677878a42e&amount=799.99","upiUrl":"upi://pay?pa=9101750337@axl&pn=Payment%20for%209101750337&tr=MaaZ1W1&am=799.99&cu=INR&tn=MaaZ1W1","payStatus":"0"}}
+[04-Jun-2026 18:49:18 Asia/Kolkata] [GalePay Request] URL: https://gateway.openzpay.cc/v2/api/payGate/payin/create
+[04-Jun-2026 18:49:18 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026060418491812300","amount":"297.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026060418491812300","notifyUrl":"http:\/\/localhost:8000\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"7bb001bb4481efbf93c4995fe99f971e"}
+[04-Jun-2026 18:49:18 Asia/Kolkata] [GalePay Response] HTTP: 200
+[04-Jun-2026 18:49:18 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026060418491812300","amount":297.00,"payTime":"2026-06-04 21:19:18","orderNo":"PAYIN524597612011520","paymentUrl":"https://firepayment.org/payment7?orderId=W60604184918595662669bca7&amount=296.99","upiUrl":"upi://pay?pa=kuran22@axl&pn=Payment%20for%20kuran22&tr=MoAvNg4&am=296.99&cu=INR&tn=MoAvNg4","payStatus":"0"}}

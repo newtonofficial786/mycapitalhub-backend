@@ -107,10 +107,10 @@ class JazpayService
             return ['success' => false, 'error' => 'Invalid response from Jazpay'];
         }
 
-        if ($httpCode !== 200) {
+        if ($httpCode !== 200 || (isset($result['success']) && $result['success'] === false)) {
             return [
                 'success' => false,
-                'error' => $result['msg'] ?? 'Payment gateway error. Please try again.',
+                'error' => $result['message'] ?? $result['msg'] ?? 'Payment gateway error. Please try again.',
                 'code' => $httpCode,
             ];
         }
@@ -133,22 +133,22 @@ class JazpayService
         $callbackUrl = $orderData['callback_url'] ?? $this->callbackUrl;
         $returnUrl = $orderData['return_url'] ?? '';
 
-        $params = [
+        $signatureParams = [
             'merchant_id' => $this->merchantId,
             'amount' => $amount,
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,
         ];
 
-        if (!empty($returnUrl)) {
-            $params['return_url'] = $returnUrl;
-        }
+        $signature = $this->generateSignature($signatureParams);
 
-        $signature = $this->generateSignature($params);
-
-        $payload = $params;
+        $payload = $signatureParams;
         $payload['api_key'] = $this->apiKey;
         $payload['signature'] = $signature;
+
+        if (!empty($returnUrl)) {
+            $payload['return_url'] = $returnUrl;
+        }
 
         return $this->makeRequest('/v1/create', $payload);
     }
