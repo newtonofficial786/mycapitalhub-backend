@@ -79,7 +79,6 @@ class WatchPaysService
         $amount = number_format($orderData['amount'], 2, '.', '');
         $merchantOrderNo = $orderData['order_id'];
         $callbackUrl = $orderData['callback_url'] ?? $this->callbackUrl;
-        $returnUrl = $orderData['return_url'] ?? '';
         $extra = $orderData['extra'] ?? '';
 
         $params = [
@@ -88,10 +87,6 @@ class WatchPaysService
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,
         ];
-
-        if (!empty($returnUrl)) {
-            $params['return_url'] = $returnUrl;
-        }
 
         if (!empty($extra)) {
             $params['extra'] = $extra;
@@ -103,10 +98,6 @@ class WatchPaysService
             'merchant_order_no' => $merchantOrderNo,
             'callback_url' => $callbackUrl,
         ];
-
-        if (!empty($returnUrl)) {
-            $signatureParams['return_url'] = $returnUrl;
-        }
 
         $signature = $this->generateSignature($signatureParams);
         $params['signature'] = $signature;

@@ -503,15 +503,12 @@ class PaymentController
         $orderId = 'WP' . date('YmdHis') . $user['id'] . rand(100, 999);
 
         $appUrl = env('APP_URL', 'http://localhost:8000');
-        $frontendUrl = env('FRONTEND_URL', $appUrl);
         $callbackUrl = rtrim($appUrl, '/') . '/api/payment/watchpays/callback';
-        $returnUrl = rtrim($frontendUrl, '/') . '/payment-result?order=' . $orderId;
 
         $result = $watchpays->createPaymentOrder([
             'amount' => $amount,
             'order_id' => $orderId,
             'callback_url' => $callbackUrl,
-            'return_url' => $returnUrl,
             'extra' => json_encode(['user_id' => $user['id']])
         ]);
 
@@ -647,6 +644,7 @@ class PaymentController
             'status' => $recharge['status'],
             'amount' => floatval($recharge['amount']),
             'local_status' => $recharge['status'],
+            'created_at' => $recharge['created_at'],
         ]);
     }
 
@@ -868,6 +866,7 @@ class PaymentController
             'amount' => $orderData['amount'] ?? $recharge['amount'],
             'pay_status' => $payStatus,
             'local_status' => $recharge['status'],
+            'created_at' => $recharge['created_at'],
         ]);
     }
 
@@ -1054,6 +1053,7 @@ class PaymentController
             'status' => $recharge['status'],
             'amount' => floatval($recharge['amount']),
             'local_status' => $recharge['status'],
+            'created_at' => $recharge['created_at'],
         ]);
     }
 
@@ -1253,6 +1253,7 @@ class PaymentController
             'status' => $recharge['status'],
             'amount' => floatval($recharge['amount']),
             'local_status' => $recharge['status'],
+            'created_at' => $recharge['created_at'],
         ]);
     }
 }
