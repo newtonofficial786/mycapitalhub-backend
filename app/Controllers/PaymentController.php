@@ -502,8 +502,8 @@ class PaymentController
 
         $orderId = 'WP' . date('YmdHis') . $user['id'] . rand(100, 999);
 
-        $appUrl = env('APP_URL', 'http://localhost:8000');
-        $callbackUrl = rtrim($appUrl, '/') . '/api/payment/watchpays/callback';
+        $frontendUrl = env('FRONTEND_URL', env('APP_URL', 'http://localhost:8000'));
+        $callbackUrl = rtrim($frontendUrl, '/') . '/payment-result?order=' . $orderId;
 
         $result = $watchpays->createPaymentOrder([
             'amount' => $amount,
@@ -524,9 +524,7 @@ class PaymentController
         $stmt->execute([$user['id'], $amount, $orderId, $orderId, $result['order_no'] ?? '']);
 
         $paymentUrl = $result['payment_url'] ?? '';
-
-        $frontendUrl = env('FRONTEND_URL', env('APP_URL', 'http://localhost:8000'));
-        $resultUrl = rtrim($frontendUrl, '/') . '/payment-result?order=' . $orderId;
+        $resultUrl = $callbackUrl;
 
         response([
             'id' => $db->lastInsertId(),
@@ -664,9 +662,8 @@ class PaymentController
 
         $orderId = 'GP' . date('YmdHis') . $user['id'] . rand(100, 999);
 
-        $appUrl = env('APP_URL', 'http://localhost:8000');
-        $frontendUrl = env('FRONTEND_URL', $appUrl);
-        $callbackUrl = rtrim($appUrl, '/') . '/api/payment/galepay/callback';
+        $frontendUrl = env('FRONTEND_URL', env('APP_URL', 'http://localhost:8000'));
+        $callbackUrl = env('GALEPAY_CALLBACK_URL', rtrim(env('APP_URL', 'http://localhost:8000'), '/') . '/api/payment/galepay/callback');
         $returnUrl = rtrim($frontendUrl, '/') . '/payment-result?order=' . $orderId;
 
         $phone = $user['mobile'] ?? '9102380668';
@@ -886,9 +883,8 @@ class PaymentController
 
         $orderId = 'JZ' . date('YmdHis') . $user['id'] . rand(100, 999);
 
-        $appUrl = env('APP_URL', 'http://localhost:8000');
-        $frontendUrl = env('FRONTEND_URL', $appUrl);
-        $callbackUrl = rtrim($appUrl, '/') . '/api/payment/jazpay/callback';
+        $frontendUrl = env('FRONTEND_URL', env('APP_URL', 'http://localhost:8000'));
+        $callbackUrl = env('JAZPAY_CALLBACK_URL', rtrim(env('APP_URL', 'http://localhost:8000'), '/') . '/api/payment/jazpay/callback');
         $returnUrl = rtrim($frontendUrl, '/') . '/payment-result?order=' . $orderId;
 
         $result = $jazpay->createPaymentOrder([
@@ -1074,9 +1070,8 @@ class PaymentController
 
         $orderNo = 'ZX' . date('YmdHis') . $user['id'] . rand(100, 999);
 
-        $appUrl = env('APP_URL', 'http://localhost:8000');
-        $frontendUrl = env('FRONTEND_URL', $appUrl);
-        $callbackUrl = rtrim($appUrl, '/') . '/api/payment/zoxpay/callback';
+        $frontendUrl = env('FRONTEND_URL', env('APP_URL', 'http://localhost:8000'));
+        $callbackUrl = env('ZOXPAY_CALLBACK_URL', rtrim(env('APP_URL', 'http://localhost:8000'), '/') . '/api/payment/zoxpay/callback');
         $returnUrl = rtrim($frontendUrl, '/') . '/payment-result?order=' . $orderNo;
 
         $result = $zoxpay->createPaymentOrder([

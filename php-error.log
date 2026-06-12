@@ -98,3 +98,48 @@
 [04-Jun-2026 18:49:18 Asia/Kolkata] [GalePay Request] Data: {"mchId":"1778123638","mchOrderId":"GP2026060418491812300","amount":"297.00","channelCode":"301","returnUrl":"http:\/\/localhost:5173\/payment-result?order=GP2026060418491812300","notifyUrl":"http:\/\/localhost:8000\/api\/payment\/galepay\/callback","email":"user@example.com","phone":"1234567890","sign":"7bb001bb4481efbf93c4995fe99f971e"}
 [04-Jun-2026 18:49:18 Asia/Kolkata] [GalePay Response] HTTP: 200
 [04-Jun-2026 18:49:18 Asia/Kolkata] [GalePay Response] Body: {"code":200,"msg":"success","data":{"mchId":"1778123638","mchOrderId":"GP2026060418491812300","amount":297.00,"payTime":"2026-06-04 21:19:18","orderNo":"PAYIN524597612011520","paymentUrl":"https://firepayment.org/payment7?orderId=W60604184918595662669bca7&amount=296.99","upiUrl":"upi://pay?pa=kuran22@axl&pn=Payment%20for%20kuran22&tr=MoAvNg4&am=296.99&cu=INR&tn=MoAvNg4","payStatus":"0"}}
+[12-Jun-2026 10:54:47 Asia/Kolkata] Product 38 last_claimed: 2026-06-04 18:46:45, now: 2026-06-12 10:54:47
+[12-Jun-2026 10:54:59 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[12-Jun-2026 10:54:59 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026061210545912240","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"bd53a9926df5a1cf2247461148822fa7"}
+[12-Jun-2026 10:55:00 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[12-Jun-2026 10:55:00 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026061210545912240",
+    "order_no": "20000922144940",
+    "amount": "800.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000922144940",
+    "status": "created"
+}
+[12-Jun-2026 11:04:17 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[12-Jun-2026 11:04:17 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026061211041712993","callback_url":"http:\/\/localhost:8000\/api\/payment\/watchpays\/callback","extra":"{\"user_id\":12}","signature":"30858c4b5b1f9973eac5532e70f281f5"}
+[12-Jun-2026 11:04:17 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[12-Jun-2026 11:04:17 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026061211041712993",
+    "order_no": "20000922145209",
+    "amount": "800.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000922145209",
+    "status": "created"
+}
+[12-Jun-2026 11:10:25 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[12-Jun-2026 11:10:25 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"875.00","merchant_order_no":"WP2026061211102512344","callback_url":"http:\/\/localhost:5173\/payment-result?order=WP2026061211102512344","extra":"{\"user_id\":12}","signature":"3be5e535dfc1a98fa95c9bf179ec2776"}
+[12-Jun-2026 11:10:25 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[12-Jun-2026 11:10:25 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026061211102512344",
+    "order_no": "20000922145376",
+    "amount": "875.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000922145376",
+    "status": "created"
+}
+[12-Jun-2026 21:41:01 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[12-Jun-2026 21:41:01 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026061221410112649","callback_url":"http:\/\/localhost:5173\/payment-result?order=WP2026061221410112649","extra":"{\"user_id\":12}","signature":"dd0ca15f6fe4cab343a3017bcbc9e60f"}
+[12-Jun-2026 21:41:02 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[12-Jun-2026 21:41:02 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026061221410112649",
+    "order_no": "20000922166680",
+    "amount": "800.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000922166680",
+    "status": "created"
+}
