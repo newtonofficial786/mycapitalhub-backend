@@ -502,8 +502,7 @@ class PaymentController
 
         $orderId = 'WP' . date('YmdHis') . $user['id'] . rand(100, 999);
 
-        $frontendUrl = env('FRONTEND_URL', env('APP_URL', 'http://localhost:8000'));
-        $callbackUrl = rtrim($frontendUrl, '/') . '/payment-result?order=' . $orderId;
+        $callbackUrl = env('WATCHPAYS_CALLBACK_URL', 'https://tatainvest.in/tatainvest/api/payment/watchpays/callback');
 
         $result = $watchpays->createPaymentOrder([
             'amount' => $amount,
@@ -642,19 +641,32 @@ class PaymentController
             $watchpays = new WatchPaysService();
             $apiResult = $watchpays->queryOrder($orderId);
 
-            if ($apiResult['success'] && isset($apiResult['data'])) {
-                $apiData = $apiResult['data'];
-                $apiStatus = $apiData['status'] ?? $apiData['pay_status'] ?? '';
+            error_log('[WatchPays Query] Order: ' . $orderId . ' Response: ' . json_encode($apiResult));
+
+            $apiData = $apiResult['data'] ?? null;
+            if ($apiData) {
+                $apiStatus = $apiData['status'] ?? $apiData['pay_status'] ?? $apiData['order_status'] ?? '';
+
+                error_log('[WatchPays Query] Status: ' . $apiStatus);
 
                 if (in_array(strtolower($apiStatus), ['completed', 'success', 'paid'], true)) {
-                    $stmt = $db->prepare("UPDATE recharges SET status = 'completed' WHERE id = ?");
+                    $stmt = $db->prepare("UPDATE recharges SET status = 'completed', updated_at = NOW() WHERE id = ?");
                     $stmt->execute([$recharge['id']]);
                     $recharge['status'] = 'completed';
 
                     $creditAmount = floatval($recharge['amount']);
                     $this->userModel->updateWalletBalance($recharge['user_id'], $creditAmount, 'recharge', 'main', 'WatchPays recharge completed (query)');
+
+                    $stmt = $db->prepare("UPDATE users SET total_recharge = total_recharge + ? WHERE id = ?");
+                    $stmt->execute([$creditAmount, $recharge['user_id']]);
+
+                    try {
+                        $this->userModel->payReferralCommission($recharge['user_id'], $creditAmount);
+                    } catch (Exception $e) {
+                        error_log('[WatchPays Query] Referral commission error: ' . $e->getMessage());
+                    }
                 } elseif (in_array(strtolower($apiStatus), ['failed', 'cancelled', 'expired'], true)) {
-                    $stmt = $db->prepare("UPDATE recharges SET status = 'failed' WHERE id = ?");
+                    $stmt = $db->prepare("UPDATE recharges SET status = 'failed', updated_at = NOW() WHERE id = ?");
                     $stmt->execute([$recharge['id']]);
                     $recharge['status'] = 'failed';
                 }
