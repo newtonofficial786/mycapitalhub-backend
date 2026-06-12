@@ -637,6 +637,30 @@ class PaymentController
             error('Order not found');
         }
 
+        if ($recharge['status'] === 'pending') {
+            require_once __DIR__ . '/../Services/WatchPaysService.php';
+            $watchpays = new WatchPaysService();
+            $apiResult = $watchpays->queryOrder($orderId);
+
+            if ($apiResult['success'] && isset($apiResult['data'])) {
+                $apiData = $apiResult['data'];
+                $apiStatus = $apiData['status'] ?? $apiData['pay_status'] ?? '';
+
+                if (in_array(strtolower($apiStatus), ['completed', 'success', 'paid'], true)) {
+                    $stmt = $db->prepare("UPDATE recharges SET status = 'completed' WHERE id = ?");
+                    $stmt->execute([$recharge['id']]);
+                    $recharge['status'] = 'completed';
+
+                    $creditAmount = floatval($recharge['amount']);
+                    $this->userModel->updateWalletBalance($recharge['user_id'], $creditAmount, 'recharge', 'main', 'WatchPays recharge completed (query)');
+                } elseif (in_array(strtolower($apiStatus), ['failed', 'cancelled', 'expired'], true)) {
+                    $stmt = $db->prepare("UPDATE recharges SET status = 'failed' WHERE id = ?");
+                    $stmt->execute([$recharge['id']]);
+                    $recharge['status'] = 'failed';
+                }
+            }
+        }
+
         response([
             'order_id' => $orderId,
             'status' => $recharge['status'],

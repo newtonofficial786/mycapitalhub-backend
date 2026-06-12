@@ -143,3 +143,48 @@
     "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000922166680",
     "status": "created"
 }
+[12-Jun-2026 22:19:49 Asia/Kolkata] [API Error] Database connection failed in P:\Website Projects\Projects001\backend\config\Database.php:45
+[12-Jun-2026 22:20:20 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[12-Jun-2026 22:20:20 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"800.00","merchant_order_no":"WP2026061222202012335","callback_url":"http:\/\/localhost:5173\/payment-result?order=WP2026061222202012335","extra":"{\"user_id\":12}","signature":"729432aff24b4d572a059e29af790bd3"}
+[12-Jun-2026 22:20:21 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[12-Jun-2026 22:20:21 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026061222202012335",
+    "order_no": "20000922168041",
+    "amount": "800.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000922168041",
+    "status": "created"
+}
+[12-Jun-2026 22:24:49 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/create
+[12-Jun-2026 22:24:49 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","amount":"100.00","merchant_order_no":"WP2026061222244912162","callback_url":"http:\/\/localhost:5173\/payment-result?order=WP2026061222244912162","extra":"{\"user_id\":12}","signature":"b04a45b1669aa023c8c4f6fd8b839479"}
+[12-Jun-2026 22:24:50 Asia/Kolkata] [WatchPays Response] HTTP: 200
+[12-Jun-2026 22:24:50 Asia/Kolkata] [WatchPays Response] Body: {
+    "success": true,
+    "merchant_order_no": "WP2026061222244912162",
+    "order_no": "20000922168196",
+    "amount": "100.00",
+    "payment_url": "https:\/\/api.watchglb.com\/pay\/uniqueurl?dataIndex=20000922168196",
+    "status": "created"
+}
+[12-Jun-2026 22:29:04 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/query
+[12-Jun-2026 22:29:04 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","merchant_order_no":"WP2026061222244912162"}
+[12-Jun-2026 22:29:05 Asia/Kolkata] [WatchPays Response] HTTP: 404
+[12-Jun-2026 22:29:05 Asia/Kolkata] [WatchPays Response] Body: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+[12-Jun-2026 22:29:05 Asia/Kolkata] [WatchPays Request] URL: https://api.watchpays.com/v1/query
+[12-Jun-2026 22:29:05 Asia/Kolkata] [WatchPays Request] Data: {"merchant_id":"100555221","api_key":"b8470a407d8a16622395f7f35c997fcf","merchant_order_no":"WP2026061222244912162"}
+[12-Jun-2026 22:29:05 Asia/Kolkata] [WatchPays Response] HTTP: 404
+[12-Jun-2026 22:29:05 Asia/Kolkata] [WatchPays Response] Body: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+

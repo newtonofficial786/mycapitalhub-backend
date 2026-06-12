@@ -115,4 +115,13 @@ class WatchPaysService
             'amount' => $callbackData['amount'] ?? 0,
         ];
     }
+
+    public function queryOrder(string $orderNo)
+    {
+        return $this->makeRequest('/query', [
+            'merchant_id' => $this->merchantId,
+            'api_key' => $this->apiKey,
+            'merchant_order_no' => $orderNo,
+        ]);
+    }
 }
