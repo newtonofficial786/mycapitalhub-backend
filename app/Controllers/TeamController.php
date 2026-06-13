@@ -98,7 +98,7 @@ class TeamController {
             'referral_code' => $userData['referral_code'],
             'team_count' => $teamCount,
             'commission_rate' => floatval($rate['commission_rate'] ?? 5),
-            'invite_link' => (env('APP_URL', 'http://localhost:5173') . '/auth/register?invite=' . $userData['referral_code'])
+            'invite_link' => (env('FRONTEND_URL', 'https://mycapitalhub.xyz') . '/auth/register?invite=' . $userData['referral_code'])
         ]);
     }
 
