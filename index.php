@@ -95,6 +95,15 @@ try {
         $c->getBanners();
         return;
     }
+    if ($uri === 'api/social-links' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Controllers/Admin/AdminSocialLinksController.php');
+        $c = new AdminSocialLinksController();
+        $c->getPublic();
+        return;
+    }
     if ($uri === 'api/products' && $method === 'GET') {
         load('/bootstrap.php');
         load('/config/Database.php');
@@ -1298,6 +1307,29 @@ try {
         load('/app/Middleware/AdminMiddleware.php');
         load('/app/Controllers/Admin/AdminPaymentResultController.php');
         $c = new AdminPaymentResultController();
+        $c->update();
+        return;
+    }
+
+    if ($uri === 'api/admin/social-links' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSocialLinksController.php');
+        $c = new AdminSocialLinksController();
+        $c->getAll();
+        return;
+    }
+    if ($uri === 'api/admin/social-links' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminSocialLinksController.php');
+        $c = new AdminSocialLinksController();
         $c->update();
         return;
     }

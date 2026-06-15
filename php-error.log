@@ -395,3 +395,5 @@
 [13-Jun-2026 12:11:28 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
 [13-Jun-2026 12:11:32 Asia/Kolkata] [API Error] Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in P:\Website Projects\Projects001\backend\config\Database.php:43
 [13-Jun-2026 12:11:44 Asia/Kolkata] Product 38 last_claimed: 2026-06-12 10:54:47, now: 2026-06-13 12:11:44
+[15-Jun-2026 14:48:50 Asia/Kolkata] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.site_settings' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\AdminSocialLinksController.php:48
+[15-Jun-2026 14:48:50 Asia/Kolkata] [API Error] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gaming_platform.site_settings' doesn't exist in P:\Website Projects\Projects001\backend\app\Controllers\Admin\AdminSocialLinksController.php:48
