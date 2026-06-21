@@ -134,4 +134,54 @@ class AdminUserActivityController {
             'top_users' => $topUsers,
         ]);
     }
+
+    public function analytics() {
+        authenticateAdmin();
+        $db = getDb();
+
+        $totalMetrics = $db->query("
+            SELECT COUNT(*) as total_activities, COUNT(DISTINCT user_id) as total_users
+            FROM user_activities
+        ")->fetch(PDO::FETCH_ASSOC);
+
+        $typeBreakdown = $db->query("
+            SELECT ua.activity_type, COUNT(*) as total_count, COUNT(DISTINCT ua.user_id) as unique_users
+            FROM user_activities ua
+            GROUP BY ua.activity_type
+            ORDER BY total_count DESC
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        $dailyTrend = $db->query("
+            SELECT DATE(created_at) as day, COUNT(*) as count, COUNT(DISTINCT user_id) as users
+            FROM user_activities
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+            GROUP BY DATE(created_at)
+            ORDER BY day ASC
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        $hourlyDist = $db->query("
+            SELECT HOUR(created_at) as hour, COUNT(*) as count
+            FROM user_activities
+            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            GROUP BY HOUR(created_at)
+            ORDER BY hour ASC
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        $dailyTypeBreakdown = $db->query("
+            SELECT DATE(created_at) as day, activity_type, COUNT(*) as count
+            FROM user_activities
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+            GROUP BY DATE(created_at), activity_type
+            ORDER BY day ASC, count DESC
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        response([
+            'total_activities' => (int)$totalMetrics['total_activities'],
+            'total_users' => (int)$totalMetrics['total_users'],
+            'type_breakdown' => $typeBreakdown,
+            'daily_trend' => $dailyTrend,
+            'hourly_distribution' => $hourlyDist,
+            'daily_type_breakdown' => $dailyTypeBreakdown,
+        ]);
+    }
 }

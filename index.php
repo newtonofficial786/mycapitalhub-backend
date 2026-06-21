@@ -1423,6 +1423,17 @@ try {
         $c->stats();
         return;
     }
+    if ($uri === 'api/admin/activities/analytics' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminUserActivityController.php');
+        $c = new AdminUserActivityController();
+        $c->analytics();
+        return;
+    }
 
     if ($uri === 'api/uploads/images' && strpos($uri, '/uploads/images') === 0) {
         $filename = basename($_SERVER['REQUEST_URI']);
