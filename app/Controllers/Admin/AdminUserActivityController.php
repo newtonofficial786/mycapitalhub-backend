@@ -14,6 +14,7 @@ class AdminUserActivityController {
 
         $userId = $data['user_id'] ?? null;
         $activityType = $data['activity_type'] ?? null;
+        $mobileSearch = $data['mobile'] ?? null;
         $page = max(1, (int)($data['page'] ?? 1));
         $limit = min(100, max(1, (int)($data['limit'] ?? 20)));
         $offset = ($page - 1) * $limit;
@@ -28,6 +29,10 @@ class AdminUserActivityController {
         if ($activityType) {
             $where .= " AND ua.activity_type = ?";
             $params[] = $activityType;
+        }
+        if ($mobileSearch) {
+            $where .= " AND u.mobile LIKE ?";
+            $params[] = '%' . $mobileSearch . '%';
         }
 
         $countStmt = $db->prepare("SELECT COUNT(*) FROM user_activities ua JOIN users u ON ua.user_id = u.id WHERE $where");
