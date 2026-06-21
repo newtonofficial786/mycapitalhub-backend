@@ -7,7 +7,8 @@ require_once __DIR__ . '/../../../app/Middleware/AuthMiddleware.php';
 class ActivityController {
 
     public function log() {
-        $userId = authenticate();
+        $user = authenticate();
+        $userId = $user['id'];
         $data = getJsonInput();
         $db = getDb();
 
