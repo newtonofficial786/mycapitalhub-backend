@@ -78,8 +78,10 @@ class AdminUserActivityController {
         $limit = min(100, max(1, (int)($data['limit'] ?? 20)));
 
         $stmt = $db->prepare("
-            SELECT ua.id, ua.activity_type, ua.metadata, ua.ip_address, ua.created_at
+            SELECT ua.id, ua.activity_type, ua.metadata, ua.ip_address, ua.created_at,
+                   u.mobile, u.level
             FROM user_activities ua
+            JOIN users u ON ua.user_id = u.id
             WHERE ua.user_id = ?
             ORDER BY ua.created_at DESC
             LIMIT ?
@@ -89,6 +91,7 @@ class AdminUserActivityController {
 
         foreach ($activities as &$a) {
             $a['metadata'] = json_decode($a['metadata'] ?? '{}', true);
+            $a['mobile'] = substr($a['mobile'], 0, 3) . '****' . substr($a['mobile'], -2);
         }
 
         response([
