@@ -53,7 +53,6 @@ class AdminUserActivityController {
 
         foreach ($activities as &$a) {
             $a['metadata'] = json_decode($a['metadata'] ?? '{}', true);
-            $a['mobile'] = substr($a['mobile'], 0, 3) . '****' . substr($a['mobile'], -2);
         }
 
         response([
@@ -91,7 +90,6 @@ class AdminUserActivityController {
 
         foreach ($activities as &$a) {
             $a['metadata'] = json_decode($a['metadata'] ?? '{}', true);
-            $a['mobile'] = substr($a['mobile'], 0, 3) . '****' . substr($a['mobile'], -2);
         }
 
         response([
@@ -129,10 +127,6 @@ class AdminUserActivityController {
             ORDER BY activity_count DESC
             LIMIT 10
         ")->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($topUsers as &$u) {
-            $u['mobile'] = substr($u['mobile'], 0, 3) . '****' . substr($u['mobile'], -2);
-        }
 
         response([
             'today' => $today,
