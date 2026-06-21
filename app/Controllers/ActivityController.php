@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../../../config/Database.php';
-require_once __DIR__ . '/../../../app/Helpers.php';
-require_once __DIR__ . '/../../../app/Middleware/AuthMiddleware.php';
+require_once __DIR__ . '/../../config/Database.php';
+require_once __DIR__ . '/../../app/Helpers.php';
+require_once __DIR__ . '/../../app/Middleware/AuthMiddleware.php';
 
 class ActivityController {
 
@@ -53,7 +53,7 @@ class ActivityController {
             echo json_encode(['success' => true, 'data' => ['logged' => true]]);
         } catch (Throwable $e) {
             error_log('[Activity] ERROR: ' . $e->getMessage());
-            echo json_encode(['success' => true, 'data' => ['logged' => false]]);
+            echo json_encode(['success' => false, 'data' => ['logged' => false]]);
         }
         exit;
     }
