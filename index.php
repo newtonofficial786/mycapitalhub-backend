@@ -1378,6 +1378,52 @@ try {
         $c->getDetails();
         return;
     }
+
+    // User Activity routes
+    if ($uri === 'api/activity/log' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Controllers/ActivityController.php');
+        $c = new ActivityController();
+        $c->log();
+        return;
+    }
+    if ($uri === 'api/admin/activities' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminUserActivityController.php');
+        $c = new AdminUserActivityController();
+        $c->list();
+        return;
+    }
+    if ($uri === 'api/admin/activities/user-history' && $method === 'POST') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminUserActivityController.php');
+        $c = new AdminUserActivityController();
+        $c->userHistory();
+        return;
+    }
+    if ($uri === 'api/admin/activities/stats' && $method === 'GET') {
+        load('/bootstrap.php');
+        load('/config/Database.php');
+        load('/app/Helpers.php');
+        load('/app/Middleware/AuthMiddleware.php');
+        load('/app/Middleware/AdminMiddleware.php');
+        load('/app/Controllers/Admin/AdminUserActivityController.php');
+        $c = new AdminUserActivityController();
+        $c->stats();
+        return;
+    }
+
     if ($uri === 'api/uploads/images' && strpos($uri, '/uploads/images') === 0) {
         $filename = basename($_SERVER['REQUEST_URI']);
         $filepath = __DIR__ . '/uploads/images/' . $filename;
