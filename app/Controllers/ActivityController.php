@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../app/Middleware/AuthMiddleware.php';
 class ActivityController {
 
     private function ensureTable($db) {
-        $db->exec("CREATE TABLE IF NOT EXISTS user_activities (
+        @$db->exec("CREATE TABLE IF NOT EXISTS user_activities (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT NOT NULL,
             activity_type VARCHAR(50) NOT NULL,
@@ -22,6 +22,9 @@ class ActivityController {
     }
 
     public function log() {
+        http_response_code(200);
+        header('Content-Type: application/json');
+
         try {
             $user = authenticate();
             $userId = $user['id'];
@@ -47,13 +50,11 @@ class ActivityController {
                 $userAgent,
             ]);
 
-            response(['logged' => true]);
+            echo json_encode(['success' => true, 'data' => ['logged' => true]]);
         } catch (Throwable $e) {
             error_log('[Activity] ERROR: ' . $e->getMessage());
-            http_response_code(200);
-            header('Content-Type: application/json');
-            echo json_encode(['logged' => false]);
-            exit;
+            echo json_encode(['success' => true, 'data' => ['logged' => false]]);
         }
+        exit;
     }
 }
