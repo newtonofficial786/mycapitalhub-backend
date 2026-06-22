@@ -58,10 +58,8 @@ class AdminWithdrawalsController {
         authenticateAdmin();
         $data = getJsonInput();
         $id = intval($data['id'] ?? 0);
-        $walletType = $data['wallet_type'] ?? 'main';
         
         if (!$id) error('Withdrawal ID required');
-        if (!in_array($walletType, ['main', 'stable', 'vip', 'referral'])) error('Invalid wallet type');
         
         $db = getDb();
         $stmt = $db->prepare("SELECT * FROM withdrawals WHERE id = ?");
@@ -71,18 +69,19 @@ class AdminWithdrawalsController {
         if (!$withdrawal) error('Withdrawal not found');
         if ($withdrawal['status'] !== 'pending') error('Withdrawal not pending');
         
+        $walletType = $withdrawal['wallet_type'] ?? 'main';
         $walletColumn = $this->getWalletColumn($walletType);
         
         $db->beginTransaction();
         try {
-            $stmt = $db->prepare("UPDATE withdrawals SET status = 'completed', updated_at = NOW(), wallet_type = ? WHERE id = ?");
-            $stmt->execute([$walletType, $id]);
+            $stmt = $db->prepare("UPDATE withdrawals SET status = 'completed', updated_at = NOW() WHERE id = ?");
+            $stmt->execute([$id]);
             
             $stmt = $db->prepare("UPDATE wallet_transactions SET status = 'completed' WHERE type = 'withdraw' AND user_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1");
             $stmt->execute([$withdrawal['user_id']]);
             
-            $stmt = $db->prepare("UPDATE users SET total_withdraw = total_withdraw + ?, {$walletColumn} = {$walletColumn} - ? WHERE id = ?");
-            $stmt->execute([$withdrawal['amount'], $withdrawal['amount'], $withdrawal['user_id']]);
+            $stmt = $db->prepare("UPDATE users SET total_withdraw = total_withdraw + ? WHERE id = ?");
+            $stmt->execute([$withdrawal['amount'], $withdrawal['user_id']]);
             
             $db->commit();
             response(null, 'Withdrawal approved');
