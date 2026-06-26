@@ -95,7 +95,7 @@ class AdminUsersController {
         $updates = [];
         $params = [];
         
-        $allowed = ['level', 'status'];
+        $allowed = ['level', 'status', 'is_admin'];
         foreach ($allowed as $field) {
             if (isset($data[$field])) {
                 $updates[] = "$field = ?";
